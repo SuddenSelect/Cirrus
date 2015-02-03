@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="defaultSuite">
+    <test name="plain-multi-chunk">
+        <parameter name="test-file" value="src/test/resources/republic.mb.txt"/>
+        <classes>
+            <class name="pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile"/>
+        </classes>
+    </test>
+    <test name="plain-single-chunk">
+        <parameter name="test-file" value="src/test/resources/single.chunk.txt"/>
+        <classes>
+            <class name="pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile"/>
+        </classes>
+    </test>
+</suite>

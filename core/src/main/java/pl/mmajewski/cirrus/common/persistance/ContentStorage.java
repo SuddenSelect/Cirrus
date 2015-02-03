@@ -46,7 +46,7 @@ public interface ContentStorage {
 
     /**
      * Removes ContentMetadata and all pieces tied to it.
-     * Invoked only when deleting content from entirely.
+     * Invoked only when deleting content entirely.
      * @param metadata
      */
     public void deleteContent(ContentMetadata metadata);

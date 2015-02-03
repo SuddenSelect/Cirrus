@@ -19,13 +19,13 @@ import java.util.Map;
 public class ContentMetadata implements Serializable{
     private static final long serialVersionUID = 1681266000001L;
 
-    private String contentId;//indexable
-    private String commiterCirrusId;//indexable
-    private LocalDateTime availableSince;//indexable
-    private LocalDateTime lastUpdated;//indexable
-    private Integer piecesAmount;
-    private String contentChecksum;
-    private ContentStatus status;//indexable
+    private String contentId;//indexable, determined by app upon creation
+    private String commiterCirrusId;//indexable, determined by core upon publishing
+    private LocalDateTime availableSince;//indexable, determined by core upon publishing
+    private LocalDateTime lastUpdated;//indexable, determined by app upon any change
+    private Integer piecesAmount;//determined by app upon creation or update
+    private String contentChecksum;//determined by app upon creation or update, checked by core
+    private ContentStatus status;//indexable, determined by app
     private Map<Integer, String> piecesChecksums;
 
     /**

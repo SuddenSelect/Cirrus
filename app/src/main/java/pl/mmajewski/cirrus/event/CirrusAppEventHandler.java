@@ -19,4 +19,14 @@ public interface CirrusAppEventHandler extends CirrusEventHandler {
             throw new EventHandlerMismatchedCirrusException(e,event,this);
         }
     }
+
+    @Override
+    default public void setAppEventHandler(CirrusEventHandler handler) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default public CirrusEventHandler getAppEventHandler() {
+        return this;
+    }
 }

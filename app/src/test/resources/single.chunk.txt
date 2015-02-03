@@ -1,0 +1,1 @@
+This is simple, tiny text. It's expected to be processed as single chunk.

@@ -37,17 +37,6 @@ public interface ServerCirrusEventHandler extends CirrusEventHandler{
      */
     public HostStorage getHostStorage();
 
-    /**
-     * Sets content storage for updating content data.
-     * @param contentStorage
-     */
-    public void setContentStorage(ContentStorage contentStorage);
-
-    /**
-     * ContentStorage getter.
-     * @return content storage if has been set, null otherwise.
-     */
-    public ContentStorage getContentStorage();
 
     /**
      * Sets availability storage for updating ContentAvailability data.

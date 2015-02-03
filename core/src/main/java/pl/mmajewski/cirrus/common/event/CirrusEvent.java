@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.common.event;
 
 import pl.mmajewski.cirrus.common.exception.UnimplementedEventCirrusException;
+import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +17,11 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
     private LocalDateTime creationTime;
     private String eventId;
     private Set<String> trace = new HashSet<String>();
+
+    public void init(){
+        setCreationTime(LocalDateTime.now());
+        setEventId(CirrusIdGenerator.generateEventId());
+    }
 
     /**
      * Method implementing the functionality of CirrusEvent

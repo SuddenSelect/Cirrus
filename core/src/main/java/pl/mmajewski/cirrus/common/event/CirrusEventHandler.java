@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.common.event;
 
 import pl.mmajewski.cirrus.common.exception.EventHandlerMismatchedCirrusException;
+import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -50,4 +51,16 @@ public interface CirrusEventHandler {
     default public void appEvent(CirrusEvent event){
         getAppEventHandler().handle(event);
     }
+
+    /**
+     * Sets content storage for updating content data.
+     * @param contentStorage
+     */
+    public void setContentStorage(ContentStorage contentStorage);
+
+    /**
+     * ContentStorage getter.
+     * @return content storage if has been set, null otherwise.
+     */
+    public ContentStorage getContentStorage();
 }

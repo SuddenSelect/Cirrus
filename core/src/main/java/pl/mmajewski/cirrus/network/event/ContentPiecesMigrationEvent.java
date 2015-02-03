@@ -7,13 +7,14 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHandler> {
+public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHandler> implements Serializable {
     private static final long serialVersionUID = 1681266000007L;
 
     private Set<ContentAvailability> contentAvailabilities;

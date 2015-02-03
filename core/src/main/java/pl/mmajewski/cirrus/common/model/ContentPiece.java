@@ -18,7 +18,7 @@ public class ContentPiece implements Serializable {
     private Integer sequence;//indexable
     private String expectedChecksum;
     private ByteBuffer content;
-    private transient ContentStatus status; //indexable, determined locally
+    private transient ContentStatus status; //indexable, determined locally by core
 
     public String getContentId() {
         return contentId;
