@@ -116,7 +116,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
     }
 
     public void suppressEventGeneration(boolean suppress){
-        if(eventHandler == null){
+        if(eventHandler == null && !suppress){
             throw new UnsupportedOperationException("Instance was initialized as non-eventful");
         }
         eventGenereationSuppressed = suppress;

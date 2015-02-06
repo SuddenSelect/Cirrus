@@ -38,9 +38,11 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <failIfNoTests>true</failIfNoTests>
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 
 

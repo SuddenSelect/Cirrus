@@ -1,10 +1,17 @@
-package pl.mmajewski.cirrus.impl;
+package pl.mmajewski.cirrus.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pl.mmajewski.cirrus.common.Constants;
+import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
 import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
+import pl.mmajewski.cirrus.main.appevents.NewContentPreparedCirrusAppEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,15 +20,15 @@ import java.nio.ByteBuffer;
 
 public class ContentAdapterImplPlainFileTest {
 
-    @Parameters("test-file")
-    @Test(priority = 1)
+    @Parameters("testFile")
+    @Test
     public void testIsSupported(String file) throws Exception {
         ContentAdapterImplPlainFile test = new ContentAdapterImplPlainFile();
         Assert.assertTrue(test.isSupported(file));
     }
 
-    @Parameters("test-file")
-    @Test(priority = 2)
+    @Parameters("testFile")
+    @Test
     public void testAdapt(String file) throws Exception {
         ContentAdapterImplPlainFile test = new ContentAdapterImplPlainFile();
         test.suppressEventGeneration(true);
@@ -31,8 +38,8 @@ public class ContentAdapterImplPlainFileTest {
         Assert.assertEquals(test.getChunks().length, expectedChunksNum);
     }
 
-    @Parameters("test-file")
-    @Test(priority = 3)
+    @Test
+    @Parameters({"testFile"})
     public void testGetChunks(String file) throws Exception {
         ContentAdapterImplPlainFile test = new ContentAdapterImplPlainFile();
         Assert.assertTrue(test.isSupported(file));
@@ -71,5 +78,53 @@ public class ContentAdapterImplPlainFileTest {
                 current = input.read();
             }
         }
+    }
+
+    private static class DummyHandler implements CirrusEventHandler{
+
+        private boolean passed = false;
+
+        @Override
+        public void accept(CirrusEvent event) {
+            NewContentPreparedCirrusAppEvent evt = (NewContentPreparedCirrusAppEvent) event;
+            Assert.assertNotNull(evt.getMetadata());
+            Assert.assertNotEquals(0, evt.getMetadata().getPiecesAmount());
+            Assert.assertNotNull(evt.getPieces());
+            Assert.assertFalse(evt.getPieces().isEmpty());
+            passed = true;
+        }
+
+        @Override
+        public void setAppEventHandler(CirrusEventHandler handler) {
+
+        }
+
+        @Override
+        public CirrusEventHandler getAppEventHandler() {
+            return null;
+        }
+
+        @Override
+        public void setContentStorage(ContentStorage contentStorage) {
+
+        }
+
+        @Override
+        public ContentStorage getContentStorage() {
+            return null;
+        }
+
+        public void test() {
+            Assert.assertTrue(passed);
+        }
+    }
+
+    @Parameters("testFile")
+    @Test
+    public void testEventGeneration(String file) throws ContentAdapterCirrusException {
+        DummyHandler handler = new DummyHandler();
+        ContentAdapterImplPlainFile adapter = new ContentAdapterImplPlainFile(handler);
+        adapter.adapt(file);
+        handler.test();
     }
 }
