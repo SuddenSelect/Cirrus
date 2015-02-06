@@ -84,7 +84,7 @@
         </plugins>
     </build>
     <modules>
-        <module>core</module>
-        <module>app</module>
+        <module>cirrus-core</module>
+        <module>cirrus-app</module>
     </modules>
 </project>

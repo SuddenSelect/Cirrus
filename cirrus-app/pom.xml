@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>app</artifactId>
+    <artifactId>cirrus-app</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>Cirrus</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>cirrus-core</artifactId>
             <version>${projectVersion}</version>
         </dependency>
 
