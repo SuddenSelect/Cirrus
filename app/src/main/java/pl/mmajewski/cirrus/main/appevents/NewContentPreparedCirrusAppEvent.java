@@ -1,10 +1,10 @@
-package pl.mmajewski.cirrus.appevents;
+package pl.mmajewski.cirrus.main.appevents;
 
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
-import pl.mmajewski.cirrus.event.SimpleCirrusAppEventHandler;
+import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.TreeSet;
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<SimpleCirrusAppEventHandler> {
+public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
     private ContentMetadata metadata;
     private List<ContentPiece> pieces;
 
@@ -35,7 +35,7 @@ public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<SimpleCirru
 
 
     @Override
-    public void appEvent(SimpleCirrusAppEventHandler handler) {
+    public void appEvent(CirrusBasicApp.AppEventHandler handler) {
         ContentStorage prepared = handler.getContentStorage();
 
         Set<ContentMetadata> metadatas = new TreeSet<>();

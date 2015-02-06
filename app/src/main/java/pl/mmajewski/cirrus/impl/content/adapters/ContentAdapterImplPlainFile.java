@@ -1,10 +1,10 @@
 package pl.mmajewski.cirrus.impl.content.adapters;
 
-import pl.mmajewski.cirrus.appevents.NewContentPreparedCirrusAppEvent;
-import pl.mmajewski.cirrus.binding.common.EventHandler;
 import pl.mmajewski.cirrus.common.Constants;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.content.ContentAdapter;
 import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
+import pl.mmajewski.cirrus.main.appevents.NewContentPreparedCirrusAppEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,26 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
     private String contentSource;
     private ByteBuffer[] chunks;
     private boolean eventGenereationSuppressed;
+    private CirrusEventHandler eventHandler;
+
+    /**
+     * Constructor for quiet (non-eventful) processing
+     */
+    public ContentAdapterImplPlainFile(){
+        eventHandler = null;
+        eventGenereationSuppressed = true;
+    }
+
+    /**
+     * Constructor for eventful processing (still can be turned off with suppressEventGeneration method)
+     * @param eventHandler handler for generated events
+     */
+    public ContentAdapterImplPlainFile(CirrusEventHandler eventHandler){
+        this.eventHandler = eventHandler;
+        this.eventGenereationSuppressed = false;
+    }
+
+
 
     @Override
     public String getContentSource() {
@@ -84,7 +104,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
                 evt.init();
                 evt.setMetadata(contentFactory.getMetadata());
                 evt.setPieces(contentFactory.getPieces());
-                EventHandler.getInstance().accept(evt);
+                eventHandler.accept(evt);
             }
         }catch (Exception e){
             throw new ContentAdapterCirrusException(e,this);
@@ -96,6 +116,13 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
     }
 
     public void suppressEventGeneration(boolean suppress){
+        if(eventHandler == null){
+            throw new UnsupportedOperationException("Instance was initialized as non-eventful");
+        }
         eventGenereationSuppressed = suppress;
+    }
+
+    public CirrusEventHandler getEventHandler(){
+        return eventHandler;
     }
 }

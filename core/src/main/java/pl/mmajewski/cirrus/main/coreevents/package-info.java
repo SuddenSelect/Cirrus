@@ -3,4 +3,4 @@
  *
  * This package contains implementations of core events.
  */
-package pl.mmajewski.cirrus.coreevents;
+package pl.mmajewski.cirrus.main.coreevents;

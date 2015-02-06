@@ -1,26 +1,25 @@
-package pl.mmajewski.cirrus.appevents;
+package pl.mmajewski.cirrus.main.appevents;
 
-import pl.mmajewski.cirrus.binding.common.EventHandler;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.coreevents.storage.CommitStorageCirrusEvent;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
-import pl.mmajewski.cirrus.event.SimpleCirrusAppEventHandler;
+import pl.mmajewski.cirrus.main.CirrusBasicApp;
+import pl.mmajewski.cirrus.main.coreevents.storage.CommitStorageCirrusEvent;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class CommitContentCirrusAppEvent extends CirrusAppEvent<SimpleCirrusAppEventHandler> {
+public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
 
     @Override
-    public void appEvent(SimpleCirrusAppEventHandler handler) {
+    public void appEvent(CirrusBasicApp.AppEventHandler handler) {
         CommitStorageCirrusEvent evt = new CommitStorageCirrusEvent();
         evt.init();
 
         ContentStorage prepared = handler.getContentStorage();
         evt.setStorageToCommit(prepared);
 
-        CirrusEventHandler coreHandler = EventHandler.getInstance();
+        CirrusEventHandler coreHandler = handler.getCoreEventHandler();
         coreHandler.accept(evt);
 
         handler.resetStorage();

@@ -1,13 +1,13 @@
-package pl.mmajewski.cirrus.coreevents.storage;
+package pl.mmajewski.cirrus.main.coreevents.storage;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.impl.event.SimpleCirrusEventHandler;
+import pl.mmajewski.cirrus.main.CirrusCore;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class CommitStorageCirrusEvent extends CirrusEvent<SimpleCirrusEventHandler> {
+public class CommitStorageCirrusEvent extends CirrusEvent<CirrusCore.CoreEventHandler> {
 
     private ContentStorage toCommit;
 
@@ -16,7 +16,7 @@ public class CommitStorageCirrusEvent extends CirrusEvent<SimpleCirrusEventHandl
     }
 
     @Override
-    public void event(SimpleCirrusEventHandler handler) {
+    public void event(CirrusCore.CoreEventHandler handler) {
         ContentStorage storage = handler.getContentStorage();
         //TODO push new content to memory storage
         //TODO generate events for content updates
