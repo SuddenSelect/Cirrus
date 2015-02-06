@@ -5,10 +5,7 @@
     <parent>
         <artifactId>Cirrus</artifactId>
         <groupId>Cirrus</groupId>
-
-        <!-- workaround for project version -->
         <version>0.1</version>
-        <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
