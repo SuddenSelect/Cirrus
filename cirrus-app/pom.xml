@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Cirrus</artifactId>
         <groupId>Cirrus</groupId>
-        <version>${projectVersion}</version>
+        <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>Cirrus</groupId>
             <artifactId>cirrus-core</artifactId>
-            <version>${projectVersion}</version>
+            <version>0.1</version>
         </dependency>
 
         <!-- testing -->

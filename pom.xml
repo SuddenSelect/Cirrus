@@ -4,13 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <projectVersion>0.1</projectVersion>
-    </properties>
-
     <groupId>Cirrus</groupId>
     <artifactId>Cirrus</artifactId>
-    <version>${projectVersion}</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
 
     <dependencies>
@@ -73,7 +69,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <finalName>Cirrus-${projectVersion}.b${buildNumber}</finalName>
+                    <finalName>Cirrus-${project.version}.b${buildNumber}</finalName>
                     <archive>
                         <manifestEntries>
                             <BuildNumber>${buildNumber}</BuildNumber>
