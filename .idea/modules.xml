@@ -3,9 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Cirrus.iml" filepath="$PROJECT_DIR$/Cirrus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cirrus-app/cirrus-app.iml" filepath="$PROJECT_DIR$/cirrus-app/cirrus-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cirrus-core/cirrus-core.iml" filepath="$PROJECT_DIR$/cirrus-core/cirrus-core.iml" />
     </modules>
   </component>
 </project>
-
