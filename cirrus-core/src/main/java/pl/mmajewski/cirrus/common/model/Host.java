@@ -92,12 +92,12 @@ public class Host implements Serializable{
         this.sharedPieces = sharedPieces;
     }
 
-    public Set<Integer> getSharedPieces(ContentMetadata contentMetadata) {
-        return sharedPieces.containsKey(contentMetadata) ? sharedPieces.get(contentMetadata) : Collections.EMPTY_SET;
+    public Set<Integer> getSharedPieces(String contentId) {
+        return sharedPieces.containsKey(contentId) ? sharedPieces.get(contentId) : Collections.EMPTY_SET;
     }
 
     public void setSharedPieces(ContentMetadata contentMetadata, Set<Integer> sharedPieces) {
-        this.sharedPieces.put(contentMetadata.getContentId(),sharedPieces);
+        this.setSharedPieces(contentMetadata.getContentId(),sharedPieces);
     }
     public void setSharedPieces(String contentId, Set<Integer> sharedPieces) {
         if(this.sharedPieces == null){

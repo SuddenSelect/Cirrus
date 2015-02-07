@@ -2,7 +2,6 @@ package pl.mmajewski.cirrus.network.server;
 
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
-import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
 /**

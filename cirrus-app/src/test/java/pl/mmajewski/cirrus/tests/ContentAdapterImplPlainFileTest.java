@@ -1,8 +1,6 @@
 package pl.mmajewski.cirrus.tests;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pl.mmajewski.cirrus.common.Constants;
@@ -62,7 +60,7 @@ public class ContentAdapterImplPlainFileTest {
         ByteBuffer lastChunk = chunks[chunks.length-1];
         for(ByteBuffer chunk : chunks){
             if(chunk!=lastChunk){
-                Assert.assertEquals(chunk.capacity(), expectedChunkSize, "Got: "+chunk.capacity()+", Expected: "+expectedChunkSize);
+                Assert.assertEquals(chunk.capacity(), expectedChunkSize, "Got: " + chunk.capacity() + ", Expected: " + expectedChunkSize);
             }else{
                 Assert.assertEquals(chunk.capacity(), expectedLastChunkSize, "Got: "+chunk.capacity()+", Expected: "+expectedLastChunkSize);
             }
@@ -92,6 +90,16 @@ public class ContentAdapterImplPlainFileTest {
             Assert.assertNotNull(evt.getPieces());
             Assert.assertFalse(evt.getPieces().isEmpty());
             passed = true;
+        }
+
+        @Override
+        public boolean hasAwaitingEvents() {
+            return false;
+        }
+
+        @Override
+        public void standby() throws InterruptedException {
+
         }
 
         @Override

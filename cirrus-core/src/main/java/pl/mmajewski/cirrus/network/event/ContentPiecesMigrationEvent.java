@@ -2,13 +2,9 @@ package pl.mmajewski.cirrus.network.event;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.ContentAvailability;
-import pl.mmajewski.cirrus.common.model.ContentMetadata;
-import pl.mmajewski.cirrus.common.model.Host;
-import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Set;
 
 /**

@@ -5,8 +5,6 @@ import com.googlecode.cqengine.attribute.SimpleAttribute;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +14,7 @@ import java.util.Map;
  * available content and retrieve content pieces when necessary.
  * Created by Maciej Majewski on 29/10/14.
  */
-public class ContentMetadata implements Serializable{
+public class ContentMetadata implements Serializable, Comparable<ContentMetadata>{
     private static final long serialVersionUID = 1681266000001L;
 
     private String contentId;//indexable, determined by app upon creation
@@ -129,4 +127,13 @@ public class ContentMetadata implements Serializable{
             return obj.status;
         }
     };
+
+     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
+    //////////////////// Comparable \\\\\\\\\\\\\\\\\\\\
+
+
+    @Override
+    public int compareTo(ContentMetadata o) {
+        return contentId.compareTo(o.contentId);
+    }
 }

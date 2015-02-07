@@ -16,7 +16,7 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
 
     private LocalDateTime creationTime;
     private String eventId;
-    private Set<String> trace = new HashSet<String>();
+    private Set<String> trace = new HashSet<>();
 
     public void init(){
         setCreationTime(LocalDateTime.now());
@@ -55,8 +55,8 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
     }
 
     /**
-     * For retrieving set of visited hosts.
-     * @return
+     * For retrieving set of visited hosts CirrusID's.
+     * return visited hosts
      */
     public Set<String> getTrace(){
         return trace;
@@ -68,4 +68,11 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
         return e instanceof CirrusEvent && eventId.equals(((CirrusEvent)e).eventId) && creationTime.isEqual(((CirrusEvent)e).creationTime);
     }
 
+    /**
+     * Returns thread created by the Event - at most one
+     * @return thread reference or null
+     */
+    public CirrusEventThread getCreatedThread(){
+        return null;
+    }
 }

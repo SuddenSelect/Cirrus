@@ -1,9 +1,6 @@
 package pl.mmajewski.cirrus.network.exception;
 
 import pl.mmajewski.cirrus.common.exception.CirrusException;
-import pl.mmajewski.cirrus.common.model.ContentMetadata;
-import pl.mmajewski.cirrus.common.model.ContentPiece;
-import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.network.Connection;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 

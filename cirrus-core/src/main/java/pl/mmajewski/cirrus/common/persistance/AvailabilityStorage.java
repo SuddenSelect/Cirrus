@@ -13,27 +13,27 @@ public interface AvailabilityStorage {
 
     /**
      * Stores availabilities in the runtime.
-     * @param availabilities
+     * @param availabilities set of availabilities
      */
     public void addAvailability(Set<ContentAvailability> availabilities);
 
     /**
      * Retrieves ContentAvailability by contentID.
-     * @param contentId
+     * @param contentId id of the content
      * @return ContentAvailability
      */
     public ContentAvailability getContentAvailability(String contentId);
 
     /**
      * Retrieves ContentAvailability of the Host with given cirrusID.
-     * @param cirrusId
+     * @param cirrusId id of the host
      * @return ContentAvailability
      */
     public ContentAvailability getHostContentAvailability(String cirrusId);
 
     /**
      * Retrieves ContentAvailability of the Content with given contentID shared by Host with given cirrusID.
-     * @param cirrusId
+     * @param cirrusId id of the host
      * @return Set of SequenceNumbers available from Host of Content
      */
     public Set<Integer> getHostContentAvailabilityPieces(String cirrusId, String contentId);

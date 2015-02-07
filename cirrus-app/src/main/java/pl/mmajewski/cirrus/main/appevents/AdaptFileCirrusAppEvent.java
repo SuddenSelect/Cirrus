@@ -1,15 +1,17 @@
 package pl.mmajewski.cirrus.main.appevents;
 
+import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.content.ContentAdapter;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
-import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
+import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
 import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
+import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class PrepareFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
+public class AdaptFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
 
     private String file;
 
@@ -27,7 +29,11 @@ public class PrepareFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.App
             evt.init();
             evt.setException(e);
             evt.setMessage(e.getMessage());
-            handler.accept(evt);
+            try {
+                handler.accept(evt);
+            } catch (EventHandlerClosingCirrusException e1) {
+                throw new EventCancelledCirrusException(e1);
+            }
         }
     }
 }

@@ -1,13 +1,16 @@
 package pl.mmajewski.cirrus.impl.content.adapters;
 
-import pl.mmajewski.cirrus.common.util.CirrusChecksum;
-import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.ContentStatus;
+import pl.mmajewski.cirrus.common.util.CirrusChecksum;
+import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
