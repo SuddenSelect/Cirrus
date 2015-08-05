@@ -60,13 +60,14 @@ public class ContentAccessorImplPlainBQueueTest {
 
 
 
-        ContentAccessor accessor = new ContentAccessorImplPlainBQueue((ContentMetadata) metadatas[0],coreEventHandler);
+        ContentAccessorImplPlainBQueue accessor = new ContentAccessorImplPlainBQueue((ContentMetadata) metadatas[0],coreEventHandler);
         accessor.saveAsFile(dumpFile);
 
         app.stopProcessingEvents();
         app.getAppEventHandler().standby();
         app.getAppEventHandler().getCoreEventHandler().standby();
 
+        accessor.waitForSaving(dumpFile);
         Assert.assertTrue(FileUtils.contentEquals(inFile,outFile));
 
     }

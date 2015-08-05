@@ -11,6 +11,8 @@ import pl.mmajewski.cirrus.main.coreevents.ContentRequestCirrusEvent;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +23,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
     private ContentMetadata metadata;
     private final CirrusEventHandler coreEventHandler;
     private FileChannel dumpFile;
+    private Map<String/*filename*/,Thread> fileDumpingThreads = new HashMap<>();
 
     public ContentAccessorImplPlainBQueue(ContentMetadata metadata, CirrusEventHandler coreEventHandler){
         this.coreEventHandler = coreEventHandler;
@@ -38,11 +41,22 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         File dump = new File(filename);
         dumpFile = new FileOutputStream(dump).getChannel();
 
-        new Thread(this.new FileDumperCirrusThread()).start();
+        fileDumpingThreads.put(filename, new Thread(this.new FileDumperCirrusThread()));
+        fileDumpingThreads.get(filename).start();
 
         ContentRequestCirrusEvent evt = new ContentRequestCirrusEvent(metadata, piecesSequence);
         evt.init();
         coreEventHandler.accept(evt);
+    }
+
+    /**
+     * Waits for the FileDumpingThread to finish
+     */
+    public void waitForSaving(String filename){
+        try {
+            fileDumpingThreads.get(filename).join();
+            fileDumpingThreads.remove(filename);
+        } catch (InterruptedException e) {}
     }
 
     @Override
@@ -67,7 +81,6 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
                         setMessage("Interrupted");
                         return;
                     }
-                    System.err.println("AA: " + piece.getSequence());
                     piece.getContent().flip();
                     dumpFile.write(piece.getContent());
                 }
