@@ -2,6 +2,7 @@ package pl.mmajewski.cirrus.common.model;
 
 import com.googlecode.cqengine.attribute.Attribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
+import com.googlecode.cqengine.query.option.QueryOptions;
 
 import java.util.Set;
 
@@ -41,13 +42,15 @@ public class ContentAvailability {
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-    public static final Attribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>("HOLDER_CIRRUS_ID") {
-        public String getValue(ContentAvailability obj) {
+    public static final Attribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>() {
+        @Override
+        public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.holderCirrusId;
         }
     };
-    public static final Attribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>("CONTENT_ID") {
-        public String getValue(ContentAvailability obj) {
+    public static final Attribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>() {
+        @Override
+        public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.contentId;
         }
     };

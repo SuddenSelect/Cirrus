@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.common.persistance;
 
+import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 
@@ -21,15 +22,15 @@ public interface ContentStorage {
     /* Parametrization */
     public void setMaxTemporarilyStoredPieces(int maxTemporaryPieces);
     public int  getMaxTemporarilyStoredPieces();
-    public void setMaxStoredPieces(int maxPieces);
-    public int  getMaxStoredPieces();
+    public void setMaxPersistentStoredPieces(int maxPersistentPieces);
+    public int getMaxPersistentStoredPieces();
     /* *************** */
 
     /**
      * Retrieves Metadata about every content in the system.
      * @return set of all stored ContentMetadata
      */
-    public Set<ContentMetadata> getAllContentMetadata();
+    public ResultSet<ContentMetadata> getAllContentMetadata();
 
     /**
      * Retrieves Metadata about content with given ID.
@@ -56,7 +57,7 @@ public interface ContentStorage {
      * this method.
      * @return collection of Content known to be CORRUPTED
      */
-    public Set<ContentMetadata> getCorruptedContentMetadata();
+    public ResultSet<ContentMetadata> getCorruptedContentMetadata();
 
     /**
      * Adds given ContentPiece to local, persistent storage.

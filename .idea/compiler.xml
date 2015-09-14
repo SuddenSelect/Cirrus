@@ -23,9 +23,21 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="app" />
-        <module name="cirrus-app" />
-        <module name="cirrus-core" />
         <module name="core" />
+      </profile>
+      <profile default="false" name="Annotation profile for cirrus-core" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="cirrus-core" />
+      </profile>
+      <profile default="false" name="Annotation profile for cirrus-app" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="cirrus-app" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

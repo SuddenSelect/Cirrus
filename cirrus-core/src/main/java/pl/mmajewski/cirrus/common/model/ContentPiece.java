@@ -2,6 +2,7 @@ package pl.mmajewski.cirrus.common.model;
 
 import com.googlecode.cqengine.attribute.Attribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
+import com.googlecode.cqengine.query.option.QueryOptions;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -67,19 +68,28 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-     public static final Attribute<ContentPiece, String> IDX_CONTENT_ID = new SimpleAttribute<ContentPiece, String>("CONTENT_ID") {
-         public String getValue(ContentPiece obj) {
+     public static final SimpleAttribute<ContentPiece, String> IDX_CONTENT_ID = new SimpleAttribute<ContentPiece, String>() {
+        @Override
+        public String getValue(ContentPiece obj, QueryOptions queryOptions) {
              return obj.contentId;
          }
      };
-    public static final Attribute<ContentPiece, Integer> IDX_SEQUENCE = new SimpleAttribute<ContentPiece, Integer>("SEQUENCE") {
-        public Integer getValue(ContentPiece obj) {
+    public static final SimpleAttribute<ContentPiece, Integer> IDX_SEQUENCE = new SimpleAttribute<ContentPiece, Integer>() {
+        @Override
+        public Integer getValue(ContentPiece obj, QueryOptions queryOptions) {
             return obj.sequence;
         }
     };
-    public static final Attribute<ContentPiece, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentPiece, ContentStatus>("CONTENT_STATUS") {
-        public ContentStatus getValue(ContentPiece obj) {
+    public static final SimpleAttribute<ContentPiece, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentPiece, ContentStatus>() {
+        @Override
+        public ContentStatus getValue(ContentPiece obj, QueryOptions queryOptions) {
             return obj.status;
+        }
+    };
+    public static final SimpleAttribute<ContentPiece, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentPiece, String>() {
+        @Override
+        public String getValue(ContentPiece obj, QueryOptions queryOptions) {
+            return obj.getContentId()+":"+obj.getSequence();
         }
     };
 }
