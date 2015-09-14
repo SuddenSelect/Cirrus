@@ -12,7 +12,9 @@ import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.ContentStatus;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static com.googlecode.cqengine.query.QueryFactory.*;
 
@@ -99,6 +101,9 @@ public class MemoryContentStorage implements ContentStorage{
     @Override
     public void deleteContent(ContentMetadata metadata) {
         contentMetadatas.remove(metadata);
+        Predicate<ContentPiece> predicate = contentPiece -> contentPiece.getContentId().equals(metadata.getContentId());
+        persistentContentPieces.removeIf(predicate);
+        temporaryContentPieces.removeIf(predicate);
     }
 
     @Override
@@ -108,7 +113,7 @@ public class MemoryContentStorage implements ContentStorage{
     }
 
     @Override
-    public void storeContentPiece(ContentPiece contentPiece) {
+    public void storeContentPiece(ContentPiece contentPiece) throws IOException {
         persistentContentPieces.add(contentPiece);
         //TODO saving to storage file
         //TODO remove if more than max

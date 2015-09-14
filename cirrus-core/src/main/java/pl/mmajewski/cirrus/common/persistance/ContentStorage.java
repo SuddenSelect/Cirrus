@@ -4,6 +4,7 @@ import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public interface ContentStorage {
      * Should in separate thread verify correctness.
      * @param contentPiece ContentPiece to be stored locally
      */
-    public void storeContentPiece(ContentPiece contentPiece);
+    public void storeContentPiece(ContentPiece contentPiece) throws IOException;
 
     /**
      * Stores ContentPiece in temporary non-persistent space that

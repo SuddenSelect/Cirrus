@@ -21,11 +21,11 @@ public class CirrusIdGenerator {
     }
 
     public static String generateContentId(String owner){
-        return owner+"/"+timestamp()+":"+rand(CONTENT_ID_LENGTH);
+        return owner+"-"+timestamp()+"-"+rand(CONTENT_ID_LENGTH);
     }
 
     public static String generateHostId(){
-        return timestamp()+":"+rand(HOST_ID_LENGTH);
+        return timestamp()+"-"+rand(HOST_ID_LENGTH);
     }
 
     public static String generateEventId(){

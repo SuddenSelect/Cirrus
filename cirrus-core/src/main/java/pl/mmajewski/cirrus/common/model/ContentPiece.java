@@ -89,7 +89,7 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
     public static final SimpleAttribute<ContentPiece, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentPiece, String>() {
         @Override
         public String getValue(ContentPiece obj, QueryOptions queryOptions) {
-            return obj.getContentId()+":"+obj.getSequence();
+            return obj.getContentId()+"-"+obj.getSequence();
         }
     };
 }

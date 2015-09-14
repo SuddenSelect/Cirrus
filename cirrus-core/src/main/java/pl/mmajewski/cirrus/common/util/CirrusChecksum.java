@@ -14,7 +14,7 @@ public class CirrusChecksum extends CRC32 {
      */
     public String getCirrusChecksum(){
         BigInteger ts = BigInteger.valueOf(System.currentTimeMillis());
-        return ts.toString(32)+":"+getStringChecksum();
+        return ts.toString(32)+"-"+getStringChecksum();
 //        return getStringChecksum();
     }
 
@@ -32,7 +32,7 @@ public class CirrusChecksum extends CRC32 {
      * @return true when valid, false otherwise
      */
     public boolean validate(String cirrusChecksum){
-        String checksum = cirrusChecksum.split(":")[1];
+        String checksum = cirrusChecksum.split("-")[1];
         return this.getStringChecksum().equals(checksum);
 //        return this.getStringChecksum().equals(cirrusChecksum);
     }
