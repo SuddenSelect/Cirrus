@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.tests;
 
+import com.googlecode.cqengine.resultset.ResultSet;
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -7,7 +8,6 @@ import org.testng.annotations.Test;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.content.ContentAccessor;
 import pl.mmajewski.cirrus.content.ContentAdapter;
 import pl.mmajewski.cirrus.impl.content.accessors.ContentAccessorImplPlainBQueue;
 import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
@@ -15,9 +15,6 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
 import java.io.File;
-import java.io.FileOutputStream;
-
-import static org.testng.Assert.*;
 
 public class ContentAccessorImplPlainBQueueTest {
 
@@ -44,11 +41,10 @@ public class ContentAccessorImplPlainBQueueTest {
         Assert.assertNotNull(coreEventHandler);
         Assert.assertFalse(storage.getAllContentMetadata().isEmpty());
 
-        Object[] metadatas = storage.getAllContentMetadata().toArray();
-        Assert.assertNotNull(metadatas);
-        Assert.assertEquals(metadatas.length, 1);
-        Assert.assertNotNull(metadatas[0]);
-
+        ResultSet<ContentMetadata> allMetadatas = storage.getAllContentMetadata();
+        Assert.assertEquals(allMetadatas.size(), 1);
+        ContentMetadata firstMetadata = allMetadatas.iterator().next();
+        Assert.assertNotNull(firstMetadata);
 
 
         CommitContentCirrusAppEvent evt = new CommitContentCirrusAppEvent();
@@ -60,7 +56,7 @@ public class ContentAccessorImplPlainBQueueTest {
 
 
 
-        ContentAccessorImplPlainBQueue accessor = new ContentAccessorImplPlainBQueue((ContentMetadata) metadatas[0],coreEventHandler);
+        ContentAccessorImplPlainBQueue accessor = new ContentAccessorImplPlainBQueue(firstMetadata, coreEventHandler);
         accessor.saveAsFile(dumpFile);
 
         app.stopProcessingEvents();
