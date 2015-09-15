@@ -17,16 +17,17 @@ public interface ConnectionPool {
     public int  getMaxConnectionsToHost();
     public void setMaxConnectionsInPool(int maxConnections);
     public int  getMaxConnectionsInPool();
+    public long getConnectionHealthCheckInterval();
     /* *************** */
 
     /**
      * Returns existing or new Connection to remote Host.
-     * @param remoteHost model descriptor of the Host
      * @param <E> type of managed connection
+     * @param remoteHost model descriptor of the Host
      * @return valid Connection
      * @throws NetworkCirrusException when connecting or network itself have failed
      */
-    public <E extends Connection> E fetchDataConnection(Host remoteHost) throws NetworkCirrusException;
+    public <E extends Connection> Connection fetchDataConnection(Host remoteHost) throws NetworkCirrusException;
 
     /**
      * Initializes pool with connections to known hosts.

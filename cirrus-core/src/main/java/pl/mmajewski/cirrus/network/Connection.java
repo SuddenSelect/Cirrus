@@ -29,5 +29,4 @@ public interface Connection {
     public ConnectionPool getParentConnectionPool();
     public void setParentConnectionPool(ConnectionPool parentPool);
     public Host getRemoteHost();
-    public void setRemoteHost(Host remoteHost);
 }
