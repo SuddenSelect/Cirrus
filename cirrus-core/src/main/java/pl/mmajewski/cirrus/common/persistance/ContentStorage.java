@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.common.persistance;
 
-import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 
@@ -31,7 +30,7 @@ public interface ContentStorage {
      * Retrieves Metadata about every content in the system.
      * @return set of all stored ContentMetadata
      */
-    public ResultSet<ContentMetadata> getAllContentMetadata();
+    public Set<ContentMetadata> getAllContentMetadata();
 
     /**
      * Retrieves Metadata about content with given ID.
@@ -58,7 +57,7 @@ public interface ContentStorage {
      * this method.
      * @return collection of Content known to be CORRUPTED
      */
-    public ResultSet<ContentMetadata> getCorruptedContentMetadata();
+    public Iterable<ContentMetadata> getCorruptedContentMetadata();
 
     /**
      * Adds given ContentPiece to local, persistent storage.
@@ -86,13 +85,13 @@ public interface ContentStorage {
      * @param contentMetadata
      * @return set of ContentPieces that have different checksums than expected
      */
-    public Set<ContentPiece> getCorruptedContentPieces(ContentMetadata contentMetadata);
+    public Iterable<ContentPiece> getCorruptedContentPieces(ContentMetadata contentMetadata);
 
     /**
      * Retrieves all ContentPieces having status CORRUPTED.
      * @return set of ContentPieces that have different checksums than expected
      */
-    public Set<ContentPiece> getCorruptedContentPieces();
+    public Iterable<ContentPiece> getCorruptedContentPieces();
 
     /**
      * Retrieves sequence numbers of ContentPieces tied to given

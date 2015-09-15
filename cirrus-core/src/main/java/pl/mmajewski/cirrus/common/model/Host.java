@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.common.model;
 
-import com.googlecode.cqengine.attribute.Attribute;
 import com.googlecode.cqengine.attribute.MultiValueAttribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
@@ -15,7 +14,7 @@ import java.util.*;
  * <p>
  * Created by Maciej Majewski on 29/10/14.
  */
-public class Host implements Serializable {
+public class Host implements Serializable, Comparable<Host> {
     private static final long serialVersionUID = 1681266000003L;
 
     private String cirrusId;//indexable
@@ -26,6 +25,7 @@ public class Host implements Serializable {
     private List<String> tags;//indexable
     private List<String/*contentID*/> availableContent;//indexable
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
+    private transient Integer latency = -1;
 
 
     public LocalDateTime getLastSeen() {
@@ -107,6 +107,27 @@ public class Host implements Serializable {
         this.sharedPieces.put(contentId, sharedPieces);
     }
 
+    public Integer getLatency() {
+        return latency;
+    }
+
+    public void setLatency(Integer latency) {
+        this.latency = latency;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Host){
+            return cirrusId.equals(((Host) obj).getCirrusId());
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int compareTo(Host o) {
+        return this.cirrusId.compareTo(o.cirrusId);
+    }
+
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
     public static final SimpleAttribute<Host, String> IDX_CIRRUS_ID = new SimpleAttribute<Host, String>() {
@@ -131,6 +152,12 @@ public class Host implements Serializable {
         @Override
         public LocalDateTime getValue(Host obj, QueryOptions queryOptions) {
             return obj.lastSeen;
+        }
+    };
+    public static final SimpleAttribute<Host, Integer> IDX_LATENCY = new SimpleAttribute<Host, Integer>() {
+        @Override
+        public Integer getValue(Host obj, QueryOptions queryOptions) {
+            return obj.latency;
         }
     };
     public static final SimpleAttribute<Host, LocalDateTime> IDX_LAST_UPDATED = new SimpleAttribute<Host, LocalDateTime>() {

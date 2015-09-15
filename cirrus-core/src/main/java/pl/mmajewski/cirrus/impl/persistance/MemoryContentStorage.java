@@ -1,12 +1,12 @@
 package pl.mmajewski.cirrus.impl.persistance;
 
+import com.google.common.collect.Sets;
 import com.googlecode.cqengine.ConcurrentIndexedCollection;
 import com.googlecode.cqengine.IndexedCollection;
 import com.googlecode.cqengine.index.compound.CompoundIndex;
 import com.googlecode.cqengine.index.hash.HashIndex;
 import com.googlecode.cqengine.persistence.offheap.OffHeapPersistence;
 import com.googlecode.cqengine.query.Query;
-import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.ContentStatus;
@@ -77,18 +77,14 @@ public class MemoryContentStorage implements ContentStorage{
     }
 
     @Override
-    public ResultSet<ContentMetadata> getAllContentMetadata() {
-        Query<ContentMetadata> query = all(ContentMetadata.class);
-        return contentMetadatas.retrieve(query);
+    public Set<ContentMetadata> getAllContentMetadata() {
+        return contentMetadatas;
     }
 
     @Override
     public ContentMetadata getContentMetadata(String contentId) {
         Query<ContentMetadata> query = equal(ContentMetadata.IDX_CONTENT_ID, contentId);
-        for(ContentMetadata metadata : contentMetadatas.retrieve(query)){
-            return metadata;
-        }
-        return null;
+        return contentMetadatas.retrieve(query).uniqueResult();
     }
 
     @Override
@@ -107,7 +103,7 @@ public class MemoryContentStorage implements ContentStorage{
     }
 
     @Override
-    public ResultSet<ContentMetadata> getCorruptedContentMetadata() {
+    public Iterable<ContentMetadata> getCorruptedContentMetadata() {
         Query<ContentMetadata> query = equal(ContentMetadata.IDX_CONTENT_STATUS, ContentStatus.CORRUPTED);
         return contentMetadatas.retrieve(query);
     }
@@ -115,7 +111,6 @@ public class MemoryContentStorage implements ContentStorage{
     @Override
     public void storeContentPiece(ContentPiece contentPiece) throws IOException {
         persistentContentPieces.add(contentPiece);
-        //TODO saving to storage file
         //TODO remove if more than max
     }
 
@@ -128,24 +123,16 @@ public class MemoryContentStorage implements ContentStorage{
     @Override
     public void deleteContentPiece(ContentPiece contentPiece) {
         persistentContentPieces.remove(contentPiece);
-        //TODO deleting from storage file
     }
 
-    private Set<ContentPiece> getPersistentAndTemporaryPieces(Query<ContentPiece> query){
-        ResultSet<ContentPiece> persistent = persistentContentPieces.retrieve(query);
-        ResultSet<ContentPiece> temporary = temporaryContentPieces.retrieve(query);
-        Set<ContentPiece> queriedPieces = new TreeSet<>();
-        for(ContentPiece piece : persistent){
-            queriedPieces.add(piece);
-        }
-        for(ContentPiece piece : temporary){
-            queriedPieces.add(piece);
-        }
+    private Iterable<ContentPiece> getPersistentAndTemporaryPieces(Query<ContentPiece> query){
+        Set<ContentPiece> queriedPieces = Sets.newTreeSet(persistentContentPieces.retrieve(query));
+        queriedPieces.addAll(Sets.newTreeSet(temporaryContentPieces.retrieve(query)));
         return queriedPieces;
     }
 
     @Override
-    public Set<ContentPiece> getCorruptedContentPieces(ContentMetadata contentMetadata) {
+    public Iterable<ContentPiece> getCorruptedContentPieces(ContentMetadata contentMetadata) {
         Query<ContentPiece> query = and(
                 equal(ContentPiece.IDX_CONTENT_ID,contentMetadata.getContentId()),
                 equal(ContentPiece.IDX_CONTENT_STATUS, ContentStatus.CORRUPTED));
@@ -153,7 +140,7 @@ public class MemoryContentStorage implements ContentStorage{
     }
 
     @Override
-    public Set<ContentPiece> getCorruptedContentPieces() {
+    public Iterable<ContentPiece> getCorruptedContentPieces() {
         Query<ContentPiece> query = equal(ContentPiece.IDX_CONTENT_STATUS, ContentStatus.CORRUPTED);
         return getPersistentAndTemporaryPieces(query);
     }
@@ -175,7 +162,7 @@ public class MemoryContentStorage implements ContentStorage{
         Query<ContentPiece> query = and(
                 equal(ContentPiece.IDX_CONTENT_ID, contentMetadata.getContentId()),
                 equal(ContentPiece.IDX_CONTENT_STATUS, ContentStatus.CORRECT));
-        Set<ContentPiece> availablePieces = getPersistentAndTemporaryPieces(query);
+        Iterable<ContentPiece> availablePieces = getPersistentAndTemporaryPieces(query);
         ArrayList<ContentPiece> availablePiecesList = new ArrayList<>(contentMetadata.getPiecesAmount());
         for(ContentPiece piece : availablePieces){
             availablePiecesList.add(piece.getSequence(), piece);

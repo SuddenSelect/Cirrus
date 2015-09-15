@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * Interface for general utility class holding information about ContentPieces placement among the network.
  * It is NOT expected to be persistent.
+ * Only holds availability for remote hosts.
  * Created by Maciej Majewski on 09/11/14.
  */
 public interface AvailabilityStorage {
@@ -22,20 +23,20 @@ public interface AvailabilityStorage {
      * @param contentId id of the content
      * @return ContentAvailability
      */
-    public ContentAvailability getContentAvailability(String contentId);
+    public Iterable<ContentAvailability> getContentAvailability(String contentId);
 
     /**
      * Retrieves ContentAvailability of the Host with given cirrusID.
      * @param cirrusId id of the host
      * @return ContentAvailability
      */
-    public ContentAvailability getHostContentAvailability(String cirrusId);
+    public Iterable<ContentAvailability> getHostContentAvailability(String cirrusId);
 
     /**
      * Retrieves ContentAvailability of the Content with given contentID shared by Host with given cirrusID.
      * @param cirrusId id of the host
      * @return Set of SequenceNumbers available from Host of Content
      */
-    public Set<Integer> getHostContentAvailabilityPieces(String cirrusId, String contentId);
+    public Iterable<Integer> getHostContentAvailabilityPieces(String cirrusId, String contentId);
 
 }

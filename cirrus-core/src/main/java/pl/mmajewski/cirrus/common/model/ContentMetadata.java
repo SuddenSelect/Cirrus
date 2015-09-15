@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.common.model;
 
-import com.googlecode.cqengine.attribute.Attribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
 

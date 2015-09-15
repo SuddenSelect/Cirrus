@@ -43,7 +43,7 @@ public class PersistentContentStorage extends MemoryContentStorage {
         }
         this.persistancePath = persistancePath;
         this.piecesSubfolder = new File(persistancePath, "pieces");
-        File metadataFile = new File(persistancePath, "content.meta");
+        File metadataFile = new File(persistancePath, "metadata");
         if(!metadataFile.exists()) {
             metadataFile.createNewFile();
         }
@@ -62,10 +62,7 @@ public class PersistentContentStorage extends MemoryContentStorage {
             pieces.put(contentId, newPiecesCollection(contentId));
         }
         Set<ContentMetadata> metadataSet = new TreeSet<>();
-        for(ContentMetadata metadata : metadatas){
-            metadataSet.add(metadata);
-        }
-        super.updateContentMetadata(metadataSet);
+        super.updateContentMetadata(metadatas);
         for(IndexedCollection<ContentPiece> piecesCollection : pieces.values()){
             for(ContentPiece piece : piecesCollection){
                 super.storeContentPiece(piece);

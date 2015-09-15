@@ -17,7 +17,14 @@ public interface HostStorage {
      * Strongly suggested to trigger backup upon execution.
      * @param hosts set of hosts to be updated
      */
-    public void updateHost(Set<Host> hosts);
+    public void updateHosts(Set<Host> hosts);
+
+    /**
+     * Deleting unreachable hosts.
+     * Strongly suggested to trigger backup upon execution.
+     * @param hosts set of hosts to be deleted
+     */
+    public void deleteHosts(Set<Host> hosts);
 
     /**
      * Retrives Host data of the local machine.
@@ -33,16 +40,10 @@ public interface HostStorage {
     public Host fetchHost(String cirrusId);
 
     /**
-     * Retrieves commiter of given content.
-     * @param contentMetadata
-     * @return Host who commited Content if exists, otherwise null
-     */
-    public Host fetchCommiter(ContentMetadata contentMetadata);
-
-    /**
      * Retrieves hosts that can provide any piece of given Content.
      * @param contentMetadata
      * @return set of hosts providing ContentPieces tied to given ContentMetadata
+     * ordered by latency
      */
-    public Set<Host> fetchSharers(ContentMetadata contentMetadata);
+    public Iterable<Host> fetchSharers(ContentMetadata contentMetadata);
 }

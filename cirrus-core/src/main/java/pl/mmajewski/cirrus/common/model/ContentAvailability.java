@@ -1,6 +1,6 @@
 package pl.mmajewski.cirrus.common.model;
 
-import com.googlecode.cqengine.attribute.Attribute;
+import com.googlecode.cqengine.attribute.MultiValueAttribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
 
@@ -10,10 +10,10 @@ import java.util.Set;
  * Class representing placement of ContentPieces in the system.
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentAvailability {
+public class ContentAvailability implements Comparable<ContentAvailability> {
     private String holderCirrusId;//indexable
     private String contentId;//indexable
-    private Set<Integer> piecesSequenceNumbers;
+    private Set<Integer> piecesSequenceNumbers;//indexable
 
     public String getHolderCirrusId() {
         return holderCirrusId;
@@ -39,19 +39,35 @@ public class ContentAvailability {
         this.piecesSequenceNumbers = piecesSequenceNumbers;
     }
 
+    @Override
+    public int compareTo(ContentAvailability o) {
+        return contentId.compareTo(o.contentId);
+    }
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-    public static final Attribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>() {
+    public static final SimpleAttribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>() {
         @Override
         public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.holderCirrusId;
         }
     };
-    public static final Attribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>() {
+    public static final SimpleAttribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>() {
         @Override
         public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.contentId;
+        }
+    };
+    public static final SimpleAttribute<ContentAvailability, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentAvailability, String>() {
+        @Override
+        public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
+            return obj.contentId+"-"+obj.holderCirrusId;
+        }
+    };
+    public static final MultiValueAttribute<ContentAvailability, Integer> IDX_AVAILABLE_PIECES = new MultiValueAttribute<ContentAvailability, Integer>() {
+        @Override
+        public Set<Integer> getValues(ContentAvailability obj, QueryOptions queryOptions) {
+            return obj.piecesSequenceNumbers;
         }
     };
 }
