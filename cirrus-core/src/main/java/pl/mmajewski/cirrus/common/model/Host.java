@@ -19,6 +19,7 @@ public class Host implements Serializable, Comparable<Host> {
 
     private String cirrusId;//indexable
     private InetAddress physicalAddress;//indexable
+    private Integer port;
     private LocalDateTime firstSeen;//indexable
     private LocalDateTime lastSeen;//indexable
     private LocalDateTime lastUpdated;//indexable
@@ -27,6 +28,13 @@ public class Host implements Serializable, Comparable<Host> {
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
     private transient Integer latency = -1;
 
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 
     public LocalDateTime getLastSeen() {
         return lastSeen;

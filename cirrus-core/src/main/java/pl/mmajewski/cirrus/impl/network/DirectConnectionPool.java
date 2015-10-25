@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by Maciej Majewski on 15/09/15.
  */
 public class DirectConnectionPool implements ConnectionPool{
-    private int maxConnectionsToHost = 1;
+    private int maxConnectionsToHost = 5;
     private int maxConnectionsInPool = 1000;
     private long connectionHealthCheckInterval = 1000;
     private Map<Host, DirectConnectionGroup> connectionGroupMap = new HashMap<>();

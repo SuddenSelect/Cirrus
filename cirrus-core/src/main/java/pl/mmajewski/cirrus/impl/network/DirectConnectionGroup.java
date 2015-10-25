@@ -18,7 +18,6 @@ public class DirectConnectionGroup implements Connection {
             try {
                 while(isAlive()) {
                     for(Connection connection : connections) {
-                        //todo ping
                         if(!connection.isAlive()) {
                             toDel.add(connection);
                             connection.kill();
