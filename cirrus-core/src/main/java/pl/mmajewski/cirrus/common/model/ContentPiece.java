@@ -68,25 +68,25 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-     public static final SimpleAttribute<ContentPiece, String> IDX_CONTENT_ID = new SimpleAttribute<ContentPiece, String>() {
+     public static final SimpleAttribute<ContentPiece, String> IDX_CONTENT_ID = new SimpleAttribute<ContentPiece, String>("IDX_CONTENT_ID") {
         @Override
         public String getValue(ContentPiece obj, QueryOptions queryOptions) {
              return obj.contentId;
          }
      };
-    public static final SimpleAttribute<ContentPiece, Integer> IDX_SEQUENCE = new SimpleAttribute<ContentPiece, Integer>() {
+    public static final SimpleAttribute<ContentPiece, Integer> IDX_SEQUENCE = new SimpleAttribute<ContentPiece, Integer>("IDX_SEQUENCE") {
         @Override
         public Integer getValue(ContentPiece obj, QueryOptions queryOptions) {
             return obj.sequence;
         }
     };
-    public static final SimpleAttribute<ContentPiece, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentPiece, ContentStatus>() {
+    public static final SimpleAttribute<ContentPiece, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentPiece, ContentStatus>("IDX_CONTENT_STATUS") {
         @Override
         public ContentStatus getValue(ContentPiece obj, QueryOptions queryOptions) {
             return obj.status;
         }
     };
-    public static final SimpleAttribute<ContentPiece, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentPiece, String>() {
+    public static final SimpleAttribute<ContentPiece, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentPiece, String>("IDX_UNIQUE_ID") {
         @Override
         public String getValue(ContentPiece obj, QueryOptions queryOptions) {
             return obj.getContentId()+"-"+obj.getSequence();

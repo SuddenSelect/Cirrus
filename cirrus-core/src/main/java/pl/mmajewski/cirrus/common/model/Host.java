@@ -138,49 +138,49 @@ public class Host implements Serializable, Comparable<Host> {
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-    public static final SimpleAttribute<Host, String> IDX_CIRRUS_ID = new SimpleAttribute<Host, String>() {
+    public static final SimpleAttribute<Host, String> IDX_CIRRUS_ID = new SimpleAttribute<Host, String>("IDX_CIRRUS_ID") {
         @Override
         public String getValue(Host obj, QueryOptions queryOptions) {
             return obj.cirrusId;
         }
     };
-    public static final SimpleAttribute<Host, InetAddress> IDX_INET_ADDRESS = new SimpleAttribute<Host, InetAddress>() {
+    public static final SimpleAttribute<Host, InetAddress> IDX_INET_ADDRESS = new SimpleAttribute<Host, InetAddress>("IDX_INET_ADDRESS") {
         @Override
         public InetAddress getValue(Host obj, QueryOptions queryOptions) {
             return obj.physicalAddress;
         }
     };
-    public static final SimpleAttribute<Host, LocalDateTime> IDX_FIRST_SEEN = new SimpleAttribute<Host, LocalDateTime>() {
+    public static final SimpleAttribute<Host, LocalDateTime> IDX_FIRST_SEEN = new SimpleAttribute<Host, LocalDateTime>("IDX_FIRST_SEEN") {
         @Override
         public LocalDateTime getValue(Host obj, QueryOptions queryOptions) {
             return obj.firstSeen;
         }
     };
-    public static final SimpleAttribute<Host, LocalDateTime> IDX_LAST_SEEN = new SimpleAttribute<Host, LocalDateTime>() {
+    public static final SimpleAttribute<Host, LocalDateTime> IDX_LAST_SEEN = new SimpleAttribute<Host, LocalDateTime>("IDX_LAST_SEEN") {
         @Override
         public LocalDateTime getValue(Host obj, QueryOptions queryOptions) {
             return obj.lastSeen;
         }
     };
-    public static final SimpleAttribute<Host, Integer> IDX_LATENCY = new SimpleAttribute<Host, Integer>() {
+    public static final SimpleAttribute<Host, Integer> IDX_LATENCY = new SimpleAttribute<Host, Integer>("IDX_LATENCY") {
         @Override
         public Integer getValue(Host obj, QueryOptions queryOptions) {
             return obj.latency;
         }
     };
-    public static final SimpleAttribute<Host, LocalDateTime> IDX_LAST_UPDATED = new SimpleAttribute<Host, LocalDateTime>() {
+    public static final SimpleAttribute<Host, LocalDateTime> IDX_LAST_UPDATED = new SimpleAttribute<Host, LocalDateTime>("IDX_LAST_UPDATED") {
         @Override
         public LocalDateTime getValue(Host obj, QueryOptions queryOptions) {
             return obj.lastUpdated;
         }
     };
-    public static final MultiValueAttribute<Host, String> IDX_TAGS = new MultiValueAttribute<Host, String>() {
+    public static final MultiValueAttribute<Host, String> IDX_TAGS = new MultiValueAttribute<Host, String>("IDX_TAGS") {
         @Override
         public List<String> getValues(Host obj, QueryOptions queryOptions) {
             return obj.tags;
         }
     };
-    public static final MultiValueAttribute<Host, String> IDX_AVAILABLE_CONTENT = new MultiValueAttribute<Host, String>() {
+    public static final MultiValueAttribute<Host, String> IDX_AVAILABLE_CONTENT = new MultiValueAttribute<Host, String>("IDX_AVAILABLE_CONTENT") {
         @Override
         public List<String> getValues(Host obj, QueryOptions queryOptions) {
             return obj.availableContent;

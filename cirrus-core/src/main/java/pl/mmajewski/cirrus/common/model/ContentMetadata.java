@@ -98,37 +98,37 @@ public class ContentMetadata implements Serializable, Comparable<ContentMetadata
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-    public static final SimpleAttribute<ContentMetadata, String> IDX_CONTENT_ID = new SimpleAttribute<ContentMetadata, String>() {
+    public static final SimpleAttribute<ContentMetadata, String> IDX_CONTENT_ID = new SimpleAttribute<ContentMetadata, String>("IDX_CONTENT_ID") {
         @Override
         public String getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.contentId;
         }
     };
-    public static final SimpleAttribute<ContentMetadata, String> IDX_CONTENT_CHECKSUM = new SimpleAttribute<ContentMetadata, String>() {
+    public static final SimpleAttribute<ContentMetadata, String> IDX_CONTENT_CHECKSUM = new SimpleAttribute<ContentMetadata, String>("IDX_CONTENT_CHECKSUM") {
         @Override
         public String getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.contentChecksum;
         }
     };
-    public static final SimpleAttribute<ContentMetadata, LocalDateTime> IDX_AVAILABLE_SINCE = new SimpleAttribute<ContentMetadata, LocalDateTime>() {
+    public static final SimpleAttribute<ContentMetadata, LocalDateTime> IDX_AVAILABLE_SINCE = new SimpleAttribute<ContentMetadata, LocalDateTime>("IDX_AVAILABLE_SINCE") {
         @Override
         public LocalDateTime getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.availableSince;
         }
     };
-    public static final SimpleAttribute<ContentMetadata, LocalDateTime> IDX_LAST_UPDATED = new SimpleAttribute<ContentMetadata, LocalDateTime>() {
+    public static final SimpleAttribute<ContentMetadata, LocalDateTime> IDX_LAST_UPDATED = new SimpleAttribute<ContentMetadata, LocalDateTime>("IDX_LAST_UPDATED") {
         @Override
         public LocalDateTime getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.lastUpdated;
         }
     };
-    public static final SimpleAttribute<ContentMetadata, String> IDX_COMMITER_CIRRUS_ID = new SimpleAttribute<ContentMetadata, String>() {
+    public static final SimpleAttribute<ContentMetadata, String> IDX_COMMITER_CIRRUS_ID = new SimpleAttribute<ContentMetadata, String>("IDX_COMMITER_CIRRUS_ID") {
         @Override
         public String getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.commiterCirrusId;
         }
     };
-    public static final SimpleAttribute<ContentMetadata, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentMetadata, ContentStatus>() {
+    public static final SimpleAttribute<ContentMetadata, ContentStatus> IDX_CONTENT_STATUS = new SimpleAttribute<ContentMetadata, ContentStatus>("IDX_CONTENT_STATUS") {
         @Override
         public ContentStatus getValue(ContentMetadata obj, QueryOptions queryOptions) {
             return obj.status;

@@ -46,25 +46,25 @@ public class ContentAvailability implements Comparable<ContentAvailability> {
 
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
-    public static final SimpleAttribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>() {
+    public static final SimpleAttribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>("IDX_HOLDER_CIRRUS_ID") {
         @Override
         public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.holderCirrusId;
         }
     };
-    public static final SimpleAttribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>() {
+    public static final SimpleAttribute<ContentAvailability, String> IDX_CONTENT_ID = new SimpleAttribute<ContentAvailability, String>("IDX_CONTENT_ID") {
         @Override
         public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.contentId;
         }
     };
-    public static final SimpleAttribute<ContentAvailability, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentAvailability, String>() {
+    public static final SimpleAttribute<ContentAvailability, String> IDX_UNIQUE_ID = new SimpleAttribute<ContentAvailability, String>("IDX_UNIQUE_ID") {
         @Override
         public String getValue(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.contentId+"-"+obj.holderCirrusId;
         }
     };
-    public static final MultiValueAttribute<ContentAvailability, Integer> IDX_AVAILABLE_PIECES = new MultiValueAttribute<ContentAvailability, Integer>() {
+    public static final MultiValueAttribute<ContentAvailability, Integer> IDX_AVAILABLE_PIECES = new MultiValueAttribute<ContentAvailability, Integer>("IDX_AVAILABLE_PIECES") {
         @Override
         public Set<Integer> getValues(ContentAvailability obj, QueryOptions queryOptions) {
             return obj.piecesSequenceNumbers;
