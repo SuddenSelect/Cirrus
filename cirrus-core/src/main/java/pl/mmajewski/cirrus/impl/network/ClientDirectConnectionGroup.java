@@ -5,12 +5,15 @@ import pl.mmajewski.cirrus.network.Connection;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.exception.ConnectionFailCirrusException;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 15/09/15.
  */
-public class DirectConnectionGroup implements Connection {
+/*package*/ class ClientDirectConnectionGroup implements Connection {
     private class HealthCheck implements Runnable{
         @Override
         public void run() {
@@ -43,9 +46,9 @@ public class DirectConnectionGroup implements Connection {
     private boolean alive = false;
     private ConnectionPool connectionPool = null;
     private Host remoteHost;
-    private Queue<Connection> connections = new LinkedList<>();
+    private Queue<ClientDirectConnection> connections = new LinkedList<>();
 
-    public DirectConnectionGroup(ConnectionPool connectionPool, Host remoteHost) {
+    public ClientDirectConnectionGroup(ConnectionPool connectionPool, Host remoteHost) {
         this.connectionPool = connectionPool;
         this.remoteHost = remoteHost;
     }
@@ -53,9 +56,10 @@ public class DirectConnectionGroup implements Connection {
     @Override
     public void connect() throws ConnectionFailCirrusException {
         for (int i = connections.size(); i < connectionPool.getMaxConnectionsToHost(); i++) {
-            Connection connection = new DirectConnection(connectionPool, remoteHost);
+            ClientDirectConnection connection = new ClientDirectConnection(connectionPool, remoteHost);
             connections.add(connection);
             connection.connect();
+
         }
     }
 
@@ -93,12 +97,12 @@ public class DirectConnectionGroup implements Connection {
         return remoteHost;
     }
 
-    public Iterable<Connection> getAllConnections(){
+    public Iterable<ClientDirectConnection> getAllConnections(){
         return connections;
     }
 
-    public Connection getConnection(){
-        Connection connection = connections.remove();
+    public ClientDirectConnection getConnection(){
+        ClientDirectConnection connection = connections.remove();
         connections.add(connection);
         return connection;
     }

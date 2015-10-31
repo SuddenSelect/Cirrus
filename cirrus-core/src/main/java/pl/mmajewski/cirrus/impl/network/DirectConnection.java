@@ -7,12 +7,11 @@ import pl.mmajewski.cirrus.network.exception.ConnectionFailCirrusException;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketOptions;
 
 /**
  * Created by Maciej Majewski on 15/09/15.
  */
-public class DirectConnection implements Connection {
+/*package*/ class DirectConnection implements Connection {
 
     private ConnectionPool connectionPool = null;
     private Host remoteHost = null;

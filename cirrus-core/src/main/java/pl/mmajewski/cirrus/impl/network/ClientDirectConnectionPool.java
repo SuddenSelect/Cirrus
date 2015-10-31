@@ -12,11 +12,11 @@ import java.util.Map;
 /**
  * Created by Maciej Majewski on 15/09/15.
  */
-public class DirectConnectionPool implements ConnectionPool{
+public class ClientDirectConnectionPool implements ConnectionPool{
     private int maxConnectionsToHost = 5;
     private int maxConnectionsInPool = 1000;
     private long connectionHealthCheckInterval = 1000;
-    private Map<Host, DirectConnectionGroup> connectionGroupMap = new HashMap<>();
+    private Map<Host, ClientDirectConnectionGroup> connectionGroupMap = new HashMap<>();
 
     @Override
     public void setMaxConnectionsToHost(int maxConnectionsToHost) {
@@ -44,8 +44,8 @@ public class DirectConnectionPool implements ConnectionPool{
     }
 
     @Override
-    public Connection fetchDataConnection(Host remoteHost) throws NetworkCirrusException {
-        DirectConnectionGroup connectionGroup = connectionGroupMap.get(remoteHost);
+    public ClientDirectConnection fetchConnection(Host remoteHost) throws NetworkCirrusException {
+        ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(remoteHost);
         if(connectionGroup!=null){
             return connectionGroup.getConnection();
         }
@@ -62,7 +62,7 @@ public class DirectConnectionPool implements ConnectionPool{
     @Override
     public void addHost(Host newHost) {
         if(!connectionGroupMap.containsKey(newHost)){
-            connectionGroupMap.put(newHost, new DirectConnectionGroup(this, newHost));
+            connectionGroupMap.put(newHost, new ClientDirectConnectionGroup(this, newHost));
         }
     }
 }

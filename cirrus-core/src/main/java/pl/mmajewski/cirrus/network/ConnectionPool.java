@@ -27,7 +27,7 @@ public interface ConnectionPool {
      * @return valid Connection
      * @throws NetworkCirrusException when connecting or network itself have failed
      */
-    public <E extends Connection> Connection fetchDataConnection(Host remoteHost) throws NetworkCirrusException;
+    public <E extends Connection> E fetchConnection(Host remoteHost) throws NetworkCirrusException;
 
     /**
      * Initializes pool with connections to known hosts.

@@ -22,7 +22,7 @@ import java.io.ObjectOutputStream;
 public class ClientDirectConnection extends DirectConnection implements ClientEventConnection, ClientDataConnection {
     private ObjectOutputStream objectOutputStream = null;
 
-    public ClientDirectConnection(ConnectionPool connectionPool, Host remoteHost) {
+    /*package*/ ClientDirectConnection(ConnectionPool connectionPool, Host remoteHost) {
         super(connectionPool, remoteHost);
     }
 
