@@ -84,13 +84,15 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 
             //Reading all chunks except wierd-sized last
             for (int i = 0; i < numberOfChunks-1; i++) {
-                ByteBuffer chunk = ByteBuffer.allocateDirect(Constants.CHUNK_SIZE);
+//                ByteBuffer chunk = ByteBuffer.allocateDirect(Constants.CHUNK_SIZE);
+                ByteBuffer chunk = ByteBuffer.allocate(Constants.CHUNK_SIZE);
                 fileChannel.read(chunk);
                 chunks[i] = chunk;
             }
             //Reading last chunk
             if(lastChunkSize>0){
-                ByteBuffer chunk = ByteBuffer.allocateDirect(lastChunkSize);
+//                ByteBuffer chunk = ByteBuffer.allocateDirect(lastChunkSize);
+                ByteBuffer chunk = ByteBuffer.allocate(lastChunkSize);
                 fileChannel.read(chunk);
                 chunk.flip();//make buffer ready for read
                 chunks[numberOfChunks-1] = chunk;

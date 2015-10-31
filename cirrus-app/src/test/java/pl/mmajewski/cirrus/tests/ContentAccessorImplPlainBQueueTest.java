@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.tests;
 
-import com.googlecode.cqengine.resultset.ResultSet;
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -15,6 +14,7 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
 import java.io.File;
+import java.util.Set;
 
 public class ContentAccessorImplPlainBQueueTest {
 
@@ -41,7 +41,7 @@ public class ContentAccessorImplPlainBQueueTest {
         Assert.assertNotNull(coreEventHandler);
         Assert.assertFalse(storage.getAllContentMetadata().isEmpty());
 
-        ResultSet<ContentMetadata> allMetadatas = storage.getAllContentMetadata();
+        Set<ContentMetadata> allMetadatas = storage.getAllContentMetadata();
         Assert.assertEquals(allMetadatas.size(), 1);
         ContentMetadata firstMetadata = allMetadatas.iterator().next();
         Assert.assertNotNull(firstMetadata);

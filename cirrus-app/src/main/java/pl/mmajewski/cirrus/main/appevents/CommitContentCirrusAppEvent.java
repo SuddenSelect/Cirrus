@@ -8,10 +8,13 @@ import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.coreevents.storage.BalanceAndDiffuseStorageCirrusEvent;
 
+import java.io.Serializable;
+
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
+public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> implements Serializable {
+    private static final long serialVersionUID = 1681266000011L;
 
     @Override
     public void appEvent(CirrusBasicApp.AppEventHandler handler) {

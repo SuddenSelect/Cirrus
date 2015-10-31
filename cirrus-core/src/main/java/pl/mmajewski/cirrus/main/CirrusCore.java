@@ -1,10 +1,10 @@
 package pl.mmajewski.cirrus.main;
 
+import pl.mmajewski.cirrus.binding.common.Persistance;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class CirrusCore {
     private static Logger logger = Logger.getLogger(CirrusCore.class.getName());
 
-    private ContentStorage contentStorage = new MemoryContentStorage();
+    private ContentStorage contentStorage = Persistance.newContentStorage();
     private CoreEventHandler coreEventHandler = this.new CoreEventHandler();
     private boolean processEvents = true;
     private Thread processThread;

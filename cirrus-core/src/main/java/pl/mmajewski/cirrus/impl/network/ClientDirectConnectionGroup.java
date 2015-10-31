@@ -43,6 +43,7 @@ import java.util.Set;
         }
     }
     private Thread healthCheckThread = null;
+    private HealthCheck healthCheck = null;
     private boolean alive = false;
     private ConnectionPool connectionPool = null;
     private Host remoteHost;
@@ -51,15 +52,20 @@ import java.util.Set;
     public ClientDirectConnectionGroup(ConnectionPool connectionPool, Host remoteHost) {
         this.connectionPool = connectionPool;
         this.remoteHost = remoteHost;
+        this.healthCheck = new HealthCheck();
+        this.healthCheckThread = new Thread(healthCheck);
     }
 
     @Override
     public void connect() throws ConnectionFailCirrusException {
+        boolean startHealthCheck = connections.isEmpty();
         for (int i = connections.size(); i < connectionPool.getMaxConnectionsToHost(); i++) {
             ClientDirectConnection connection = new ClientDirectConnection(connectionPool, remoteHost);
             connections.add(connection);
             connection.connect();
-
+        }
+        if(startHealthCheck){
+            this.healthCheckThread.start();
         }
     }
 

@@ -6,6 +6,8 @@ import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.main.CirrusCore;
 
+import java.io.IOException;
+
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
@@ -21,13 +23,16 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<CirrusCore.
     public void event(CirrusCore.CoreEventHandler handler) {
         ContentStorage storage = handler.getContentStorage();
         storage.updateContentMetadata(toCommit.getAllContentMetadata());
-        for(ContentMetadata metadata : toCommit.getAllContentMetadata()) {
-            for (ContentPiece piece : toCommit.getAvailablePieces(metadata)) {
-                storage.storeContentPiece(piece);
+            for (ContentMetadata metadata : toCommit.getAllContentMetadata()) {
+                for (ContentPiece piece : toCommit.getAvailablePieces(metadata)) {
+                    try {
+                        storage.storeContentPiece(piece);
+                    } catch (IOException e) {
+                        e.printStackTrace();//todo handle
+                    }
+                }
             }
-        }
 
-        //TODO push new content to memory storage
         //TODO generate events for content updates
         //TODO initiate content diffusion
     }

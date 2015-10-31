@@ -26,7 +26,13 @@ public class Host implements Serializable, Comparable<Host> {
     private List<String> tags;//indexable
     private List<String/*contentID*/> availableContent;//indexable
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
-    private transient Integer latency = -1;
+    private /*transient*/ Integer latency = -1;
+    // IMPORTANT: transient fields becomes NULL when inserted into CQEngine collection
+    // Therefore, field needs to be reset by server upon receiving
+
+    public void simulateFieldTransiency(){
+        latency = -1;
+    }
 
     public Integer getPort() {
         return port;

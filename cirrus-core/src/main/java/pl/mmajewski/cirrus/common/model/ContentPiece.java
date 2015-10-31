@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.common.model;
 
-import com.googlecode.cqengine.attribute.Attribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
 
@@ -18,8 +17,14 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
     private String contentId;//indexable, ContentMetadata ID
     private Integer sequence;//indexable
     private String expectedChecksum;
-    private ByteBuffer content;
-    private transient ContentStatus status; //indexable, determined locally by core
+    private byte[] content;
+    private /*transient*/ ContentStatus status; //indexable, determined locally by core
+    // IMPORTANT: transient fields becomes NULL when inserted into CQEngine collection
+    // Therefore, field needs to be reset by server upon receiving
+
+    public void simulateFieldTransiency(){
+        status = ContentStatus.UNCHECKED;
+    }
 
     public String getContentId() {
         return contentId;
@@ -46,7 +51,7 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
     }
 
     public ByteBuffer getContent() {
-        return content;
+        return ByteBuffer.wrap(content);
     }
 
     public ContentStatus getStatus() {
@@ -58,7 +63,7 @@ public class ContentPiece implements Serializable, Comparable<ContentPiece> {
     }
 
     public void setContent(ByteBuffer content) {
-        this.content = content;
+        this.content = content.hasArray() ? content.array() : null;
     }
 
     @Override

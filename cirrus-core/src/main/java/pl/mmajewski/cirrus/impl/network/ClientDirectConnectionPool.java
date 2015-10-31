@@ -1,8 +1,8 @@
 package pl.mmajewski.cirrus.impl.network;
 
 import pl.mmajewski.cirrus.common.model.Host;
-import pl.mmajewski.cirrus.network.Connection;
 import pl.mmajewski.cirrus.network.ConnectionPool;
+import pl.mmajewski.cirrus.network.exception.ConnectionFailCirrusException;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 
 import java.util.Collection;
@@ -63,6 +63,11 @@ public class ClientDirectConnectionPool implements ConnectionPool{
     public void addHost(Host newHost) {
         if(!connectionGroupMap.containsKey(newHost)){
             connectionGroupMap.put(newHost, new ClientDirectConnectionGroup(this, newHost));
+            try {
+                connectionGroupMap.get(newHost).connect();
+            } catch (ConnectionFailCirrusException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.Host;
-import pl.mmajewski.cirrus.network.Connection;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.ClientDataConnection;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
@@ -30,7 +29,9 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
     public void connect() throws ConnectionFailCirrusException {
         super.connect();
         try {
-            objectOutputStream = new ObjectOutputStream(super.getSocket().getOutputStream());
+            if(objectOutputStream == null) {
+                objectOutputStream = new ObjectOutputStream(super.getSocket().getOutputStream());
+            }
         } catch (IOException e) {
             throw new ConnectionFailCirrusException(e, this, super.getParentConnectionPool());
         }

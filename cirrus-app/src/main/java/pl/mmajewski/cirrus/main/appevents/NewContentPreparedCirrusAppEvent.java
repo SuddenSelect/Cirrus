@@ -6,6 +6,8 @@ import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -13,7 +15,9 @@ import java.util.TreeSet;
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
+public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> implements Serializable {
+    private static final long serialVersionUID = 1681266000009L;
+
     private ContentMetadata metadata;
     private List<ContentPiece> pieces;
 
@@ -40,10 +44,13 @@ public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasic
 
         Set<ContentMetadata> metadatas = new TreeSet<>();
         metadatas.add(metadata);
-
-        for(ContentPiece piece : pieces) {
-            prepared.storeContentPiece(piece);
+        try {
+            for (ContentPiece piece : pieces) {
+                prepared.storeContentPiece(piece);
+            }
+            prepared.updateContentMetadata(metadatas);
+        } catch (IOException e) {
+            handleAppEventException(handler, e);
         }
-        prepared.updateContentMetadata(metadatas);
     }
 }

@@ -4,13 +4,16 @@ import com.googlecode.cqengine.attribute.MultiValueAttribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Class representing placement of ContentPieces in the system.
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentAvailability implements Comparable<ContentAvailability> {
+public class ContentAvailability implements Serializable, Comparable<ContentAvailability> {
+    private static final long serialVersionUID = 1681266000015L;
+
     private String holderCirrusId;//indexable
     private String contentId;//indexable
     private Set<Integer> piecesSequenceNumbers;//indexable

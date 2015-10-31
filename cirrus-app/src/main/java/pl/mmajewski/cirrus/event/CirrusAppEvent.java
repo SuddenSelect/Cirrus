@@ -1,7 +1,11 @@
 package pl.mmajewski.cirrus.event;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.exception.UnimplementedEventCirrusException;
+import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
+import pl.mmajewski.cirrus.main.CirrusBasicApp;
+import pl.mmajewski.cirrus.main.appevents.ActionFailureCirrusAppEvent;
 
 /**
  * AppEvents are expected to extend this class and implement their behavior
@@ -18,5 +22,17 @@ public abstract class CirrusAppEvent <CEH extends CirrusAppEventHandler> extends
 
     public void appEvent(CEH handler) {
         throw new UnimplementedEventCirrusException(this);
+    }
+
+    protected void handleAppEventException(CirrusBasicApp.AppEventHandler handler, Exception e){
+        ActionFailureCirrusAppEvent evt = new ActionFailureCirrusAppEvent();
+        evt.init();
+        evt.setException(e);
+        evt.setMessage(e.getMessage());
+        try {
+            handler.accept(evt);
+        } catch (EventHandlerClosingCirrusException e1) {
+            throw new EventCancelledCirrusException(e1);
+        }
     }
 }

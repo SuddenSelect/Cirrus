@@ -1,11 +1,11 @@
 package pl.mmajewski.cirrus.main;
 
+import pl.mmajewski.cirrus.binding.common.Persistance;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
-import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class CirrusBasicApp  {
     private static Logger logger = Logger.getLogger(CirrusBasicApp.class.getName());
 
-    private ContentStorage prepared = new MemoryContentStorage();
+    private ContentStorage prepared = Persistance.newContentStorage();
     private CirrusCore core = new CirrusCore();
     private AppEventHandler appEventHandler = this.new AppEventHandler();
     private volatile boolean processEvents = true;
@@ -40,7 +40,7 @@ public class CirrusBasicApp  {
     }
 
     private void resetPreparedContentStorage(){
-        prepared = new MemoryContentStorage();
+        prepared = Persistance.newContentStorage();
     }
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {

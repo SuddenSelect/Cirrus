@@ -4,24 +4,26 @@
 <suite name="defaultSuite" junit="false" parallel="methods">
 
     <test name="plain-multi-chunk">
-        <parameter name="testFile" value="target/test-classes/republic.mb.txt"/>
-        <parameter name="dumpFile" value="target/test-classes/republic.mb.dmp"/>
+        <parameter name="testFile" value="cirrus-app/target/test-classes/republic.mb.txt"/>
+        <parameter name="dumpFile" value="cirrus-app/target/test-classes/republic.mb.dmp"/>
 
         <classes>
             <class name="pl.mmajewski.cirrus.tests.ContentAdapterImplPlainFileTest"/>
             <class name="pl.mmajewski.cirrus.tests.CirrusBasicAppTest"/>
             <class name="pl.mmajewski.cirrus.tests.ContentAccessorImplPlainBQueueTest"/>
+            <class name="pl.mmajewski.cirrus.tests.ClientDirectConnectionTest"/>
         </classes>
     </test>
 
     <test name="plain-single-chunk">
-        <parameter name="testFile" value="target/test-classes/single.chunk.txt"/>
-        <parameter name="dumpFile" value="target/test-classes/single.chunk.dmp"/>
+        <parameter name="testFile" value="cirrus-app/target/test-classes/single.chunk.txt"/>
+        <parameter name="dumpFile" value="cirrus-app/target/test-classes/single.chunk.dmp"/>
 
         <classes>
             <class name="pl.mmajewski.cirrus.tests.ContentAdapterImplPlainFileTest"/>
             <class name="pl.mmajewski.cirrus.tests.CirrusBasicAppTest"/>
             <class name="pl.mmajewski.cirrus.tests.ContentAccessorImplPlainBQueueTest"/>
+            <class name="pl.mmajewski.cirrus.tests.ClientDirectConnectionTest"/>
         </classes>
     </test>
 
