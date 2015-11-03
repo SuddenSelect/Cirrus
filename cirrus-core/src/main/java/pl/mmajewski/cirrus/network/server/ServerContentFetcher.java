@@ -30,4 +30,9 @@ public interface ServerContentFetcher {
      * @throws NetworkCirrusException thrown when something went wrong
      */
     public void sendContentPieces(Host target, Collection<? extends ContentPiece> contentPieces) throws NetworkCirrusException;
+
+    /**
+     * Ends sending threads
+     */
+    public void kill();
 }

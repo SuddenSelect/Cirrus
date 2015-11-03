@@ -142,6 +142,11 @@ public class Host implements Serializable, Comparable<Host> {
         return this.cirrusId.compareTo(o.cirrusId);
     }
 
+    @Override
+    public String toString() {
+        return "Host{ "+getCirrusId()+" @ "+getPhysicalAddress().getHostAddress()+" : "+getPort()+" }";
+    }
+
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
     public static final SimpleAttribute<Host, String> IDX_CIRRUS_ID = new SimpleAttribute<Host, String>("IDX_CIRRUS_ID") {
