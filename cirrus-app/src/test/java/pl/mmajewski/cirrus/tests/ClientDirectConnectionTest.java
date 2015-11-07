@@ -14,59 +14,18 @@ import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.*;
 
 /**
  * Created by Maciej Majewski on 31/10/15.
  */
 public class ClientDirectConnectionTest {
-    private static Integer serverPort = 64444;
-    private class TestServer implements Runnable{
-        private Object received = null;
-        private int port;
-
-        public Object getReceived() {
-            return received;
-        }
-
-        public void
-
-        setPort(int port) {
-            this.port = port;
-        }
-
-        @Override
-        public void run(){
-            ServerSocket server = null;
-            try {
-                server = new ServerSocket(port);
-                Socket client = server.accept();
-                ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
-                received = inputStream.readObject();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            } finally {
-                if(server!=null && !server.isClosed()){
-                    try {
-                        server.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
 
     @Parameters("testFile")
     @Test
     public void clientDirectConnectionContentPieceTest(String file) throws UnknownHostException, NetworkCirrusException, ContentAdapterCirrusException, InterruptedException {
         TestServer testServer = new TestServer();
-        int serverPort;
-        synchronized (ClientDirectConnectionTest.serverPort) {
-            serverPort = ClientDirectConnectionTest.serverPort++;
-        }
+        int serverPort = TestServer.getServerPort();
         testServer.setPort(serverPort);
         Thread server = new Thread(testServer);
         server.start();
@@ -113,10 +72,7 @@ public class ClientDirectConnectionTest {
     @Test
     public void clientDirectConnectionEventTest() throws UnknownHostException, NetworkCirrusException, ContentAdapterCirrusException, InterruptedException {
         TestServer testServer = new TestServer();
-        int serverPort;
-        synchronized (ClientDirectConnectionTest.serverPort) {
-            serverPort = ClientDirectConnectionTest.serverPort++;
-        }
+        int serverPort = TestServer.getServerPort();
         testServer.setPort(serverPort);
         Thread server = new Thread(testServer);
         server.start();
