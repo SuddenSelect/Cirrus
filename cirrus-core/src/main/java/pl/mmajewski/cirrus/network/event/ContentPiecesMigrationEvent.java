@@ -15,6 +15,10 @@ public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHa
 
     private Set<ContentAvailability> contentAvailabilities;
 
+    public ContentPiecesMigrationEvent(Set<ContentAvailability> contentAvailabilities) {
+        this.contentAvailabilities = contentAvailabilities;
+    }
+
     @Override
     public void event(ServerCirrusEventHandler handler){
         handler.getAvailabilityStorage().addAvailability(contentAvailabilities);

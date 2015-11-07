@@ -16,17 +16,13 @@ public class HostCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> imple
 
     private Set<Host> sharedHosts;
 
+    public HostCirrusEvent(Set<Host> sharedHosts) {
+        this.sharedHosts = sharedHosts;
+    }
+
     @Override
     public  void event(ServerCirrusEventHandler handler){
         HostStorage storage = handler.getHostStorage();
         storage.updateHosts(sharedHosts);
-    }
-
-    public Set<Host> getSharedHosts() {
-        return sharedHosts;
-    }
-
-    public void setSharedHosts(Set<Host> sharedHosts) {
-        this.sharedHosts = sharedHosts;
     }
 }
