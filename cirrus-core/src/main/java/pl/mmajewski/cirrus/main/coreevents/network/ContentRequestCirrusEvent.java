@@ -1,4 +1,4 @@
-package pl.mmajewski.cirrus.main.coreevents;
+package pl.mmajewski.cirrus.main.coreevents.network;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.GenericCirrusEventThread;
