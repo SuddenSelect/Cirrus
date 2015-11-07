@@ -13,7 +13,9 @@ import pl.mmajewski.cirrus.network.server.ServerContentSender;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -52,6 +54,7 @@ public class DoubleThreadContentSender implements ServerContentSender {
     private class Sender implements Runnable{
         private BlockingQueue<SendCommand> sendCommands = new LinkedBlockingQueue<>();
         private ConnectionPool connectionPool;
+        private CountDownLatch endSignal = new CountDownLatch(1);
 
         public Sender(ConnectionPool dataConnectionPool) {
             this.connectionPool = dataConnectionPool;
@@ -79,6 +82,10 @@ public class DoubleThreadContentSender implements ServerContentSender {
                                connection.sendContentPiece(toSend);
                            }
                        }
+                       
+                       if(endSignal !=null){//for testing only
+                           endSignal.countDown();
+                       }
                    } catch (NetworkCirrusException e) {
                        int commandsAmount = sendCommands.size();
                        sendCommands.removeIf(command -> command.getTargetHost().equals(sendCommand.getTargetHost()));
@@ -88,6 +95,10 @@ public class DoubleThreadContentSender implements ServerContentSender {
                                sendCommands.size() - commandsAmount,
                                e.getMessage()
                        ));
+
+                       while(endSignal.getCount()>0){
+                           endSignal.countDown();
+                       }
                    }
                 }
             }catch (InterruptedException e){
@@ -137,4 +148,16 @@ public class DoubleThreadContentSender implements ServerContentSender {
         metadataThread.interrupt();
         piecesThread.interrupt();
     }
+
+    /**
+     * Holds calling thread until Sender Thread have finished
+     * For testing only
+     */
+    public void waitForMetadataSending() throws InterruptedException {
+        metadataSender.endSignal.await(3, TimeUnit.SECONDS);
+    }
+    public void waitForPiecesSending() throws InterruptedException {
+        piecesSender.endSignal.await(3, TimeUnit.SECONDS);
+    }
+
 }

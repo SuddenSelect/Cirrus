@@ -27,5 +27,11 @@
         </classes>
     </test>
 
+    <test name="no-file">
+        <classes>
+            <class name="pl.mmajewski.cirrus.tests.DoubleThreadContentSenderTest"/>
+        </classes>
+    </test>
+
 </suite>
 

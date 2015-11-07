@@ -31,6 +31,7 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
         try {
             if(objectOutputStream == null) {
                 objectOutputStream = new ObjectOutputStream(super.getSocket().getOutputStream());
+                objectOutputStream.flush();
             }
         } catch (IOException e) {
             throw new ConnectionFailCirrusException(e, this, super.getParentConnectionPool());
@@ -54,6 +55,7 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
     public void sendEvent(CirrusEvent event) throws SendEventFailCirrusException {
         try {
             objectOutputStream.writeObject(event);
+            objectOutputStream.reset();
         } catch (Exception e) {
             throw new SendEventFailCirrusException(e,this,super.getParentConnectionPool());
         }
@@ -63,6 +65,7 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
     public void sendContentPiece(ContentPiece contentPiece) throws SendContentPieceFailCirrusException {
         try {
             objectOutputStream.writeUnshared(contentPiece);
+            objectOutputStream.reset();
         } catch (Exception e) {
             throw new SendContentPieceFailCirrusException(e,this,super.getParentConnectionPool());
         }
@@ -72,6 +75,7 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
     public void sendContentMetadata(ContentMetadata contentMetadata) throws SendContentMetadataFailCirrusException {
         try {
             objectOutputStream.writeUnshared(contentMetadata);
+            objectOutputStream.reset();
         } catch (Exception e) {
             throw new SendContentMetadataFailCirrusException(e,this,super.getParentConnectionPool());
         }
