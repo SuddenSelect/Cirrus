@@ -25,10 +25,9 @@ class TestServer implements Runnable {
         return received;
     }
 
-    public void
-
-    setPort(int port) {
+    public TestServer setPort(int port) {
         this.port = port;
+        return this;
     }
 
     @Override
