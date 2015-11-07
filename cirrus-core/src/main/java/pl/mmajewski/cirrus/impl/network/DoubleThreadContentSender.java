@@ -8,7 +8,7 @@ import pl.mmajewski.cirrus.network.client.ClientDataConnection;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.exception.SendContentMetadataFailCirrusException;
 import pl.mmajewski.cirrus.network.exception.SendContentPieceFailCirrusException;
-import pl.mmajewski.cirrus.network.server.ServerContentFetcher;
+import pl.mmajewski.cirrus.network.server.ServerContentSender;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 /**
  * Created by Maciej Majewski on 03/11/15.
  */
-public class DoubleThreadContentFetcher implements ServerContentFetcher {
-    private final Logger logger = Logger.getLogger(DoubleThreadContentFetcher.class.getName());
+public class DoubleThreadContentSender implements ServerContentSender {
+    private final Logger logger = Logger.getLogger(DoubleThreadContentSender.class.getName());
 
     private class SendCommand {
         private Host targetHost;
@@ -103,7 +103,7 @@ public class DoubleThreadContentFetcher implements ServerContentFetcher {
     private Sender piecesSender;
     private Thread piecesThread;
 
-    public DoubleThreadContentFetcher(ConnectionPool connectionPool) {
+    public DoubleThreadContentSender(ConnectionPool connectionPool) {
         metadataSender = new Sender(connectionPool);
         piecesSender = new Sender(connectionPool);
 

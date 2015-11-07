@@ -13,7 +13,7 @@ import java.util.Collection;
  * Expected to maintain a separate thread sending buffered data where instructed.
  * Created by Maciej Majewski on 30/10/14.
  */
-public interface ServerContentFetcher {
+public interface ServerContentSender {
 
     /**
      * Sends ContentMetadata to the remote host.

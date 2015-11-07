@@ -1,7 +1,7 @@
 package pl.mmajewski.cirrus.binding.network;
 
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
-import pl.mmajewski.cirrus.network.server.ServerContentFetcher;
+import pl.mmajewski.cirrus.network.server.ServerContentSender;
 
 /**
  * Created by Maciej Majewski on 30/11/14.
@@ -11,7 +11,7 @@ public class Server extends Network {
         return null;//binding stub
     }
 
-    public static ServerContentFetcher newContentFetcher() {
+    public static ServerContentSender newContentFetcher() {
         return null;//binding stub
     }
 }
