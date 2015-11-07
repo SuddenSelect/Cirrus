@@ -1,9 +1,13 @@
 package pl.mmajewski.cirrus.tests;
 
+import pl.mmajewski.cirrus.common.model.Host;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Created by Maciej Majewski on 07/11/15.
@@ -16,6 +20,13 @@ class TestServer implements Runnable {
             port = TestServer.serverPort++;
         }
         return port;
+    }
+
+    static Host getLocalHost(int serverPort) throws UnknownHostException {
+        Host localhost = new Host();
+        localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
+        localhost.setPort(serverPort);
+        return localhost;
     }
 
     private Object received = null;

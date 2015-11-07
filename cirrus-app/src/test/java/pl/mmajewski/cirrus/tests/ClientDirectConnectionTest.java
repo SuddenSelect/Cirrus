@@ -30,9 +30,7 @@ public class ClientDirectConnectionTest {
         Thread server = new Thread(testServer);
         server.start();
 
-        Host localhost = new Host();
-        localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127,0,0,1}));
-        localhost.setPort(serverPort);
+        Host localhost = TestServer.getLocalHost(serverPort);
 
         ClientDirectConnectionPool connectionPool = new ClientDirectConnectionPool();
         connectionPool.addHost(localhost);
@@ -77,9 +75,7 @@ public class ClientDirectConnectionTest {
         Thread server = new Thread(testServer);
         server.start();
 
-        Host localhost = new Host();
-        localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
-        localhost.setPort(serverPort);
+        Host localhost = TestServer.getLocalHost(serverPort);
 
 
         ClientDirectConnectionPool connectionPool = new ClientDirectConnectionPool();
@@ -106,4 +102,5 @@ public class ClientDirectConnectionTest {
         Assert.assertEquals(received.getCreatedThread(), event.getCreatedThread());
         Assert.assertEquals(received.getTrace(), event.getTrace());
     }
+
 }
