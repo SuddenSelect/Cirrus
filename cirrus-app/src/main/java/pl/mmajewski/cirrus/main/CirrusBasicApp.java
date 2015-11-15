@@ -1,6 +1,6 @@
 package pl.mmajewski.cirrus.main;
 
-import pl.mmajewski.cirrus.binding.common.Persistance;
+import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 public class CirrusBasicApp  {
     private static Logger logger = Logger.getLogger(CirrusBasicApp.class.getName());
 
-    private ContentStorage prepared = Persistance.newContentStorage();
-    private CirrusCore core = new CirrusCore();
+    private ContentStorage prepared = CirrusCoreFactory.Persistance.newContentStorage();
+    private CirrusCore core = CirrusCoreFactory.newCirrusCore();
     private AppEventHandler appEventHandler = this.new AppEventHandler();
     private volatile boolean processEvents = true;
     private Thread processThread;
@@ -27,7 +27,7 @@ public class CirrusBasicApp  {
     public CirrusBasicApp(){
         processThread = new Thread(appEventHandler);
         processThread.start();
-        core.getCoreEventHandler().setAppEventHandler(appEventHandler);
+        core.getCirrusCoreEventHandler().setAppEventHandler(appEventHandler);
     }
 
     public AppEventHandler getAppEventHandler() {
@@ -40,7 +40,7 @@ public class CirrusBasicApp  {
     }
 
     private void resetPreparedContentStorage(){
-        prepared = Persistance.newContentStorage();
+        prepared = CirrusCoreFactory.Persistance.newContentStorage();
     }
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {
@@ -103,7 +103,7 @@ public class CirrusBasicApp  {
         }
 
         public CirrusEventHandler getCoreEventHandler(){
-            return core.getCoreEventHandler();
+            return core.getCirrusCoreEventHandler();
         }
     }
 

@@ -7,7 +7,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.content.ContentAccessor;
-import pl.mmajewski.cirrus.main.coreevents.network.ContentRequestCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.ContentRequestCirrusEvent;
 
 import java.io.*;
 import java.nio.channels.FileChannel;

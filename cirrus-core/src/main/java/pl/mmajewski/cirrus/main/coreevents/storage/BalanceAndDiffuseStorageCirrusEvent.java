@@ -4,14 +4,14 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.main.CirrusCore;
+import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.io.IOException;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<CirrusCore.CoreEventHandler> {
+public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> {
 
     private ContentStorage toCommit;
 
@@ -20,7 +20,7 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<CirrusCore.
     }
 
     @Override
-    public void event(CirrusCore.CoreEventHandler handler) {
+    public void event(CirrusCoreEventHandler handler) {
         ContentStorage storage = handler.getContentStorage();
         storage.updateContentMetadata(toCommit.getAllContentMetadata());
             for (ContentMetadata metadata : toCommit.getAllContentMetadata()) {

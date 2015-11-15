@@ -21,56 +21,6 @@ import java.net.*;
  */
 public class ClientDirectConnectionTest {
 
-    @Parameters("testFile")
-    @Test
-    public void clientDirectConnectionContentPieceTest(String file) throws UnknownHostException, NetworkCirrusException, ContentAdapterCirrusException, InterruptedException {
-        TestServer testServer = new TestServer(1);
-        int serverPort = TestServer.getServerPort();
-        testServer.setPort(serverPort);
-        Thread server = new Thread(testServer);
-        server.start();
-
-        Host localhost = TestServer.getLocalHost(serverPort);
-
-        ClientDirectConnectionPool connectionPool = new ClientDirectConnectionPool();
-        connectionPool.addHost(localhost);
-        ClientDirectConnection connection = connectionPool.fetchConnection(localhost);
-        connection.connect();
-
-        ContentAdapterImplPlainFile test = new ContentAdapterImplPlainFile();
-        test.suppressEventGeneration(true);
-        test.adapt(file);
-
-        ContentPiece contentPiece = new ContentPiece();
-        contentPiece.setContentId("test-id");
-        contentPiece.setContent(test.getChunks()[0]);
-        contentPiece.setSequence(0);
-        contentPiece.setExpectedChecksum("test-checksum");
-        contentPiece.setStatus(ContentStatus.CALCULATING);
-
-        connection.sendContentPiece(contentPiece);
-
-        server.join();
-        Object object = testServer.getReceived().get(0);
-        connection.kill();
-
-
-        Assert.assertNotNull(object);
-        Assert.assertTrue(object instanceof ContentPiece);
-
-        ContentPiece received = (ContentPiece) object;
-        received.simulateFieldTransiency();
-
-        Assert.assertEquals(received.getContentId(), contentPiece.getContentId());
-        Assert.assertEquals(received.getSequence(), contentPiece.getSequence());
-        Assert.assertEquals(received.getExpectedChecksum(), contentPiece.getExpectedChecksum());
-        Assert.assertNotNull(received.getContent());
-        Assert.assertNotNull(contentPiece.getContent());
-        Assert.assertEquals(received.getContent(), contentPiece.getContent());
-        Assert.assertNotEquals(received.getStatus(), contentPiece.getStatus());
-        Assert.assertEquals(received.getStatus(), ContentStatus.UNCHECKED);
-    }
-
     @Test
     public void clientDirectConnectionEventTest() throws UnknownHostException, NetworkCirrusException, ContentAdapterCirrusException, InterruptedException {
         TestServer testServer = new TestServer(1);

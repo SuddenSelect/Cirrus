@@ -6,6 +6,7 @@ import com.googlecode.cqengine.query.option.QueryOptions;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -16,6 +17,19 @@ import java.util.*;
  */
 public class Host implements Serializable, Comparable<Host> {
     private static final long serialVersionUID = 1681266000003L;
+    public static Host localhost = null;
+    public static Host getLocalHost() {
+        if(localhost == null) {
+            try {
+                Host localhost = new Host();
+                localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
+                Host.localhost = localhost;
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+        return localhost;
+    }
 
     private String cirrusId;//indexable
     private InetAddress physicalAddress;//indexable

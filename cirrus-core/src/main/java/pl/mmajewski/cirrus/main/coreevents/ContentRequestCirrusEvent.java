@@ -1,4 +1,4 @@
-package pl.mmajewski.cirrus.main.coreevents.network;
+package pl.mmajewski.cirrus.main.coreevents;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.GenericCirrusEventThread;
@@ -6,14 +6,14 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
-import pl.mmajewski.cirrus.main.CirrusCore;
+import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.util.ArrayList;
 
 /**
  * Created by Maciej Majewski on 2015-02-06.
  */
-public class ContentRequestCirrusEvent extends CirrusEvent<CirrusCore.CoreEventHandler> {
+public class ContentRequestCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> {
     private CirrusBlockingSequence<ContentPiece> sink;
     private ContentMetadata metadata;
     private ArrayList<ContentPiece> pieces;
@@ -24,7 +24,7 @@ public class ContentRequestCirrusEvent extends CirrusEvent<CirrusCore.CoreEventH
     }
 
     @Override
-    public void event(CirrusCore.CoreEventHandler handler) {
+    public void event(CirrusCoreEventHandler handler) {
         ContentStorage storage = handler.getContentStorage();
         pieces = storage.getAvailablePieces(metadata);
 

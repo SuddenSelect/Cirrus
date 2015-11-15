@@ -22,9 +22,8 @@ class TestServer implements Runnable {
         return TestServer.serverPort++;
     }
 
-    static Host getLocalHost(int serverPort) throws UnknownHostException {
-        Host localhost = new Host();
-        localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
+    static Host getLocalHost(int serverPort) {
+        Host localhost = Host.getLocalHost();
         localhost.setPort(serverPort);
         return localhost;
     }

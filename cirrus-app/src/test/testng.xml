@@ -11,7 +11,6 @@
             <class name="pl.mmajewski.cirrus.tests.ContentAdapterImplPlainFileTest"/>
             <class name="pl.mmajewski.cirrus.tests.CirrusBasicAppTest"/>
             <class name="pl.mmajewski.cirrus.tests.ContentAccessorImplPlainBQueueTest"/>
-            <class name="pl.mmajewski.cirrus.tests.ClientDirectConnectionTest"/>
         </classes>
     </test>
 
@@ -23,13 +22,12 @@
             <class name="pl.mmajewski.cirrus.tests.ContentAdapterImplPlainFileTest"/>
             <class name="pl.mmajewski.cirrus.tests.CirrusBasicAppTest"/>
             <class name="pl.mmajewski.cirrus.tests.ContentAccessorImplPlainBQueueTest"/>
-            <class name="pl.mmajewski.cirrus.tests.ClientDirectConnectionTest"/>
         </classes>
     </test>
 
     <test name="no-file">
         <classes>
-            <class name="pl.mmajewski.cirrus.tests.DoubleThreadContentSenderTest"/>
+            <class name="pl.mmajewski.cirrus.tests.ClientDirectConnectionTest"/>
         </classes>
     </test>
 
