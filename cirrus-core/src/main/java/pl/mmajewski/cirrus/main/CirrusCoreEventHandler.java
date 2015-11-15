@@ -27,6 +27,7 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
     @Override
     public void run() {
         try {
+            logger.fine("CirrusCoreEventHandler started");
             while (parent.isProcessEvents() || hasAwaitingEvents()) {
                 CirrusEvent evt = queue.poll(10, TimeUnit.MILLISECONDS);
                 if (evt != null) {
@@ -38,7 +39,9 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
                     }
                 }
             }
+            logger.fine("CirrusCoreEventHandler stopped");
         } catch (InterruptedException e) {
+            logger.fine("CirrusCoreEventHandler interrupted");
         }
     }
 

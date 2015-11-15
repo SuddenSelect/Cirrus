@@ -3,7 +3,9 @@ package pl.mmajewski.cirrus.main.appevents;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
@@ -33,5 +35,12 @@ public class ActionFailureCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.A
     @Override
     public void appEvent(CirrusBasicApp.AppEventHandler handler) {
         //TODO present problem to the user
+        StringWriter stackTrace = new StringWriter();
+        if(exception!=null) {
+            exception.printStackTrace(new PrintWriter(stackTrace));
+        } else {
+            stackTrace.append("< no stack trace >");
+        }
+        handler.pushFailure("# "+message+" :\n"+stackTrace.toString()+"\n");
     }
 }

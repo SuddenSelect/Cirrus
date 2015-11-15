@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.event;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.exception.UnimplementedEventCirrusException;
 import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;

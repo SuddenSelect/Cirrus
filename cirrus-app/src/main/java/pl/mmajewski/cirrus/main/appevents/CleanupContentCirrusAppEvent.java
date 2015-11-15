@@ -6,6 +6,8 @@ import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
@@ -16,7 +18,8 @@ public class CleanupContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.
     @Override
     public void appEvent(CirrusBasicApp.AppEventHandler handler) {
         ContentStorage storage = handler.getContentStorage();
-        for(ContentMetadata meta : storage.getAllContentMetadata()){
+        Set<ContentMetadata> toDel = new HashSet<>(storage.getAllContentMetadata());
+        for(ContentMetadata meta : toDel){
             storage.deleteContent(meta);
         }
         handler.resetStorage();

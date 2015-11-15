@@ -33,6 +33,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
         @Override
         public void run() {
             try {
+                logger.fine("CirrusCoreServer started");
                 ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
                 while (true) {
                     Object received = inputStream.readUnshared();
@@ -52,6 +53,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
                 synchronized (activeServers) {
                     activeServers.remove(this);
                 }
+                logger.fine("CirrusCoreServer stopped");
             }
         }
     }

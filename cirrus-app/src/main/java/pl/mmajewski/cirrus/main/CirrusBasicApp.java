@@ -6,6 +6,7 @@ import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
+import pl.mmajewski.cirrus.main.appevents.ActionFailureCirrusAppEvent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -45,20 +46,32 @@ public class CirrusBasicApp  {
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {
         private BlockingQueue<CirrusEvent<AppEventHandler>> queue = new LinkedBlockingQueue<>();
+        private BlockingQueue<String> failures = new LinkedBlockingQueue<>(30);
 
         @Override
         public void run() {
             try {
+                logger.fine("AppEventHandler started");
                 while (processEvents || hasAwaitingEvents()) {
                     CirrusEvent evt = queue.poll(20, TimeUnit.MILLISECONDS);
                     if(evt!=null){
-                        this.handle(evt);
+                        logger.fine("Event: "+evt.getClass());
+                        try {
+                            this.handle(evt);
+                        }catch (Exception e){
+                            logger.severe(e.getMessage());
+                            ActionFailureCirrusAppEvent event = new ActionFailureCirrusAppEvent();
+                            event.setException(e);
+                            event.setMessage(e.getMessage());
+                            this.handle((CirrusEvent)event);
+                        }
                     }else{
                         synchronized (queue){
                             queue.notifyAll();
                         }
                     }
                 }
+                logger.fine("AppEventHandler stopped");
             } catch (InterruptedException e) {}
         }
 
@@ -104,6 +117,14 @@ public class CirrusBasicApp  {
 
         public CirrusEventHandler getCoreEventHandler(){
             return core.getCirrusCoreEventHandler();
+        }
+
+        public void pushFailure(String failure){
+            failures.add(failure);
+        }
+
+        public String popFailure(){
+            return failures.poll();
         }
     }
 
