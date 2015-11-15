@@ -23,7 +23,7 @@ public class AdaptFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEv
     @Override
     public void appEvent(CirrusBasicApp.AppEventHandler handler) {
         try {
-            ContentAdapter adapter = new ContentAdapterImplPlainFile();
+            ContentAdapter adapter = new ContentAdapterImplPlainFile(handler);
             adapter.adapt(file);//generates NewContentPrepared...
         } catch (ContentAdapterCirrusException e) {
             handleAppEventException(handler, e);
