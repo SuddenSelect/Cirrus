@@ -1,7 +1,7 @@
-package pl.mmajewski.cirrus.main.appevents;
+package pl.mmajewski.cirrus.main.coreevents;
 
-import pl.mmajewski.cirrus.event.CirrusAppEvent;
-import pl.mmajewski.cirrus.main.CirrusBasicApp;
+import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.io.StringWriter;
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class ActionFailureCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> implements Serializable {
+public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> implements Serializable {
     private static final long serialVersionUID = 1681266000014L;
 
     private String message;
@@ -33,7 +33,7 @@ public class ActionFailureCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.A
     }
 
     @Override
-    public void appEvent(CirrusBasicApp.AppEventHandler handler) {
+    public void event(CirrusCoreEventHandler handler) {
         //TODO present problem to the user
         StringWriter stackTrace = new StringWriter();
         if(exception!=null) {

@@ -6,7 +6,7 @@ import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
-import pl.mmajewski.cirrus.main.appevents.ActionFailureCirrusAppEvent;
+import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -46,7 +46,6 @@ public class CirrusBasicApp  {
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {
         private BlockingQueue<CirrusEvent<AppEventHandler>> queue = new LinkedBlockingQueue<>();
-        private BlockingQueue<String> failures = new LinkedBlockingQueue<>(30);
 
         @Override
         public void run() {
@@ -60,7 +59,7 @@ public class CirrusBasicApp  {
                             this.handle(evt);
                         }catch (Exception e){
                             logger.severe(e.getMessage());
-                            ActionFailureCirrusAppEvent event = new ActionFailureCirrusAppEvent();
+                            ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
                             event.setException(e);
                             event.setMessage(e.getMessage());
                             this.handle((CirrusEvent)event);
@@ -119,12 +118,14 @@ public class CirrusBasicApp  {
             return core.getCirrusCoreEventHandler();
         }
 
-        public void pushFailure(String failure){
-            failures.add(failure);
+        @Override
+        public void pushFailure(String failure) {
+            getCoreEventHandler().pushFailure(failure);
         }
 
-        public String popFailure(){
-            return failures.poll();
+        @Override
+        public String popFailure() {
+            return getCoreEventHandler().popFailure();
         }
     }
 

@@ -74,4 +74,16 @@ public interface CirrusEventHandler {
      * @return content storage if has been set, null otherwise.
      */
     public ContentStorage getContentStorage();
+
+    /**
+     * Stores failure message
+     * @param failure
+     */
+    public void pushFailure(String failure);
+
+    /**
+     * Retrieves failure message
+     * @return
+     */
+    public String popFailure();
 }

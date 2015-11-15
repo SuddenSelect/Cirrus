@@ -4,6 +4,7 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,6 +18,7 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
     private static Logger logger = Logger.getLogger(CirrusCoreEventHandler.class.getName());
 
     private BlockingQueue<CirrusEvent<CirrusCoreEventHandler>> queue = new LinkedBlockingQueue<>();
+    private BlockingQueue<String> failures = new LinkedBlockingQueue<>(30);
     private CirrusEventHandler appEventHandler;
     private CirrusCore parent;
 
@@ -31,8 +33,15 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
             while (parent.isProcessEvents() || hasAwaitingEvents()) {
                 CirrusEvent evt = queue.poll(10, TimeUnit.MILLISECONDS);
                 if (evt != null) {
-                    System.err.println(evt.getClass().getName());
-                    this.handle(evt);
+                    try{
+                        this.handle(evt);
+                    }catch (Exception e){
+                        logger.severe(e.getMessage());
+                        ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
+                        event.setException(e);
+                        event.setMessage(e.getMessage());
+                        this.handle((CirrusEvent)event);
+                    }
                 } else {
                     synchronized (queue) {
                         queue.notifyAll();
@@ -89,6 +98,17 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
 
     public ContentStorage getContentStorage() {
         return parent.getContentStorage();
+    }
+
+
+    @Override
+    public void pushFailure(String failure){
+        failures.add(failure);
+    }
+
+    @Override
+    public String popFailure(){
+        return failures.poll();
     }
 
 }

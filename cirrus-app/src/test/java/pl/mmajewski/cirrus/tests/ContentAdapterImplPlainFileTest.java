@@ -125,6 +125,16 @@ public class ContentAdapterImplPlainFileTest {
         public void test() {
             Assert.assertTrue(passed);
         }
+
+        @Override
+        public void pushFailure(String failure) {
+            throw new RuntimeException(failure);
+        }
+
+        @Override
+        public String popFailure() {
+            return null;
+        }
     }
 
     @Parameters("testFile")
