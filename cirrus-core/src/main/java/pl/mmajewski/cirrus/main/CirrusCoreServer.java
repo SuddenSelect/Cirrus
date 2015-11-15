@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.main;
 
+import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.exception.CoreServerInitializationCirrusException;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;

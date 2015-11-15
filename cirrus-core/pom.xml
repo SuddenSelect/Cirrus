@@ -12,4 +12,26 @@
     <artifactId>cirrus-core</artifactId>
     <version>0.1</version>
 
+    <build>
+        <plugins>
+            <!-- ServiceLoader -->
+            <plugin>
+                <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
+                <artifactId>serviceloader-maven-plugin</artifactId>
+                <version>1.0.6</version>
+                <configuration>
+                    <services>
+                        <param>pl.mmajewski.cirrus.common.event.CirrusEvent</param>
+                    </services>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

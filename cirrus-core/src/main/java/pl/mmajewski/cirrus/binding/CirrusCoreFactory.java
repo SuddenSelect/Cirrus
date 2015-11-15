@@ -46,7 +46,10 @@ public class CirrusCoreFactory {
         }
 
         public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, int port) {
-            return new CirrusCoreServer(cirrusCore, port);//binding stub
+            CirrusCoreServer cirrusCoreServer = new CirrusCoreServer(cirrusCore, port);
+            cirrusCoreServer.setAvailabilityStorage(Persistance.newAvailabilityStorage());
+            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(Host.getLocalHost()));//TODO permanent localhost retrieval
+            return cirrusCoreServer;//binding stub
         }
     }
 

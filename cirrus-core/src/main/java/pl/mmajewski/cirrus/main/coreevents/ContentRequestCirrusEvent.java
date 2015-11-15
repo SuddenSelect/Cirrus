@@ -18,9 +18,12 @@ public class ContentRequestCirrusEvent extends CirrusEvent<CirrusCoreEventHandle
     private ContentMetadata metadata;
     private ArrayList<ContentPiece> pieces;
 
-    public ContentRequestCirrusEvent(ContentMetadata metadata, CirrusBlockingSequence<ContentPiece> sink){
-        this.metadata = metadata;
+    public void setSink(CirrusBlockingSequence<ContentPiece> sink) {
         this.sink = sink;
+    }
+
+    public void setMetadata(ContentMetadata metadata) {
+        this.metadata = metadata;
     }
 
     @Override

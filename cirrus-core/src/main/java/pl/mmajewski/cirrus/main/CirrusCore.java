@@ -13,12 +13,12 @@ public class CirrusCore {
     private static Logger logger = Logger.getLogger(CirrusCore.class.getName());
 
     private ContentStorage contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
-    private CirrusCoreEventHandler cirrusCoreEventHandler = new CirrusCoreEventHandler(this);
+    private CirrusEventHandler cirrusCoreEventHandler = CirrusCoreFactory.Server.newCoreEventHandler(this, 6465);
     private volatile boolean processEvents = true;
     private Thread processThread;
 
     public CirrusCore() {
-        processThread = new Thread(cirrusCoreEventHandler);
+        processThread = new Thread((Runnable) cirrusCoreEventHandler);
         processThread.start();
     }
 

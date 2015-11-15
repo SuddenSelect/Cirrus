@@ -16,7 +16,7 @@ public class ContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> im
 
     private Set<ContentMetadata> sharedMetadata;
 
-    public ContentCirrusEvent(Set<ContentMetadata> sharedMetadata) {
+    public void setSharedMetadata(Set<ContentMetadata> sharedMetadata) {
         this.sharedMetadata = sharedMetadata;
     }
 

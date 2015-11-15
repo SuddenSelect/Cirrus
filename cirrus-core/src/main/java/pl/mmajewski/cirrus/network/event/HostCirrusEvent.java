@@ -16,7 +16,7 @@ public class HostCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> imple
 
     private Set<Host> sharedHosts;
 
-    public HostCirrusEvent(Set<Host> sharedHosts) {
+    public void setSharedHosts(Set<Host> sharedHosts) {
         this.sharedHosts = sharedHosts;
     }
 

@@ -3,6 +3,7 @@ package pl.mmajewski.cirrus.common.model;
 import com.googlecode.cqengine.attribute.MultiValueAttribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
+import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -23,6 +24,14 @@ public class Host implements Serializable, Comparable<Host> {
             try {
                 Host localhost = new Host();
                 localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
+                localhost.setCirrusId(CirrusIdGenerator.generateHostId());
+                localhost.setLastSeen(LocalDateTime.now());
+                localhost.setLatency(0);
+                localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
+//                localhost.setPort(6466);//TODO make persistent
+//                localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
+//                localhost.setAvailableContent(Collections.EMPTY_LIST);//TODO make persistent
+//                localhost.setSharedPiecesMap(Collections.EMPTY_MAP);
                 Host.localhost = localhost;
             } catch (UnknownHostException e) {
                 e.printStackTrace();
