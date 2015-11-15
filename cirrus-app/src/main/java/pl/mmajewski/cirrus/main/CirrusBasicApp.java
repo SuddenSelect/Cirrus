@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class CirrusBasicApp  {
     private static Logger logger = Logger.getLogger(CirrusBasicApp.class.getName());
 
-    private ContentStorage prepared = CirrusCoreFactory.Persistance.newContentStorage();
+    private ContentStorage contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
     private CirrusCore core = CirrusCoreFactory.newCirrusCore();
     private AppEventHandler appEventHandler = this.new AppEventHandler();
     private volatile boolean processEvents = true;
@@ -40,7 +40,7 @@ public class CirrusBasicApp  {
     }
 
     private void resetPreparedContentStorage(){
-        prepared = CirrusCoreFactory.Persistance.newContentStorage();
+        contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
     }
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {
@@ -95,7 +95,7 @@ public class CirrusBasicApp  {
         }
 
         public ContentStorage getContentStorage() {
-            return CirrusBasicApp.this.prepared;
+            return CirrusBasicApp.this.contentStorage;
         }
 
         public void resetStorage(){

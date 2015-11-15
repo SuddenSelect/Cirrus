@@ -23,8 +23,11 @@ public class DumpFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEve
     private ContentMetadata metadata;
     private String file;
 
-    public DumpFileCirrusAppEvent(ContentMetadata metadata, String file) {
+    public void setMetadata(ContentMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    public void setFile(String file) {
         this.file = file;
     }
 

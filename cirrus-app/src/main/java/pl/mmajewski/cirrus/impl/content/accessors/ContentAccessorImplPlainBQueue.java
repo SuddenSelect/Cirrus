@@ -44,7 +44,9 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         fileDumpingThreads.put(filename, new Thread(this.new FileDumperCirrusThread()));
         fileDumpingThreads.get(filename).start();
 
-        ContentRequestCirrusEvent evt = new ContentRequestCirrusEvent(metadata, piecesSequence);
+        ContentRequestCirrusEvent evt = new ContentRequestCirrusEvent();
+        evt.setMetadata(metadata);
+        evt.setSink(piecesSequence);
         evt.init();
         coreEventHandler.accept(evt);
     }
