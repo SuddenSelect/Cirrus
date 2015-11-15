@@ -85,7 +85,7 @@ public class CirrusBasicApp  {
                 }
             }else {
                 logger.info("APP: Waiting for thread to finish by itself");
-                processThread.join();
+                processThread.join(10000);
             }
         }
 
