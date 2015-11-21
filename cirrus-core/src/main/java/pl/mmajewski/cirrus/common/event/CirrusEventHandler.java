@@ -34,9 +34,9 @@ public interface CirrusEventHandler {
      * Visitor behavior implementation. Immediate execution.
      * @param event Event instance of type bound to EH
      */
-    default public void handle(CirrusEvent<CirrusEventHandler> event){
+    default public <CEH extends CirrusEventHandler> void handle(CirrusEvent<CEH> event){
         try {
-            event.event(this);
+            event.event((CEH) this);
         }catch (ClassCastException e){
             throw new EventHandlerMismatchedCirrusException(e,event,this);
         }
@@ -59,7 +59,7 @@ public interface CirrusEventHandler {
      * Should be first thing to be called by an event.
      * @param event Event instance of type bound to EH
      */
-    default public void appEvent(CirrusEvent<CirrusEventHandler> event){
+    default public <CEH extends CirrusEventHandler> void appEvent(CirrusEvent<CEH> event){
         getAppEventHandler().handle(event);
     }
 

@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.event;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.exception.UnimplementedEventCirrusException;
 import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
@@ -12,11 +13,11 @@ import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
  * by overriding 'appEvent' method.
  * Created by Maciej Majewski on 09/11/14.
  */
-public abstract class CirrusAppEvent <CEH extends CirrusAppEventHandler> extends CirrusEvent<CEH> {
+public abstract class CirrusAppEvent <CEH extends CirrusEventHandler> extends CirrusEvent<CEH> {
     private static final long serialVersionUID = 1681266000008L;
 
     @Override
-    public final void event(CirrusAppEventHandler handler){
+    public final void event(CirrusEventHandler handler){
         handler.appEvent(this);
     }
 
