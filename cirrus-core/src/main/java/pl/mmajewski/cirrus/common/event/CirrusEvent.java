@@ -12,11 +12,14 @@ import java.util.Set;
  * Created by Maciej Majewski on 29/10/14.
  */
 public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Serializable{
-    private static final long serialVersionUID = 1681266000004L;
 
     private LocalDateTime creationTime;
     private String eventId;
     private Set<String> trace = new HashSet<>();
+
+    public CirrusEvent(){
+        init();
+    }
 
     public void init(){
         setCreationTime(LocalDateTime.now());

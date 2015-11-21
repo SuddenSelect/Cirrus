@@ -4,14 +4,12 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.ContentAvailability;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHandler> implements Serializable {
-    private static final long serialVersionUID = 1681266000007L;
+public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<ContentAvailability> contentAvailabilities;
 

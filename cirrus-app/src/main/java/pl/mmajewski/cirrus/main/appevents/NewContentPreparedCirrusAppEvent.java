@@ -7,7 +7,6 @@ import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,8 +14,7 @@ import java.util.TreeSet;
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> implements Serializable {
-    private static final long serialVersionUID = 1681266000009L;
+public class NewContentPreparedCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
 
     private ContentMetadata metadata;
     private List<ContentPiece> pieces;

@@ -40,7 +40,7 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
                         ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
                         event.setException(e);
                         event.setMessage(e.getMessage());
-                        this.handle((CirrusEvent)event);
+                        this.handle(event);
                     }
                 } else {
                     synchronized (queue) {

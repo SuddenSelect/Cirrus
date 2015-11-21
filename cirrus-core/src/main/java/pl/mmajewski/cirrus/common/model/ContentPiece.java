@@ -12,7 +12,6 @@ import java.nio.ByteBuffer;
  * Created by Maciej Majewski on 29/10/14.
  */
 public class ContentPiece implements Serializable, Comparable<ContentPiece> {
-    private static final long serialVersionUID = 1681266000002L;
 
     private String contentId;//indexable, ContentMetadata ID
     private Integer sequence;//indexable

@@ -3,7 +3,9 @@ package pl.mmajewski.cirrus.main;
 import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.net.InetAddress;
 import java.util.logging.Logger;
 
 /**
@@ -13,17 +15,22 @@ public class CirrusCore {
     private static Logger logger = Logger.getLogger(CirrusCore.class.getName());
 
     private ContentStorage contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
-    private CirrusEventHandler cirrusCoreEventHandler = CirrusCoreFactory.Server.newCoreEventHandler(this, 6465);
+    private ServerCirrusEventHandler cirrusCoreEventHandler;
     private volatile boolean processEvents = true;
     private Thread processThread;
+    private InetAddress localAddress;
 
-    public CirrusCore() {
+    public CirrusCore(InetAddress localAddress) {
+        this.localAddress = localAddress;
+        cirrusCoreEventHandler = CirrusCoreFactory.Server.newCoreEventHandler(this, localAddress, 6465);
         processThread = new Thread((Runnable) cirrusCoreEventHandler);
         processThread.start();
+        cirrusCoreEventHandler.listen();
     }
 
     public void stopProcessingEvents(){
         processEvents = false;
+        cirrusCoreEventHandler.kill();
     }
 
     public CirrusEventHandler getCirrusCoreEventHandler(){
@@ -46,4 +53,7 @@ public class CirrusCore {
         this.contentStorage = contentStorage;
     }
 
+    public InetAddress getLocalAddress() {
+        return localAddress;
+    }
 }

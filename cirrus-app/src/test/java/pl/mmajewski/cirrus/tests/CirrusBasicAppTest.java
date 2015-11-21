@@ -12,6 +12,9 @@ import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class CirrusBasicAppTest {
 
     private void testContentStorageNotEmpty(ContentStorage storage, String which){
@@ -27,8 +30,8 @@ public class CirrusBasicAppTest {
 
     @Parameters("testFile")
     @Test
-    public void testCommit(String file) throws ContentAdapterCirrusException, InterruptedException, EventHandlerClosingCirrusException {
-        CirrusBasicApp app = new CirrusBasicApp();
+    public void testCommit(String file) throws ContentAdapterCirrusException, InterruptedException, EventHandlerClosingCirrusException, UnknownHostException {
+        CirrusBasicApp app = new CirrusBasicApp(InetAddress.getLoopbackAddress());
         Assert.assertNotNull(app.getAppEventHandler());
         Assert.assertNotNull(app.getAppEventHandler().getContentStorage());
         Assert.assertNotNull(app.getAppEventHandler().getCoreEventHandler());

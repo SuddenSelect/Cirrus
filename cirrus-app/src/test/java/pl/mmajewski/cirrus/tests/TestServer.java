@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -23,7 +22,7 @@ class TestServer implements Runnable {
     }
 
     static Host getLocalHost(int serverPort) {
-        Host localhost = Host.getLocalHost();
+        Host localhost = Host.newHost(InetAddress.getLoopbackAddress());
         localhost.setPort(serverPort);
         return localhost;
     }

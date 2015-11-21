@@ -5,14 +5,12 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> implements Serializable {
-    private static final long serialVersionUID = 1681266000005L;
+public class ContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<ContentMetadata> sharedMetadata;
 

@@ -13,10 +13,14 @@ import pl.mmajewski.cirrus.common.model.ContentStatus;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 
-import static com.googlecode.cqengine.query.QueryFactory.*;
+import static com.googlecode.cqengine.query.QueryFactory.and;
+import static com.googlecode.cqengine.query.QueryFactory.equal;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
@@ -78,7 +82,7 @@ public class MemoryContentStorage implements ContentStorage{
 
     @Override
     public Set<ContentMetadata> getAllContentMetadata() {
-        return contentMetadatas;
+        return new HashSet<>(contentMetadatas);
     }
 
     @Override

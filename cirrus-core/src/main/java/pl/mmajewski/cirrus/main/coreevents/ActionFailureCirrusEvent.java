@@ -4,14 +4,12 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.io.StringWriter;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> implements Serializable {
-    private static final long serialVersionUID = 1681266000014L;
+public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> {
 
     private String message;
     private Throwable exception;
@@ -41,6 +39,6 @@ public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
         } else {
             stackTrace.append("< no stack trace >");
         }
-        handler.pushFailure("# "+message+" :\n"+stackTrace.toString()+"\n");
+        handler.pushFailure("# "+getCreationTime()+" # "+message+" :\n"+stackTrace.toString()+"\n");
     }
 }

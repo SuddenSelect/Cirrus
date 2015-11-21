@@ -15,7 +15,6 @@ import java.util.Map;
  * Created by Maciej Majewski on 29/10/14.
  */
 public class ContentMetadata implements Serializable, Comparable<ContentMetadata> {
-    private static final long serialVersionUID = 1681266000001L;
 
     private String contentId;//indexable, determined by app upon creation
     private String commiterCirrusId;//indexable, determined by core upon publishing

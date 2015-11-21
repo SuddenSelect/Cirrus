@@ -7,7 +7,6 @@ import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -17,25 +16,21 @@ import java.util.*;
  * Created by Maciej Majewski on 29/10/14.
  */
 public class Host implements Serializable, Comparable<Host> {
-    private static final long serialVersionUID = 1681266000003L;
     public static Host localhost = null;
-    public static Host getLocalHost() {
+    public static Host newHost(InetAddress inetAddress) {
         if(localhost == null) {
-            try {
-                Host localhost = new Host();
-                localhost.setPhysicalAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}));
-                localhost.setCirrusId(CirrusIdGenerator.generateHostId());
-                localhost.setLastSeen(LocalDateTime.now());
-                localhost.setLatency(0);
-                localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
-//                localhost.setPort(6466);//TODO make persistent
-//                localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
-//                localhost.setAvailableContent(Collections.EMPTY_LIST);//TODO make persistent
-//                localhost.setSharedPiecesMap(Collections.EMPTY_MAP);
-                Host.localhost = localhost;
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
+            Host localhost = new Host();
+            localhost.setPhysicalAddress(inetAddress);
+            localhost.setCirrusId(CirrusIdGenerator.generateHostId());
+            localhost.setLastSeen(LocalDateTime.now());
+            localhost.setLatency(0);
+            localhost.setPort(6465);
+//            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
+//            localhost.setPort(6466);//TODO make persistent
+//            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
+//            localhost.setAvailableContent(Collections.EMPTY_LIST);//TODO make persistent
+//            localhost.setSharedPiecesMap(Collections.EMPTY_MAP);
+            Host.localhost = localhost;
         }
         return localhost;
     }
@@ -46,7 +41,7 @@ public class Host implements Serializable, Comparable<Host> {
     private LocalDateTime firstSeen;//indexable
     private LocalDateTime lastSeen;//indexable
     private LocalDateTime lastUpdated;//indexable
-    private List<String> tags;//indexable
+    private List<String> tags = new ArrayList<>(0);//indexable
     private List<String/*contentID*/> availableContent;//indexable
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
     private /*transient*/ Integer latency = -1;

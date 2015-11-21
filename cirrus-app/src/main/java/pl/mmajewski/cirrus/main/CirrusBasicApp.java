@@ -8,6 +8,7 @@ import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
+import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -20,12 +21,13 @@ public class CirrusBasicApp  {
     private static Logger logger = Logger.getLogger(CirrusBasicApp.class.getName());
 
     private ContentStorage contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
-    private CirrusCore core = CirrusCoreFactory.newCirrusCore();
+    private CirrusCore core;
     private AppEventHandler appEventHandler = this.new AppEventHandler();
     private volatile boolean processEvents = true;
     private Thread processThread;
 
-    public CirrusBasicApp(){
+    public CirrusBasicApp(InetAddress localAddress){
+        core = CirrusCoreFactory.newCirrusCore(localAddress);
         processThread = new Thread(appEventHandler);
         processThread.start();
         core.getCirrusCoreEventHandler().setAppEventHandler(appEventHandler);
@@ -42,6 +44,10 @@ public class CirrusBasicApp  {
 
     private void resetPreparedContentStorage(){
         contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
+    }
+
+    public void accept(CirrusEvent event) throws EventHandlerClosingCirrusException {
+        getAppEventHandler().getCoreEventHandler().accept(event);
     }
 
     public class AppEventHandler implements CirrusAppEventHandler, Runnable {
@@ -62,7 +68,7 @@ public class CirrusBasicApp  {
                             ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
                             event.setException(e);
                             event.setMessage(e.getMessage());
-                            this.handle((CirrusEvent)event);
+                            this.handle(event);
                         }
                     }else{
                         synchronized (queue){

@@ -46,4 +46,10 @@ public interface HostStorage {
      * ordered by latency
      */
     public Iterable<Host> fetchSharers(ContentMetadata contentMetadata);
+
+    /**
+     * Retrieves all hosts in newly created collection
+     * @return set of all hosts
+     */
+    public Set<Host> fetchAllHosts();
 }

@@ -9,14 +9,12 @@ import pl.mmajewski.cirrus.impl.content.accessors.ContentAccessorImplPlainBQueue
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 2015-02-06.
  */
-public class DumpFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> implements Serializable {
-    private static final long serialVersionUID = 1681266000010L;
+public class DumpFileCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
 
     private static Logger logger = Logger.getLogger(DumpFileCirrusAppEvent.class.getName());
 

@@ -1,20 +1,16 @@
 package pl.mmajewski.cirrus.tests;
 
 import org.testng.Assert;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pl.mmajewski.cirrus.common.model.ContentPiece;
-import pl.mmajewski.cirrus.common.model.ContentStatus;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
-import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
 import pl.mmajewski.cirrus.impl.network.ClientDirectConnection;
 import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 
-import java.net.*;
+import java.net.UnknownHostException;
 
 /**
  * Created by Maciej Majewski on 31/10/15.

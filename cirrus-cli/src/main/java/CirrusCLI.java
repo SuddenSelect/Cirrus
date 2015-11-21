@@ -1,29 +1,51 @@
 import asg.cliche.Command;
 import asg.cliche.Shell;
-import asg.cliche.ShellDependent;
 import asg.cliche.ShellFactory;
+import asg.cliche.ShellManageable;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.CirrusCoreServer;
+import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
+import pl.mmajewski.cirrus.main.appevents.CleanupContentCirrusAppEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.MessageFormat;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.ServiceLoader;
-import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 15/11/15.
  */
-public class CirrusCLI extends CirrusCommonShell implements ShellDependent {
+public class CirrusCLI implements ShellManageable {
     private Shell shell;
 
-    private CirrusBasicApp cirrusBasicApp = new CirrusBasicApp();
-    private CirrusEvent event = null;
-    private Set<Host> hosts = new HashSet<>();
+    private CirrusBasicApp cirrusBasicApp;
+
+    private String listCollection(Collection collection){
+        StringBuilder sb = new StringBuilder();
+        for(Object object : collection){
+            sb.append("+ ");
+            sb.append(object.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Command
+    public String start(String localhostAddress) throws UnknownHostException {
+        if(cirrusBasicApp==null) {
+            cirrusBasicApp = new CirrusBasicApp(InetAddress.getByName(localhostAddress));
+            return "CirrusBasicApp started";
+        }
+        return "ERROR: CirrusBasicApp already started";
+    }
 
     @Command
     public void stop(){
@@ -38,34 +60,23 @@ public class CirrusCLI extends CirrusCommonShell implements ShellDependent {
     }
 
     @Command
-    public String storedHost(String cirrusId){
+    public String storedHosts(){
         CirrusCoreServer srv = (CirrusCoreServer)cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
         HostStorage hostStorage = srv.getHostStorage();
-        return hostStorage.fetchHost(cirrusId).toString();
+        return listCollection(hostStorage.fetchAllHosts());
     }
 
     @Command
     public String storedMetadataApp(){
         CirrusCoreServer srv = (CirrusCoreServer)cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
         ContentStorage contentStorage = srv.getContentStorage();
-        return super.listCollection(contentStorage.getAllContentMetadata());
+        return listCollection(contentStorage.getAllContentMetadata());
     }
     @Command
     public String storedMetadataCore(){
         CirrusBasicApp.AppEventHandler srv = cirrusBasicApp.getAppEventHandler();
         ContentStorage contentStorage = srv.getContentStorage();
-        return super.listCollection(contentStorage.getAllContentMetadata());
-    }
-
-    @Command
-    public void reset(){
-        event = null;
-    }
-
-    @Command
-    public void create(String className) throws Exception {
-        Class eventClass = Class.forName(className);
-        event = (CirrusEvent) eventClass.newInstance();
+        return listCollection(contentStorage.getAllContentMetadata());
     }
 
     @Command
@@ -75,30 +86,6 @@ public class CirrusCLI extends CirrusCommonShell implements ShellDependent {
         while((failure=srv.popFailure())!=null){
             System.err.println("---- FAILURE ----\n"+failure+"------------------");
         }
-    }
-
-    @Command
-    public void applyCore() throws Exception {
-        cirrusBasicApp.getAppEventHandler().getCoreEventHandler().accept(event);
-    }
-
-    @Command
-    public void applyApp() throws Exception {
-        cirrusBasicApp.getAppEventHandler().accept(event);
-    }
-
-    @Command
-    public String listProperties() throws Exception {
-        if(event==null){
-            return "No event";
-        }
-        Class eventClass = event.getClass();
-        return listClassSetters(eventClass);
-    }
-
-    @Command
-    public String listHosts(){
-        return listCollection(hosts);
     }
 
     @Command
@@ -114,28 +101,49 @@ public class CirrusCLI extends CirrusCommonShell implements ShellDependent {
     }
 
     @Command
-    public void makeHosts() throws IOException {
-        ShellFactory.createSubshell("hosts", shell, null, new CirrusHostShell(hosts)).commandLoop();
+    public void adaptFile(String file) throws EventHandlerClosingCirrusException {
+        AdaptFileCirrusAppEvent event = new AdaptFileCirrusAppEvent();
+        event.setFile(file);
+        cirrusBasicApp.accept(event);
     }
 
     @Command
-    public void set(String what, String property) throws Exception {
-        if("host-collection".equals(what)){
-            super.set(event,property,Set.class,hosts);
-        }
+    public void cleanupContent() throws EventHandlerClosingCirrusException {
+        CleanupContentCirrusAppEvent event = new CleanupContentCirrusAppEvent();
+        cirrusBasicApp.accept(event);
     }
 
     @Command
-    public void set(String property, String className, String value) throws Exception {
-        super.set(event,property,Class.forName(className),value);
+    public String localhost(){
+        CirrusCoreServer coreServer = (CirrusCoreServer) cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+        return coreServer.getHostStorage().fetchLocalHost().toString();
     }
+
+    @Command
+    public void signup(String cirrusId, String ip, int port) throws UnknownHostException, EventHandlerClosingCirrusException {
+        InetAddress bootstrap = InetAddress.getByName(ip);
+        Host host = new Host();
+        host.setPhysicalAddress(bootstrap);
+        host.setPort(port);
+        host.setCirrusId(cirrusId);
+
+        SendSignupCirrusEvent event = new SendSignupCirrusEvent();
+        event.setHost(host);
+        cirrusBasicApp.accept(event);
+    }
+
 
     public static void main(String[] args) throws IOException {
         ShellFactory.createConsoleShell("cirrus-cli", "Welcome to simple Cirrus CLI!", new CirrusCLI()).commandLoop();
     }
 
     @Override
-    public void cliSetShell(Shell shell) {
-        this.shell = shell;
+    public void cliEnterLoop() {
+
+    }
+
+    @Override
+    public void cliLeaveLoop() {
+        stop();
     }
 }

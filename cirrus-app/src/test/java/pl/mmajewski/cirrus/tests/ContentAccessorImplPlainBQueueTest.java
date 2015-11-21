@@ -14,11 +14,17 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Set;
 
 public class ContentAccessorImplPlainBQueueTest {
 
-    private CirrusBasicApp app = new CirrusBasicApp();
+    private CirrusBasicApp app;
+
+    public ContentAccessorImplPlainBQueueTest() throws UnknownHostException {
+        app = new CirrusBasicApp(InetAddress.getLoopbackAddress());
+    }
 
 
     @Parameters({"testFile","dumpFile"})

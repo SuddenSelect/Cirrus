@@ -11,6 +11,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.googlecode.cqengine.query.QueryFactory.*;
@@ -36,13 +37,15 @@ public class MemoryHostStorage implements HostStorage {
 
     @Override
     public void updateHosts(Set<Host> hosts) {
-        this.hosts.removeAll(hosts);
-        this.hosts.addAll(hosts);
-        if(hosts.contains(localhost)){
-            for(Host host : hosts){
-                if(host.equals(localhost)){
-                    localhost = host;
-                    break;
+        if(hosts!=null) {
+            this.hosts.removeAll(hosts);
+            this.hosts.addAll(hosts);
+            if (hosts.contains(localhost)) {
+                for (Host host : hosts) {
+                    if (host.equals(localhost)) {
+                        localhost = host;
+                        break;
+                    }
                 }
             }
         }
@@ -69,5 +72,10 @@ public class MemoryHostStorage implements HostStorage {
         Query<Host> query = in(Host.IDX_AVAILABLE_CONTENT, contentMetadata.getContentId());
         QueryOptions options = queryOptions(orderBy(ascending(Host.IDX_LATENCY)));
         return hosts.retrieve(query, options);
+    }
+
+    @Override
+    public Set<Host> fetchAllHosts() {
+        return new HashSet<>(hosts);
     }
 }

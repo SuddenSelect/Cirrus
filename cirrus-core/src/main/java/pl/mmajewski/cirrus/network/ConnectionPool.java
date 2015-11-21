@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.network;
 
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 
@@ -21,6 +22,12 @@ public interface ConnectionPool {
     /* *************** */
 
     /**
+     * Sets event hander to which all failures will be reported.
+     * @param handler
+     */
+    public void setParentEventHandler(CirrusEventHandler handler);
+
+    /**
      * Returns existing or new Connection to remote Host.
      * @param <E> type of managed connection
      * @param remoteHost model descriptor of the Host
@@ -40,4 +47,10 @@ public interface ConnectionPool {
      * @param newHost
      */
     public void addHost(Host newHost);
+
+    /**
+     * Kills all connections to given host and stops maintaining connections to it.
+     * @param host
+     */
+    public void removeHost(Host host);
 }

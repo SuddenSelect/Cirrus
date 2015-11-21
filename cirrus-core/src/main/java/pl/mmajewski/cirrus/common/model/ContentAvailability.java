@@ -12,7 +12,6 @@ import java.util.Set;
  * Created by Maciej Majewski on 09/11/14.
  */
 public class ContentAvailability implements Serializable, Comparable<ContentAvailability> {
-    private static final long serialVersionUID = 1681266000015L;
 
     private String holderCirrusId;//indexable
     private String contentId;//indexable

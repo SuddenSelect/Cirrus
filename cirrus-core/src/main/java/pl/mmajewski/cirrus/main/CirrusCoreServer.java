@@ -7,6 +7,7 @@ import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
                     Object received = inputStream.readUnshared();
                     if(received != null){
                         if(received instanceof CirrusEvent) {
+                            logger.info("[CirrusCoreServer.Server] Received event: "+received.getClass().getName());
                             CirrusCoreServer.super.accept((CirrusEvent) received);
                         }else{
                             logger.warning("[CirrusCoreServer.Server] Received not-event: "+received.getClass());
@@ -59,15 +61,17 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
     }
 
     private class Listener implements Runnable{
-        private ServerSocket serverSocket;
+        private int port;
 
         public Listener(int port) throws IOException {
-            this.serverSocket = new ServerSocket(port);
+            this.port = port;
         }
 
         @Override
         public void run() {
             try{
+                ServerSocket serverSocket = new ServerSocket(port);
+                logger.info("[CirrusCoreServer.Listener] Listener started");
                 while (true){
                     Server server = new Server();
                     Socket client = serverSocket.accept();
@@ -100,19 +104,32 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
     private HostStorage hostStorage = null;
     private AvailabilityStorage availabilityStorage = null;
 
+    private ConnectionPool connectionPool = CirrusCoreFactory.Network.newConnectionPool();
+
     public CirrusCoreServer(CirrusCore parent, int port) {
         super(parent);
         try {
             this.listener = new Listener(port);
             this.listenerThread = new Thread(listener);
         } catch (IOException e) {
-            new CoreServerInitializationCirrusException(e,Host.getLocalHost());
+            logger.severe("[CirrusCoreServer] Initialization error: "+e.getMessage());
+            new CoreServerInitializationCirrusException(e,Host.newHost(parent.getLocalAddress()));
         }
     }
 
     @Override
     synchronized public void listen() {
         listenerThread.start();
+    }
+
+    @Override
+    synchronized public void kill() {
+        try {
+            listener.kill();
+            listenerThread.join(4000);
+        } catch (InterruptedException e) {
+            logger.warning("[CirrusCoreServer]: "+e.getMessage());
+        }
     }
 
     @Override
@@ -133,5 +150,10 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
     @Override
     synchronized public AvailabilityStorage getAvailabilityStorage() {
         return availabilityStorage;
+    }
+
+    @Override
+    public ConnectionPool getConnectionPool() {
+        return connectionPool;
     }
 }

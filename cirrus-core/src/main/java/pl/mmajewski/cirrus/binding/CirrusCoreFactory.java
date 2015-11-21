@@ -4,6 +4,7 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.impl.persistance.MemoryAvailabilityStorage;
 import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
 import pl.mmajewski.cirrus.impl.persistance.MemoryHostStorage;
@@ -15,6 +16,8 @@ import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.net.InetAddress;
+
 /**
  * Created by Maciej Majewski on 15/11/15.
  *
@@ -24,8 +27,8 @@ import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
  */
 public class CirrusCoreFactory {
 
-    public static CirrusCore newCirrusCore(){
-        return new CirrusCore();
+    public static CirrusCore newCirrusCore(InetAddress localAddress){
+        return new CirrusCore(localAddress);
     }
 
     public static class Network {
@@ -35,20 +38,20 @@ public class CirrusCoreFactory {
         }
 
         public static ConnectionPool newConnectionPool() {
-            return null;//binding stub
+            return new ClientDirectConnectionPool();//binding stub
         }
     }
 
     public static class Server {
 
-        public static ServerCirrusEventHandler newCoreEventHandler(int port) {
-            return new CirrusCoreServer(newCirrusCore(), port);//binding stub
+        public static ServerCirrusEventHandler newCoreEventHandler(InetAddress localAddress, int port) {
+            return new CirrusCoreServer(newCirrusCore(localAddress), port);//binding stub
         }
 
-        public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, int port) {
+        public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, InetAddress localhost, int port) {
             CirrusCoreServer cirrusCoreServer = new CirrusCoreServer(cirrusCore, port);
             cirrusCoreServer.setAvailabilityStorage(Persistance.newAvailabilityStorage());
-            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(Host.getLocalHost()));//TODO permanent localhost retrieval
+            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(Host.newHost(localhost)));//TODO permanent localhost retrieval
             return cirrusCoreServer;//binding stub
         }
     }

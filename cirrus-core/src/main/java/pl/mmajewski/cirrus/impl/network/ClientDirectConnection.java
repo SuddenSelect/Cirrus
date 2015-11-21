@@ -8,6 +8,7 @@ import pl.mmajewski.cirrus.network.exception.ConnectionFailCirrusException;
 import pl.mmajewski.cirrus.network.exception.SendEventFailCirrusException;
 
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 
 /**
@@ -51,6 +52,9 @@ public class ClientDirectConnection extends DirectConnection implements ClientEv
         try {
             objectOutputStream.writeObject(event);
             objectOutputStream.reset();
+        } catch (NotSerializableException e) {
+            System.err.println("NotSerializable: "+event.getClass().getName());
+            e.printStackTrace();
         } catch (Exception e) {
             throw new SendEventFailCirrusException(e,this,super.getParentConnectionPool());
         }

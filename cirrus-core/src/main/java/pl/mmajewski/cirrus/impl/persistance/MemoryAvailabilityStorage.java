@@ -11,7 +11,8 @@ import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.googlecode.cqengine.query.QueryFactory.*;
+import static com.googlecode.cqengine.query.QueryFactory.and;
+import static com.googlecode.cqengine.query.QueryFactory.equal;
 
 /**
  * Created by Maciej Majewski on 15/09/15.

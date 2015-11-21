@@ -1,6 +1,9 @@
 package pl.mmajewski.cirrus.impl.network;
 
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
+import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.exception.ConnectionFailCirrusException;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
@@ -17,6 +20,12 @@ public class ClientDirectConnectionPool implements ConnectionPool{
     private int maxConnectionsInPool = 1000;
     private long connectionHealthCheckInterval = 1000;
     private Map<Host, ClientDirectConnectionGroup> connectionGroupMap = new HashMap<>();
+    private CirrusEventHandler handler;
+
+    @Override
+    public void setParentEventHandler(CirrusEventHandler handler) {
+        this.handler=handler;
+    }
 
     @Override
     public void setMaxConnectionsToHost(int maxConnectionsToHost) {
@@ -66,8 +75,28 @@ public class ClientDirectConnectionPool implements ConnectionPool{
             try {
                 connectionGroupMap.get(newHost).connect();
             } catch (ConnectionFailCirrusException e) {
-                e.printStackTrace();
+                if(handler!=null){
+                    try{
+                        ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
+                        event.setException(e);
+                        event.setMessage(e.getMessage());
+                        handler.accept(event);
+                    } catch (EventHandlerClosingCirrusException e1) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    e.printStackTrace();
+                }
             }
+        }
+    }
+
+    @Override
+    public void removeHost(Host host) {
+        if(connectionGroupMap.containsKey(host)){
+            ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(host);
+            connectionGroup.kill();
+            connectionGroupMap.remove(host);
         }
     }
 }

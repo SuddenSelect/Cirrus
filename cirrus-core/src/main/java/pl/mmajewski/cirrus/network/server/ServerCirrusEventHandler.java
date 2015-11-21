@@ -3,6 +3,7 @@ package pl.mmajewski.cirrus.network.server;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.network.ConnectionPool;
 
 /**
  * Responsible for rerouting internal events back to the PropagationStrategy,
@@ -23,6 +24,11 @@ public interface ServerCirrusEventHandler extends CirrusEventHandler{
      * Processing should be basically calling CirrusEvent's 'event' method.
      */
     public void listen();
+
+    /**
+     * Terminates threads started by 'listen' method.
+     */
+    public void kill();
 
     /**
      * Sets host storage for updating hosts data.
@@ -48,4 +54,10 @@ public interface ServerCirrusEventHandler extends CirrusEventHandler{
      * @return content storage if has been set, null otherwise.
      */
     public AvailabilityStorage getAvailabilityStorage();
+
+    /**
+     * ConnectionPool getter
+     * @return ConnectionPool, null otherwise
+     */
+    public ConnectionPool getConnectionPool();
 }
