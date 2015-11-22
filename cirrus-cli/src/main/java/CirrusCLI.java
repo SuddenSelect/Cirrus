@@ -11,6 +11,7 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.CirrusCoreServer;
 import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
 import pl.mmajewski.cirrus.main.appevents.CleanupContentCirrusAppEvent;
+import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
 
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class CirrusCLI implements ShellManageable {
         cirrusBasicApp.stopProcessingEvents();
     }
 
-    @Command(abbrev = "ae")
+    @Command
     public String awaitingEvents() {
         return new MessageFormat("Core: {0}, App: {1}").format(new Object[]{
                 cirrusBasicApp.getAppEventHandler().getCoreEventHandler().hasAwaitingEvents(),
@@ -67,13 +68,13 @@ public class CirrusCLI implements ShellManageable {
     }
 
     @Command
-    public String storedMetadataApp(){
+    public String storedMetadataCore(){
         CirrusCoreServer srv = (CirrusCoreServer)cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
         ContentStorage contentStorage = srv.getContentStorage();
         return listCollection(contentStorage.getAllContentMetadata());
     }
     @Command
-    public String storedMetadataCore(){
+    public String storedMetadataApp(){
         CirrusBasicApp.AppEventHandler srv = cirrusBasicApp.getAppEventHandler();
         ContentStorage contentStorage = srv.getContentStorage();
         return listCollection(contentStorage.getAllContentMetadata());
@@ -108,6 +109,17 @@ public class CirrusCLI implements ShellManageable {
     }
 
     @Command
+    public void commit() throws EventHandlerClosingCirrusException {
+        CommitContentCirrusAppEvent event = new CommitContentCirrusAppEvent();
+        cirrusBasicApp.accept(event);
+    }
+
+    @Command
+    public void rollback(){
+        cirrusBasicApp.getAppEventHandler().resetStorage();
+    }
+
+    @Command
     public void cleanupContent() throws EventHandlerClosingCirrusException {
         CleanupContentCirrusAppEvent event = new CleanupContentCirrusAppEvent();
         cirrusBasicApp.accept(event);
@@ -132,14 +144,28 @@ public class CirrusCLI implements ShellManageable {
         cirrusBasicApp.accept(event);
     }
 
+    @Command
+    public String testHostStorage() {
+        return new Host().toString();
+    }
 
+    private static String address = null;
     public static void main(String[] args) throws IOException {
+        if(args.length>0){
+            address = args[0];
+        }
         ShellFactory.createConsoleShell("cirrus-cli", "Welcome to simple Cirrus CLI!", new CirrusCLI()).commandLoop();
     }
 
     @Override
     public void cliEnterLoop() {
-
+        if(address!=null){
+            try {
+                start(address);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

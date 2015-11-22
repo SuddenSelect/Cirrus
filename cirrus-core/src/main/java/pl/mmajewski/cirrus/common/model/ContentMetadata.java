@@ -142,4 +142,9 @@ public class ContentMetadata implements Serializable, Comparable<ContentMetadata
     public int compareTo(ContentMetadata o) {
         return contentId.compareTo(o.contentId);
     }
+
+    @Override
+    public String toString() {
+        return "ContentMetadata{ " + contentId + " @ " + commiterCirrusId + " #" + piecesAmount + " " + contentChecksum + " }";
+    }
 }

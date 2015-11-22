@@ -14,7 +14,7 @@ public class MetadataPropagationCirrusEvent extends CirrusEvent<CirrusCoreEventH
 
     private Set<ContentMetadata> metadataSet;
 
-    public void setMetadataList(Set<ContentMetadata> metadataSet) {
+    public void setMetadataSet(Set<ContentMetadata> metadataSet) {
         this.metadataSet = metadataSet;
     }
 

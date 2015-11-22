@@ -156,4 +156,9 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
     public ConnectionPool getConnectionPool() {
         return connectionPool;
     }
+
+    @Override
+    public String getLocalCirrusId() {
+        return hostStorage.fetchLocalHost().getCirrusId();
+    }
 }

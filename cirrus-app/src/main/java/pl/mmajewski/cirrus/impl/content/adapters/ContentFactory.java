@@ -44,6 +44,7 @@ import java.util.Map;
         for(ByteBuffer chunk : chunks){
             pieceChecksum.reset();
             pieceChecksum.update(chunk);
+            chunk.rewind();
             totalChecksum.update(chunk);
 
             ContentPiece newPiece = new ContentPiece();
@@ -63,7 +64,7 @@ import java.util.Map;
             metadata.setStatus(ContentStatus.CALCULATING);
         }else{
             metadata.setStatus(ContentStatus.CORRECT);
-            metadata.setContentChecksum(totalChecksum.getCirrusChecksum());
+            metadata.setContentChecksum(totalChecksum.getStringChecksum());
         }
         return metadata;
     }

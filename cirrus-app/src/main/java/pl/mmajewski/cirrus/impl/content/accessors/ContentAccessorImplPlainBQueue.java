@@ -83,7 +83,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
                         setMessage("Interrupted");
                         return;
                     }
-                    piece.getContent().flip();
+                    piece.getContent().rewind();
                     dumpFile.write(piece.getContent());
                 }
                 setMessage("Finished");

@@ -2,6 +2,7 @@ package pl.mmajewski.cirrus.impl.content.adapters;
 
 import pl.mmajewski.cirrus.common.Constants;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.content.ContentAdapter;
 import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
 import pl.mmajewski.cirrus.main.appevents.NewContentPreparedCirrusAppEvent;
@@ -94,7 +95,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 //                ByteBuffer chunk = ByteBuffer.allocateDirect(lastChunkSize);
                 ByteBuffer chunk = ByteBuffer.allocate(lastChunkSize);
                 fileChannel.read(chunk);
-                chunk.flip();//make buffer ready for read
+                chunk.rewind();//make buffer ready for read
                 chunks[numberOfChunks-1] = chunk;
             }
 
@@ -104,7 +105,9 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 
                 NewContentPreparedCirrusAppEvent evt = new NewContentPreparedCirrusAppEvent();
                 evt.init();
-                evt.setMetadata(contentFactory.getMetadata());
+                ContentMetadata metadata = contentFactory.getMetadata();
+                metadata.setCommiterCirrusId(eventHandler.getLocalCirrusId());
+                evt.setMetadata(metadata);
                 evt.setPieces(contentFactory.getPieces());
                 eventHandler.accept(evt);
             }

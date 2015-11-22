@@ -22,7 +22,7 @@ public class CirrusChecksum extends CRC32 {
      * Presents CRC32 checksum as pretty String
      * @return crc32 checksum as String
      */
-    private String getStringChecksum(){
+    public String getStringChecksum(){
         return BigInteger.valueOf(this.getValue()).toString(32);
     }
 

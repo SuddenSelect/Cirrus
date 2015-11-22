@@ -133,6 +133,11 @@ public class CirrusBasicApp  {
         public String popFailure() {
             return getCoreEventHandler().popFailure();
         }
+
+        @Override
+        public String getLocalCirrusId() {
+            return getCoreEventHandler().getLocalCirrusId();
+        }
     }
 
 }

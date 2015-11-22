@@ -28,7 +28,7 @@ public interface ContentStorage {
 
     /**
      * Retrieves Metadata about every content in the system.
-     * @return set of all stored ContentMetadata
+     * @return new set of all stored ContentMetadata
      */
     public Set<ContentMetadata> getAllContentMetadata();
 

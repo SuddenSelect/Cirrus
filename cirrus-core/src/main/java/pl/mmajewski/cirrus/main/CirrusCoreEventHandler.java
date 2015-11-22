@@ -4,6 +4,7 @@ import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
 import java.util.concurrent.BlockingQueue;
@@ -111,4 +112,10 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
         return failures.poll();
     }
 
+    // Should be overriden
+    private static String cirrusId = CirrusIdGenerator.generateHostId();
+    @Override
+    public String getLocalCirrusId() {
+        return cirrusId;
+    }
 }

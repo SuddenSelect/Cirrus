@@ -19,7 +19,7 @@ public class ClientDirectConnectionPool implements ConnectionPool{
     private int maxConnectionsToHost = 5;
     private int maxConnectionsInPool = 1000;
     private long connectionHealthCheckInterval = 1000;
-    private Map<Host, ClientDirectConnectionGroup> connectionGroupMap = new HashMap<>();
+    private Map<String/*CirrusId*/, ClientDirectConnectionGroup> connectionGroupMap = new HashMap<>();
     private CirrusEventHandler handler;
 
     @Override
@@ -54,7 +54,7 @@ public class ClientDirectConnectionPool implements ConnectionPool{
 
     @Override
     public ClientDirectConnection fetchConnection(Host remoteHost) throws NetworkCirrusException {
-        ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(remoteHost);
+        ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(remoteHost.getCirrusId());
         if(connectionGroup!=null){
             return connectionGroup.getConnection();
         }
@@ -70,10 +70,10 @@ public class ClientDirectConnectionPool implements ConnectionPool{
 
     @Override
     public void addHost(Host newHost) {
-        if(!connectionGroupMap.containsKey(newHost)){
-            connectionGroupMap.put(newHost, new ClientDirectConnectionGroup(this, newHost));
+        if(!connectionGroupMap.containsKey(newHost.getCirrusId())){
+            connectionGroupMap.put(newHost.getCirrusId(), new ClientDirectConnectionGroup(this, newHost));
             try {
-                connectionGroupMap.get(newHost).connect();
+                connectionGroupMap.get(newHost.getCirrusId()).connect();
             } catch (ConnectionFailCirrusException e) {
                 if(handler!=null){
                     try{
@@ -94,7 +94,7 @@ public class ClientDirectConnectionPool implements ConnectionPool{
     @Override
     public void removeHost(Host host) {
         if(connectionGroupMap.containsKey(host)){
-            ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(host);
+            ClientDirectConnectionGroup connectionGroup = connectionGroupMap.get(host.getCirrusId());
             connectionGroup.kill();
             connectionGroupMap.remove(host);
         }

@@ -55,6 +55,7 @@ public class ContentAccessorImplPlainBQueueTest {
 
         CommitContentCirrusAppEvent evt = new CommitContentCirrusAppEvent();
         evt.init();
+        evt.setBroadcastChange(false);
         app.getAppEventHandler().accept(evt);
 
         app.getAppEventHandler().standby();

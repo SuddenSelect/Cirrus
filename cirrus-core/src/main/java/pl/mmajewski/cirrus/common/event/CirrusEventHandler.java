@@ -86,4 +86,10 @@ public interface CirrusEventHandler {
      * @return
      */
     public String popFailure();
+
+    /**
+     * Retrieves CirrusID of current user.
+     * @return
+     */
+    public String getLocalCirrusId();
 }

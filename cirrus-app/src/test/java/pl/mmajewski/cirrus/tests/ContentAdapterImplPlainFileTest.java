@@ -135,6 +135,11 @@ public class ContentAdapterImplPlainFileTest {
         public String popFailure() {
             return null;
         }
+
+        @Override
+        public String getLocalCirrusId() {
+            return "dummy-cirrus-id";
+        }
     }
 
     @Parameters("testFile")

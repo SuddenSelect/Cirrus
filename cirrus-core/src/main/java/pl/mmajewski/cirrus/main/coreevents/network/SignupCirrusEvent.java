@@ -9,6 +9,7 @@ import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,6 +33,8 @@ public class SignupCirrusEvent extends HostCirrusEvent {
         ContentCirrusEvent metadataShareEvent = new ContentCirrusEvent();
         metadataShareEvent.setSharedMetadata(handler.getContentStorage().getAllContentMetadata());
 
+        Set<Host> joinedHosts = new HashSet<>();
+
         for(Host host : joiningHosts) {
             try {
                 handler.getConnectionPool().addHost(host);
@@ -39,6 +42,7 @@ public class SignupCirrusEvent extends HostCirrusEvent {
                 connection.sendEvent(hostShareEvent);
                 connection.sendEvent(metadataShareEvent);
 
+                joinedHosts.add(host);
             } catch (NetworkCirrusException e) {
                 ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();
                 failureEvent.setException(e);
@@ -50,5 +54,7 @@ public class SignupCirrusEvent extends HostCirrusEvent {
                 }
             }
         }
+
+        handler.getHostStorage().updateHosts(joinedHosts);
     }
 }

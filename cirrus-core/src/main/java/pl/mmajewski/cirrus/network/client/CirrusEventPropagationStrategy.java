@@ -2,15 +2,15 @@ package pl.mmajewski.cirrus.network.client;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.Host;
+import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * Strategy of propagating CirrusEvents.
- * Prevents positive feedback.
- * Minimizes duplicates.
+ * Should prevent sending givent events to hosts who already had them.
  * Created by Maciej Majewski on 30/10/14.
  */
-public interface CirrusEventPropagationStrategy {
-    public <E extends CirrusEvent> void propagateEvent(Collection<? extends Host> knownHosts, E event);
+public interface CirrusEventPropagationStrategy<E extends CirrusEvent> {
+    public Set<Host> getTargets(HostStorage hostStorage, E event);
 }
