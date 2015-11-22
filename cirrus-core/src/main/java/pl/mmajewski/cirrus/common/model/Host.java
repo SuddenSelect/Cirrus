@@ -7,6 +7,7 @@ import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -36,7 +37,10 @@ public class Host implements Serializable, Comparable<Host> {
     }
 
     private String cirrusId;//indexable
-    private InetAddress physicalAddress;//indexable
+    private String physicalAddress;//indexable
+    // IMPORTANT: InetAddress fields become "0.0.0.0" when inserted into CQEngine collection
+    // Therefore, field needs to be stored differently. String class was chosen instead.
+
     private Integer port;
     private LocalDateTime firstSeen;//indexable
     private LocalDateTime lastSeen;//indexable
@@ -45,7 +49,7 @@ public class Host implements Serializable, Comparable<Host> {
     private List<String/*contentID*/> availableContent;//indexable
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
     private /*transient*/ Integer latency = -1;
-    // IMPORTANT: transient fields becomes NULL when inserted into CQEngine collection
+    // IMPORTANT: transient fields become NULL when inserted into CQEngine collection
     // Therefore, field needs to be reset by server upon receiving
 
     public void simulateFieldTransiency(){
@@ -69,11 +73,16 @@ public class Host implements Serializable, Comparable<Host> {
     }
 
     public InetAddress getPhysicalAddress() {
-        return physicalAddress;
+        try {
+            return InetAddress.getByName(physicalAddress);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setPhysicalAddress(InetAddress physicalAddress) {
-        this.physicalAddress = physicalAddress;
+        this.physicalAddress = physicalAddress.getHostAddress();
     }
 
     public String getCirrusId() {
@@ -173,9 +182,9 @@ public class Host implements Serializable, Comparable<Host> {
             return obj.cirrusId;
         }
     };
-    public static final SimpleAttribute<Host, InetAddress> IDX_INET_ADDRESS = new SimpleAttribute<Host, InetAddress>("IDX_INET_ADDRESS") {
+    public static final SimpleAttribute<Host, String> IDX_INET_ADDRESS = new SimpleAttribute<Host, String>("IDX_INET_ADDRESS") {
         @Override
-        public InetAddress getValue(Host obj, QueryOptions queryOptions) {
+        public String getValue(Host obj, QueryOptions queryOptions) {
             return obj.physicalAddress;
         }
     };
