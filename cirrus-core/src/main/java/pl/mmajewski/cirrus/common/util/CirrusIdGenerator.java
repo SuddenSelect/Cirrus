@@ -20,8 +20,8 @@ public class CirrusIdGenerator {
         return BigInteger.valueOf(System.currentTimeMillis()).toString(32);
     }
 
-    public static String generateContentId(String owner){
-        return owner+"-"+timestamp()+"-"+rand(CONTENT_ID_LENGTH);
+    public static String generateContentId(String owner, String contentName){
+        return owner+"-"+contentName+"-"+timestamp()+"-"+rand(CONTENT_ID_LENGTH);
     }
 
     public static String generateHostId(){

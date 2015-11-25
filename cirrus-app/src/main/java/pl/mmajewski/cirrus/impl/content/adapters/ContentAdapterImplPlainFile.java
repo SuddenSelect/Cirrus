@@ -100,7 +100,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
             }
 
             if(!eventGenereationSuppressed) {
-                ContentFactory contentFactory = new ContentFactory(numberOfChunks);
+                ContentFactory contentFactory = new ContentFactory(source.getName(), numberOfChunks);
                 contentFactory.feed(chunks);
 
                 NewContentPreparedCirrusAppEvent evt = new NewContentPreparedCirrusAppEvent();

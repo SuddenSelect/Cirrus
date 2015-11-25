@@ -28,12 +28,12 @@ import java.util.Map;
      * Constructor for processing static content (known length)
      * @param piecesNum total number of pieces
      */
-    public ContentFactory(int piecesNum){
+    public ContentFactory(String contentName, int piecesNum){
         metadata.setPiecesAmount(piecesNum);
         metadata.setStatus(ContentStatus.UNCHECKED);
 
             String owner = System.getProperty("user.name","-anon-");
-            String cirrusId = CirrusIdGenerator.generateContentId(owner);
+            String cirrusId = CirrusIdGenerator.generateContentId(owner, contentName);
         metadata.setContentId(cirrusId);
         metadata.setPiecesChecksums(piecesChecksums);
 

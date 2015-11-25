@@ -3,30 +3,37 @@ import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 import asg.cliche.ShellManageable;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.content.ContentAccessor;
+import pl.mmajewski.cirrus.impl.content.accessors.ContentAccessorImplPlainBQueue;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
+import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 import pl.mmajewski.cirrus.main.CirrusCoreServer;
 import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
 import pl.mmajewski.cirrus.main.appevents.CleanupContentCirrusAppEvent;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
+import pl.mmajewski.cirrus.main.coreevents.ContentRequestCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.ServiceLoader;
+import java.util.logging.FileHandler;
 
 /**
  * Created by Maciej Majewski on 15/11/15.
  */
 public class CirrusCLI implements ShellManageable {
-    private Shell shell;
-
     private CirrusBasicApp cirrusBasicApp;
 
     private String listCollection(Collection collection){
@@ -145,9 +152,27 @@ public class CirrusCLI implements ShellManageable {
     }
 
     @Command
-    public String testHostStorage() {
-        return new Host().toString();
+    public String availableContent(){
+        ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
+        return this.listCollection(contentStorage.getAllContentMetadata());
     }
+
+    @Command
+    public void request(String contentId, String destination) throws Exception {
+        File file = new File(destination);
+        if(file.exists()){
+            throw new Exception("File already exists");
+        }else{
+            file.createNewFile();
+        }
+
+        CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+        ContentStorage contentStorage = coreEventHandler.getContentStorage();
+        ContentMetadata metadata = contentStorage.getContentMetadata(contentId);
+        ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(metadata, coreEventHandler);
+        contentAccessor.saveAsFile(destination);
+    }
+
 
     private static String address = null;
     public static void main(String[] args) throws IOException {
@@ -170,6 +195,8 @@ public class CirrusCLI implements ShellManageable {
 
     @Override
     public void cliLeaveLoop() {
-        stop();
+        if(cirrusBasicApp!=null) {
+            stop();
+        }
     }
 }
