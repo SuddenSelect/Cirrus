@@ -2,7 +2,9 @@ package pl.mmajewski.cirrus.main.coreevents.network;
 
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
+import pl.mmajewski.cirrus.impl.client.MetadataBroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
+import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.event.ContentCirrusEvent;
 import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
@@ -45,6 +47,29 @@ public class SignupCirrusEvent extends HostCirrusEvent {
                 connection.sendEvent(metadataShareEvent);
 
                 joinedHosts.add(host);
+            } catch (NetworkCirrusException e) {
+                ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();
+                failureEvent.setException(e);
+                failureEvent.setMessage(e.getMessage());
+                try {
+                    handler.accept(failureEvent);
+                } catch (EventHandlerClosingCirrusException e1) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        HostCirrusEvent broadcastJoinedHosts = new HostCirrusEvent();
+        broadcastJoinedHosts.addTrace(this.getTrace());
+        broadcastJoinedHosts.addTrace(handler.getLocalCirrusId());
+
+        CirrusEventPropagationStrategy propagationStrategy = new MetadataBroadcastPropagationStrategy();
+        Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), broadcastJoinedHosts);
+
+        for(Host host : targets){
+            try {
+                ClientEventConnection connection = handler.getConnectionPool().fetchConnection(host);
+                connection.sendEvent(broadcastJoinedHosts);
             } catch (NetworkCirrusException e) {
                 ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();
                 failureEvent.setException(e);
