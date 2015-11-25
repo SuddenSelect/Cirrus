@@ -29,6 +29,8 @@ public class SendMetadataUpdateCirrusEvent extends CirrusEvent<ServerCirrusEvent
     public void event(ServerCirrusEventHandler handler) {
         MetadataPropagationCirrusEvent propagationEvent = new MetadataPropagationCirrusEvent();
         propagationEvent.setMetadataSet(metadataSet);
+        propagationEvent.addTrace(handler.getLocalCirrusId());
+        propagationEvent.addTrace(this.getTrace());
 
         CirrusEventPropagationStrategy propagationStrategy = new MetadataBroadcastPropagationStrategy();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), propagationEvent);

@@ -29,9 +29,11 @@ public class SignupCirrusEvent extends HostCirrusEvent {
 
         HostCirrusEvent hostShareEvent = new HostCirrusEvent();
         hostShareEvent.setSharedHosts(handler.getHostStorage().fetchAllHosts());
+        hostShareEvent.addTrace(handler.getLocalCirrusId());
 
         ContentCirrusEvent metadataShareEvent = new ContentCirrusEvent();
         metadataShareEvent.setSharedMetadata(handler.getContentStorage().getAllContentMetadata());
+        metadataShareEvent.addTrace(handler.getLocalCirrusId());
 
         Set<Host> joinedHosts = new HashSet<>();
 

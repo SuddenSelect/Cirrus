@@ -29,6 +29,11 @@ public class SendSignupCirrusEvent extends CirrusEvent<ServerCirrusEventHandler>
         Set<Host> joiningHosts = new HashSet<>();
         joiningHosts.add(handler.getHostStorage().fetchLocalHost());
         signupEvent.setJoiningHosts(joiningHosts);
+        signupEvent.addTrace(handler.getLocalCirrusId());
+
+        MetadataPropagationCirrusEvent propagationEvent = new MetadataPropagationCirrusEvent();
+        propagationEvent.setMetadataSet(handler.getContentStorage().getAllContentMetadata());
+        propagationEvent.addTrace(handler.getLocalCirrusId());
 
         ConnectionPool connectionPool = handler.getConnectionPool();
         connectionPool.addHost(host);

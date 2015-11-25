@@ -5,6 +5,7 @@ import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,6 +56,10 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
      */
     public void addTrace(String cirrusId){
         trace.add(cirrusId);
+    }
+
+    public void addTrace(Collection<String> cirrusIds){
+        trace.addAll(cirrusIds);
     }
 
     /**
