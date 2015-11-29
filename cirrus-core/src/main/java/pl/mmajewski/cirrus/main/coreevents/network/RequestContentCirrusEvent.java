@@ -46,6 +46,8 @@ public class RequestContentCirrusEvent extends CirrusEvent<ServerCirrusEventHand
         DeliverContentCirrusEvent contentEvent = new DeliverContentCirrusEvent();
         contentEvent.setContentMetadata(contentMetadata);
         contentEvent.setContentPieces(availablePieces);
+        contentEvent.addTrace(this.getTrace());
+        contentEvent.addTrace(handler.getLocalCirrusId());
 
         ConnectionPool connectionPool = handler.getConnectionPool();
         try {

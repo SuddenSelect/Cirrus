@@ -43,6 +43,8 @@ public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHan
             try {
                 ClientEventConnection connection = connectionPool.fetchConnection(target);
                 RequestContentCirrusEvent requestingEvent = targets.get(target);
+                requestingEvent.addTrace(this.getTrace());
+                requestingEvent.addTrace(handler.getLocalCirrusId());
                 connection.sendEvent(requestingEvent);
             } catch (NetworkCirrusException e) {
                 ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();
