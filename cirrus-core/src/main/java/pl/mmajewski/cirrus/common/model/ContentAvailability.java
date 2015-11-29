@@ -46,6 +46,22 @@ public class ContentAvailability implements Serializable, Comparable<ContentAvai
         return contentId.compareTo(o.contentId);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("ContentAvailability{");
+        sb.append(holderCirrusId);
+        sb.append(" -> ");
+        sb.append(contentId);
+        sb.append(" ( ");
+        for(Integer i : piecesSequenceNumbers){
+            sb.append(i);
+            sb.append(" ");
+        }
+        sb.append(") }");
+        return sb.toString();
+
+    }
+
     /////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
     //////////////// CQEngine Attributes \\\\\\\\\\\\\\\
     public static final SimpleAttribute<ContentAvailability, String> IDX_HOLDER_CIRRUS_ID = new SimpleAttribute<ContentAvailability, String>("IDX_HOLDER_CIRRUS_ID") {

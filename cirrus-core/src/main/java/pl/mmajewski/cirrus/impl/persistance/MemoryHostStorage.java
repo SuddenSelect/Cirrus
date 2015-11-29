@@ -83,4 +83,16 @@ public class MemoryHostStorage implements HostStorage {
     public Set<Host> fetchAllHosts() {
         return new HashSet<>(hosts);
     }
+
+    @Override
+    public Iterable<Host> fetchAllHostsAscendingLatency() {
+        Query<Host> query = all(Host.class);
+        QueryOptions options = queryOptions(orderBy(ascending(Host.IDX_LATENCY)));
+        return hosts.retrieve(query, options);
+    }
+
+    @Override
+    public Integer size(){
+        return hosts.size();
+    }
 }

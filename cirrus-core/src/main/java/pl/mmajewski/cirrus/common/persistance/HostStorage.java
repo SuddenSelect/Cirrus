@@ -52,4 +52,16 @@ public interface HostStorage {
      * @return set of all hosts
      */
     public Set<Host> fetchAllHosts();
+
+    /**
+     * Retrieves all hosts ordered by latency in ascending order
+     * @return set of all hosts
+     */
+    public Iterable<Host> fetchAllHostsAscendingLatency();
+
+    /**
+     * Retrieves number of all stored hosts
+     * @return number of stored hosts
+     */
+    public Integer size();
 }

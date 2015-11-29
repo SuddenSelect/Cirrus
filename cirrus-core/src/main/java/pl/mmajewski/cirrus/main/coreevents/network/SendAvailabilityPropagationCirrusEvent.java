@@ -2,7 +2,7 @@ package pl.mmajewski.cirrus.main.coreevents.network;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
-import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.ContentAvailability;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.impl.client.BroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
@@ -12,31 +12,31 @@ import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Maciej Majewski on 22/11/15.
+ * Created by Maciej Majewski on 29/11/15.
  */
-public class SendMetadataUpdateCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
-    private Set<ContentMetadata> metadataSet;
+    private Set<ContentAvailability> availabilities = null;
 
-    public void setMetadataSet(Set<ContentMetadata> metadataSet) {
-        this.metadataSet = metadataSet;
+    public void setAvailabilities(Set<ContentAvailability> availabilities) {
+        this.availabilities = availabilities;
     }
 
     @Override
     public void event(ServerCirrusEventHandler handler) {
-        MetadataPropagationCirrusEvent propagationEvent = new MetadataPropagationCirrusEvent();
-        propagationEvent.setMetadataSet(metadataSet);
-        propagationEvent.addTrace(handler.getLocalCirrusId());
+        SendAvailabilityPropagationCirrusEvent propagationEvent = new SendAvailabilityPropagationCirrusEvent();
         propagationEvent.addTrace(this.getTrace());
+        propagationEvent.addTrace(handler.getLocalCirrusId());
 
-        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<MetadataPropagationCirrusEvent>();
+        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<SendAvailabilityPropagationCirrusEvent>();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), propagationEvent);
-        for(Host host : targets) {
-            ConnectionPool connectionPool = handler.getConnectionPool();
-            connectionPool.addHost(host);
+
+        ConnectionPool connectionPool = handler.getConnectionPool();
+        for(Host host : targets){
             try {
                 ClientEventConnection connection = connectionPool.fetchConnection(host);
                 connection.sendEvent(propagationEvent);

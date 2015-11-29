@@ -2,7 +2,7 @@ package pl.mmajewski.cirrus.main.coreevents.network;
 
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
-import pl.mmajewski.cirrus.impl.client.MetadataBroadcastPropagationStrategy;
+import pl.mmajewski.cirrus.impl.client.BroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
@@ -63,7 +63,7 @@ public class SignupCirrusEvent extends HostCirrusEvent {
         broadcastJoinedHosts.addTrace(this.getTrace());
         broadcastJoinedHosts.addTrace(handler.getLocalCirrusId());
 
-        CirrusEventPropagationStrategy propagationStrategy = new MetadataBroadcastPropagationStrategy();
+        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<MetadataPropagationCirrusEvent>();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), broadcastJoinedHosts);
 
         for(Host host : targets){

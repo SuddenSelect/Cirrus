@@ -28,10 +28,14 @@ public class Host implements Serializable, Comparable<Host> {
             localhost.setPort(6465);//TODO make persistent
 //            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
 //            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
-            localhost.setAvailableContent(new ArrayList<>());//TODO make persistent
+            localhost.setAvailableContent(new HashSet<>());//TODO make persistent
             localhost.setSharedPiecesMap(new HashMap<>());
             Host.localhost = localhost;
         }
+        return localhost;
+    }
+
+    public static Host getLocalhost() {
         return localhost;
     }
 
@@ -45,7 +49,7 @@ public class Host implements Serializable, Comparable<Host> {
     private LocalDateTime lastSeen;//indexable
     private LocalDateTime lastUpdated;//indexable
     private List<String> tags = new ArrayList<>(0);//indexable
-    private List<String/*contentID*/> availableContent;//indexable
+    private Set<String/*contentID*/> availableContent;//indexable
     private Map<String/*contentID*/, Set<Integer>> sharedPieces;
     private /*transient*/ Integer latency = -1;
     // IMPORTANT: transient fields become NULL when inserted into CQEngine collection
@@ -116,11 +120,11 @@ public class Host implements Serializable, Comparable<Host> {
         this.lastUpdated = lastUpdated;
     }
 
-    public List<String> getAvailableContent() {
+    public Set<String> getAvailableContent() {
         return availableContent;
     }
 
-    public void setAvailableContent(List<String> availableContent) {
+    public void setAvailableContent(Set<String> availableContent) {
         this.availableContent = availableContent;
     }
 
@@ -219,7 +223,7 @@ public class Host implements Serializable, Comparable<Host> {
     };
     public static final MultiValueAttribute<Host, String> IDX_AVAILABLE_CONTENT = new MultiValueAttribute<Host, String>("IDX_AVAILABLE_CONTENT") {
         @Override
-        public List<String> getValues(Host obj, QueryOptions queryOptions) {
+        public Set<String> getValues(Host obj, QueryOptions queryOptions) {
             return obj.availableContent;
         }
     };

@@ -6,6 +6,7 @@ import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
+import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.content.ContentAccessor;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -31,6 +33,13 @@ import java.util.ServiceLoader;
 public class CirrusCLI implements ShellManageable {
     private CirrusBasicApp cirrusBasicApp;
 
+    private String listCollection(Iterable iterable){
+        ArrayList list = new ArrayList();
+        for(Object iter : iterable){
+            list.add(iter);
+        }
+        return listCollection(list);
+    }
     private String listCollection(Collection collection){
         StringBuilder sb = new StringBuilder();
         for(Object object : collection){
@@ -147,7 +156,7 @@ public class CirrusCLI implements ShellManageable {
     }
 
     @Command
-    public String availableContent(){
+    public String metadatas(){
         ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
         return this.listCollection(contentStorage.getAllContentMetadata());
     }
@@ -166,6 +175,20 @@ public class CirrusCLI implements ShellManageable {
         ContentMetadata metadata = contentStorage.getContentMetadata(contentId);
         ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(metadata, coreEventHandler);
         contentAccessor.saveAsFile(destination);
+    }
+
+    @Command
+    public String hostAvailabilities(String cirrusId){
+        CirrusCoreServer srv = (CirrusCoreServer)cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+        AvailabilityStorage availabilityStorage = srv.getAvailabilityStorage();
+        return this.listCollection(availabilityStorage.getHostContentAvailability(cirrusId));
+    }
+
+    @Command
+    public String contentAvailabilities(String contentId){
+        CirrusCoreServer srv = (CirrusCoreServer)cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+        AvailabilityStorage availabilityStorage = srv.getAvailabilityStorage();
+        return this.listCollection(availabilityStorage.getContentAvailability(contentId));
     }
 
 
