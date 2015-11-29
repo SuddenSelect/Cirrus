@@ -18,7 +18,9 @@ import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 2015-02-06.
@@ -39,12 +41,18 @@ public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHan
 
         CirrusContentRequestingStrategy<RequestContentCirrusEvent> requestingStrategy = new LowLatencyMissingPiecesRequestingStrategy();
         Map<Host, RequestContentCirrusEvent> targets = requestingStrategy.getTargets(handler.getHostStorage(), handler.getContentStorage(), metadata);
+
+        Set<String> trace = new HashSet<>();
+        for(Host target : targets.keySet()){
+            trace.add(target.getCirrusId());
+        }
         for(Host target : targets.keySet()){
             try {
                 ClientEventConnection connection = connectionPool.fetchConnection(target);
                 RequestContentCirrusEvent requestingEvent = targets.get(target);
                 requestingEvent.addTrace(this.getTrace());
                 requestingEvent.addTrace(handler.getLocalCirrusId());
+                requestingEvent.addTrace(trace);
                 connection.sendEvent(requestingEvent);
             } catch (NetworkCirrusException e) {
                 ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();

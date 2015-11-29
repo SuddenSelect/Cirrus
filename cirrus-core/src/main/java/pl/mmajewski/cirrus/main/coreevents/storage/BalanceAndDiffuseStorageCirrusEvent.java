@@ -42,8 +42,15 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirru
 
         ConnectionPool connectionPool = handler.getConnectionPool();
 
+        Set<String> trace = new HashSet<>();
+        for(Host target : targets.keySet()){
+            trace.add(target.getCirrusId());
+        }
         for(Host host : targets.keySet()){
             StoreContentCirrusEvent storeEvent = targets.get(host);
+            storeEvent.addTrace(trace);
+            storeEvent.addTrace(this.getTrace());
+            storeEvent.addTrace(handler.getLocalCirrusId());
             try {
                 if (host.equals(Host.getLocalhost())) {
                     handler.accept(storeEvent);

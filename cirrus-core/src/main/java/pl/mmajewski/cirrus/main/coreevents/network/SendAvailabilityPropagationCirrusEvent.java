@@ -12,6 +12,7 @@ import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,12 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
 
         CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<SendAvailabilityPropagationCirrusEvent>();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), propagationEvent);
+
+        Set<String> trace = new HashSet<>();
+        for(Host target : targets){
+            trace.add(target.getCirrusId());
+        }
+        propagationEvent.addTrace(trace);
 
         ConnectionPool connectionPool = handler.getConnectionPool();
         for(Host host : targets){
