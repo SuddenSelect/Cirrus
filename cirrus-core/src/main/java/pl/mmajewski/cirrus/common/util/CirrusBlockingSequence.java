@@ -33,7 +33,7 @@ public class CirrusBlockingSequence<E extends Object> implements Iterable<E> {
         synchronized (lock){
             if(currentElement<totalElements) {
                 if (!sequence.containsKey(currentElement)) {
-                    lock.wait(3000);
+                    lock.wait(8000);
                 }
                 ret = sequence.get(currentElement);
                 currentElement += 1;

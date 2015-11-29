@@ -113,7 +113,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
             this.listenerThread = new Thread(listener);
         } catch (IOException e) {
             logger.severe("[CirrusCoreServer] Initialization error: "+e.getMessage());
-            new CoreServerInitializationCirrusException(e,Host.newHost(parent.getLocalAddress()));
+            new CoreServerInitializationCirrusException(e,Host.getLocalhost(parent.getLocalAddress()));
         }
     }
 

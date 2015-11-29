@@ -6,7 +6,7 @@ import pl.mmajewski.cirrus.impl.client.MetadataBroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
-import pl.mmajewski.cirrus.network.event.ContentCirrusEvent;
+import pl.mmajewski.cirrus.network.event.FetchContentCirrusEvent;
 import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
@@ -33,7 +33,7 @@ public class SignupCirrusEvent extends HostCirrusEvent {
         hostShareEvent.setSharedHosts(handler.getHostStorage().fetchAllHosts());
         hostShareEvent.addTrace(handler.getLocalCirrusId());
 
-        ContentCirrusEvent metadataShareEvent = new ContentCirrusEvent();
+        FetchContentCirrusEvent metadataShareEvent = new FetchContentCirrusEvent();
         metadataShareEvent.setSharedMetadata(handler.getContentStorage().getAllContentMetadata());
         metadataShareEvent.addTrace(handler.getLocalCirrusId());
 

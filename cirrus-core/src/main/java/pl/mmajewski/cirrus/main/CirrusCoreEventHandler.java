@@ -3,10 +3,15 @@ package pl.mmajewski.cirrus.main;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -117,5 +122,21 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
     @Override
     public String getLocalCirrusId() {
         return cirrusId;
+    }
+
+    private Map<String/*contentId*/, CirrusBlockingSequence<ContentPiece>> sinks = new HashMap<>();
+    @Override
+    public CirrusBlockingSequence<ContentPiece> getContentPieceSink(ContentMetadata metadata) {
+        if(!sinks.containsKey(metadata.getContentId())){
+            synchronized (sinks) {
+                sinks.put(metadata.getContentId(), new CirrusBlockingSequence<>(metadata.getPiecesAmount()));
+            }
+        }
+        return sinks.get(metadata.getContentId());
+    }
+
+    @Override
+    public void freeContentPieceSink(ContentMetadata metadata) {
+        sinks.remove(metadata.getContentId());
     }
 }

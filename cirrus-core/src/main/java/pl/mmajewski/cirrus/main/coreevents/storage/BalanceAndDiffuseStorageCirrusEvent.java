@@ -35,5 +35,6 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<CirrusCoreE
 
         //TODO generate events for content updates
         //TODO initiate content diffusion
+        //TODO update hosts shares
     }
 }

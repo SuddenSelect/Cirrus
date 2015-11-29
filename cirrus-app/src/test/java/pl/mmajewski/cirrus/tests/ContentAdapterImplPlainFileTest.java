@@ -6,7 +6,10 @@ import org.testng.annotations.Test;
 import pl.mmajewski.cirrus.common.Constants;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.exception.ContentAdapterCirrusException;
 import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
 import pl.mmajewski.cirrus.main.appevents.NewContentPreparedCirrusAppEvent;
@@ -139,6 +142,16 @@ public class ContentAdapterImplPlainFileTest {
         @Override
         public String getLocalCirrusId() {
             return "dummy-cirrus-id";
+        }
+
+        @Override
+        public CirrusBlockingSequence<ContentPiece> getContentPieceSink(ContentMetadata metadata) {
+            return null;
+        }
+
+        @Override
+        public void freeContentPieceSink(ContentMetadata metadata) {
+
         }
     }
 

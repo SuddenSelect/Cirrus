@@ -22,7 +22,7 @@ class TestServer implements Runnable {
     }
 
     static Host getLocalHost(int serverPort) {
-        Host localhost = Host.newHost(InetAddress.getLoopbackAddress());
+        Host localhost = Host.getLocalhost(InetAddress.getLoopbackAddress());
         localhost.setPort(serverPort);
         localhost.setCirrusId("test-cirrus-id");
         return localhost;

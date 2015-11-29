@@ -7,7 +7,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.content.ContentAccessor;
-import pl.mmajewski.cirrus.main.coreevents.ContentRequestCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.AssembleContentCirrusEvent;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -27,7 +27,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
 
     public ContentAccessorImplPlainBQueue(ContentMetadata metadata, CirrusEventHandler coreEventHandler){
         this.coreEventHandler = coreEventHandler;
-        this.piecesSequence = new CirrusBlockingSequence<>(metadata.getPiecesAmount());
+        this.piecesSequence = coreEventHandler.getContentPieceSink(metadata);
         setContentMetadata(metadata);
     }
 
@@ -44,9 +44,8 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         fileDumpingThreads.put(filename, new Thread(this.new FileDumperCirrusThread()));
         fileDumpingThreads.get(filename).start();
 
-        ContentRequestCirrusEvent evt = new ContentRequestCirrusEvent();
+        AssembleContentCirrusEvent evt = new AssembleContentCirrusEvent();
         evt.setMetadata(metadata);
-        evt.setSink(piecesSequence);
         evt.init();
         coreEventHandler.accept(evt);
     }
@@ -86,6 +85,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
                     piece.getContent().rewind();
                     dumpFile.write(piece.getContent());
                 }
+                coreEventHandler.freeContentPieceSink(metadata);
                 setMessage("Finished");
             }catch (IOException e) {
                 setMessage("Saving problem: "+e.getMessage());

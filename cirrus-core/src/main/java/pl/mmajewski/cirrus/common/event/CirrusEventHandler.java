@@ -2,7 +2,10 @@ package pl.mmajewski.cirrus.common.event;
 
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.exception.EventHandlerMismatchedCirrusException;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 
 /**
  * Handler interface for event-visitors with suggested implementation
@@ -92,4 +95,17 @@ public interface CirrusEventHandler {
      * @return
      */
     public String getLocalCirrusId();
+
+    /**
+     * Retrieves queue of content being retrieved
+     * @param contentId id of content being retrieved
+     * @return queue sink
+     */
+    public CirrusBlockingSequence<ContentPiece> getContentPieceSink(ContentMetadata metadata);
+
+    /**
+     * Removes queue of retrieved content
+     * @param contentId id of retrieved content
+     */
+    public void freeContentPieceSink(ContentMetadata metadata);
 }

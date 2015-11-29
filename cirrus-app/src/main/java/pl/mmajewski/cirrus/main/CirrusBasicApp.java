@@ -4,7 +4,10 @@ import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
@@ -137,6 +140,16 @@ public class CirrusBasicApp  {
         @Override
         public String getLocalCirrusId() {
             return getCoreEventHandler().getLocalCirrusId();
+        }
+
+        @Override
+        public CirrusBlockingSequence<ContentPiece> getContentPieceSink(ContentMetadata metadata) {
+            return getCoreEventHandler().getContentPieceSink(metadata);
+        }
+
+        @Override
+        public void freeContentPieceSink(ContentMetadata metadata) {
+            getCoreEventHandler().freeContentPieceSink(metadata);
         }
     }
 

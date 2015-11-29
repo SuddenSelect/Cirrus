@@ -7,10 +7,12 @@ import com.googlecode.cqengine.index.hash.HashIndex;
 import com.googlecode.cqengine.persistence.offheap.OffHeapPersistence;
 import com.googlecode.cqengine.query.Query;
 import com.googlecode.cqengine.query.option.QueryOptions;
+import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,12 +29,15 @@ public class MemoryHostStorage implements HostStorage {
                 addIndex(CompoundIndex.onAttributes(Host.IDX_TAGS, Host.IDX_LAST_SEEN));
                 addIndex(HashIndex.onAttribute(Host.IDX_CIRRUS_ID));
                 addIndex(HashIndex.onAttribute(Host.IDX_INET_ADDRESS));
+                addIndex(HashIndex.onAttribute(Host.IDX_AVAILABLE_CONTENT));
     }};
     private Host localhost;
 
     public MemoryHostStorage(Host localhost){
         this.localhost = localhost;
-        hosts.add(localhost);
+        if(localhost!=null) {
+            hosts.add(localhost);
+        }
     }
 
     @Override
@@ -69,7 +74,7 @@ public class MemoryHostStorage implements HostStorage {
 
     @Override
     public Iterable<Host> fetchSharers(ContentMetadata contentMetadata) {
-        Query<Host> query = in(Host.IDX_AVAILABLE_CONTENT, contentMetadata.getContentId());
+        Query<Host> query = equal(Host.IDX_AVAILABLE_CONTENT, contentMetadata.getContentId());
         QueryOptions options = queryOptions(orderBy(ascending(Host.IDX_LATENCY)));
         return hosts.retrieve(query, options);
     }

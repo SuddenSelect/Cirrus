@@ -18,19 +18,18 @@ import java.util.*;
  */
 public class Host implements Serializable, Comparable<Host> {
     public static Host localhost = null;
-    public static Host newHost(InetAddress inetAddress) {
+    public static Host getLocalhost(InetAddress inetAddress) {
         if(localhost == null) {
             Host localhost = new Host();
             localhost.setPhysicalAddress(inetAddress);
             localhost.setCirrusId(CirrusIdGenerator.generateHostId());
             localhost.setLastSeen(LocalDateTime.now());
             localhost.setLatency(0);
-            localhost.setPort(6465);
+            localhost.setPort(6465);//TODO make persistent
 //            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
-//            localhost.setPort(6466);//TODO make persistent
 //            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
-//            localhost.setAvailableContent(Collections.EMPTY_LIST);//TODO make persistent
-//            localhost.setSharedPiecesMap(Collections.EMPTY_MAP);
+            localhost.setAvailableContent(new ArrayList<>());//TODO make persistent
+            localhost.setSharedPiecesMap(new HashMap<>());
             Host.localhost = localhost;
         }
         return localhost;

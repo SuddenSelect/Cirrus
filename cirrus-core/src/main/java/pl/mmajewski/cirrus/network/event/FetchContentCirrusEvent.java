@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by Maciej Majewski on 09/11/14.
  */
-public class ContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+public class FetchContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<ContentMetadata> sharedMetadata;
 
