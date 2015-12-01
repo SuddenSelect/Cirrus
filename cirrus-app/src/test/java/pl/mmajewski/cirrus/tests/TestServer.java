@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.tests;
 
+import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.model.Host;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ class TestServer implements Runnable {
     }
 
     static Host getLocalHost(int serverPort) {
-        Host localhost = Host.getLocalhost(InetAddress.getLoopbackAddress());
+        Host localhost = CirrusCoreFactory.getLocalhost(InetAddress.getLoopbackAddress());
         localhost.setPort(serverPort);
         localhost.setCirrusId("test-cirrus-id");
         return localhost;

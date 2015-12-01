@@ -4,7 +4,6 @@ import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.exception.CoreServerInitializationCirrusException;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
-import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.network.ConnectionPool;
@@ -113,7 +112,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
             this.listenerThread = new Thread(listener);
         } catch (IOException e) {
             logger.severe("[CirrusCoreServer] Initialization error: "+e.getMessage());
-            new CoreServerInitializationCirrusException(e,Host.getLocalhost(parent.getLocalAddress()));
+            new CoreServerInitializationCirrusException(e, CirrusCoreFactory.getLocalhost(parent.getLocalAddress()));
         }
     }
 

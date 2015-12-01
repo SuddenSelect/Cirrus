@@ -4,6 +4,7 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.impl.persistance.MemoryAvailabilityStorage;
 import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
@@ -16,7 +17,12 @@ import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.io.*;
 import java.net.InetAddress;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 15/11/15.
@@ -26,9 +32,77 @@ import java.net.InetAddress;
  *
  */
 public class CirrusCoreFactory {
+    private static final Logger logger = Logger.getLogger(CirrusCoreFactory.class.getName());
+
+    private static Host localhost = null;
 
     public static CirrusCore newCirrusCore(InetAddress localAddress){
         return new CirrusCore(localAddress);
+    }
+
+    private static Host loadIdentity(){
+        Host localhost = null;
+        File identity = new File(".identity");
+        if(identity.exists()){
+            try {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(identity));
+                localhost = (Host) in.readObject();
+                in.close();
+            } catch (IOException e) {
+                logger.warning(e.getMessage());
+            } catch (ClassNotFoundException e) {
+                logger.severe(e.getMessage());
+            } catch (ClassCastException e){
+                logger.severe("Identity file malformed! "+e.getMessage());
+            }
+        }
+        return localhost;
+    }
+
+    private static void saveIdentity(){
+        Host localHost = getLocalhost();
+        if(localHost!=null){
+            try {
+                File identity = new File(".identity");
+                if (identity.exists()) {
+                    identity.delete();
+                }
+                identity.createNewFile();
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(identity));
+                out.writeObject(localHost);
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                logger.severe(e.getMessage());
+            }
+        }
+    }
+
+    public static Host getLocalhost() {
+        return localhost;
+    }
+
+    public static Host getLocalhost(InetAddress inetAddress) {
+        if(localhost == null) {
+            localhost = loadIdentity();
+            if(localhost==null) {
+                localhost = new Host();
+                localhost.setPhysicalAddress(inetAddress);
+                localhost.setCirrusId(CirrusIdGenerator.generateHostId());
+                localhost.setLastSeen(LocalDateTime.now());
+                localhost.setLatency(0);
+                localhost.setPort(6465);//TODO make persistent
+//            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
+//            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
+                localhost.setAvailableContent(new HashSet<>());//TODO make persistent
+                localhost.setSharedPiecesMap(new HashMap<>());
+
+                saveIdentity();
+            }else {
+                localhost.setPhysicalAddress(inetAddress);
+            }
+        }
+        return localhost;
     }
 
     public static class Network {
@@ -51,7 +125,7 @@ public class CirrusCoreFactory {
         public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, InetAddress localhost, int port) {
             CirrusCoreServer cirrusCoreServer = new CirrusCoreServer(cirrusCore, port);
             cirrusCoreServer.setAvailabilityStorage(Persistance.newAvailabilityStorage());
-            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(Host.getLocalhost(localhost)));//TODO permanent localhost retrieval
+            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(getLocalhost(localhost)));//TODO permanent localhost retrieval
             return cirrusCoreServer;//binding stub
         }
     }

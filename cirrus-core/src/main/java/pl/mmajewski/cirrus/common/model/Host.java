@@ -3,9 +3,9 @@ package pl.mmajewski.cirrus.common.model;
 import com.googlecode.cqengine.attribute.MultiValueAttribute;
 import com.googlecode.cqengine.attribute.SimpleAttribute;
 import com.googlecode.cqengine.query.option.QueryOptions;
-import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
+import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 
-import java.io.Serializable;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
@@ -17,26 +17,8 @@ import java.util.*;
  * Created by Maciej Majewski on 29/10/14.
  */
 public class Host implements Serializable, Comparable<Host> {
-    public static Host localhost = null;
-    public static Host getLocalhost(InetAddress inetAddress) {
-        if(localhost == null) {
-            Host localhost = new Host();
-            localhost.setPhysicalAddress(inetAddress);
-            localhost.setCirrusId(CirrusIdGenerator.generateHostId());
-            localhost.setLastSeen(LocalDateTime.now());
-            localhost.setLatency(0);
-            localhost.setPort(6465);//TODO make persistent
-//            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
-//            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
-            localhost.setAvailableContent(new HashSet<>());//TODO make persistent
-            localhost.setSharedPiecesMap(new HashMap<>());
-            Host.localhost = localhost;
-        }
-        return localhost;
-    }
-
     public static Host getLocalhost() {
-        return localhost;
+        return CirrusCoreFactory.getLocalhost();
     }
 
     private String cirrusId;//indexable
