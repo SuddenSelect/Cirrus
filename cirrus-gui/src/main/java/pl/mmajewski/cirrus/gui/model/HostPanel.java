@@ -24,7 +24,7 @@ public class HostPanel implements RefreshablePanel {
     private Host host = null;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    public void apply(Host host){
+    synchronized public void apply(Host host){
         this.host = host;
 
         cirrusIdTextField.setText(host.getCirrusId());
@@ -52,6 +52,7 @@ public class HostPanel implements RefreshablePanel {
         constructPropertiesTree(host);
     }
 
+    @Override
     public void refresh(){
         if(host!=null) {
             apply(host);

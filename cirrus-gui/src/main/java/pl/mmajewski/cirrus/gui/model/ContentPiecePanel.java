@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.gui.model;
 
 import pl.mmajewski.cirrus.common.model.ContentPiece;
+import pl.mmajewski.cirrus.gui.RefreshablePanel;
 
 import javax.swing.*;
 import java.nio.ByteBuffer;
@@ -10,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by Maciej Majewski on 01/12/15.
  */
-public class ContentPiecePanel {
+public class ContentPiecePanel implements RefreshablePanel {
     private JPanel contentPiecePanel;
     private JTextField contentIdTextField;
     private JTextField sequenceTextField;
@@ -21,7 +22,7 @@ public class ContentPiecePanel {
 
     private ContentPiece contentPiece = null;
 
-    public void apply(ContentPiece contentPiece){
+    synchronized public void apply(ContentPiece contentPiece){
         this.contentPiece = contentPiece;
 
         contentIdTextField.setText(contentPiece.getContentId());
@@ -38,6 +39,7 @@ public class ContentPiecePanel {
 
     }
 
+    @Override
     public void refresh(){
         if(contentPiece!=null) {
             apply(contentPiece);
