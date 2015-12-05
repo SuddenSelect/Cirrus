@@ -2,6 +2,8 @@ package pl.mmajewski.cirrus.gui.action;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -66,15 +68,23 @@ public class SignupPanel {
     public SignupPanel() {
         remoteAddressFormattedTextField.setInputVerifier(addressVerifier);
         fillAdressesComboBox();
-        ipVersionComboBox.addActionListener(e -> fillAdressesComboBox());
-
-        startModeCheckBox.addActionListener(e -> {
-            if(startModeCheckBox.isSelected()){
-                remoteAddressFormattedTextField.setText("");
-                remoteCirrusIdTextField.setText("");
+        ipVersionComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignupPanel.this.fillAdressesComboBox();
             }
-            remoteAddressFormattedTextField.setEnabled(!startModeCheckBox.isSelected());
-            remoteCirrusIdTextField.setEnabled(!startModeCheckBox.isSelected());
+        });
+
+        startModeCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (startModeCheckBox.isSelected()) {
+                    remoteAddressFormattedTextField.setText("");
+                    remoteCirrusIdTextField.setText("");
+                }
+                remoteAddressFormattedTextField.setEnabled(!startModeCheckBox.isSelected());
+                remoteCirrusIdTextField.setEnabled(!startModeCheckBox.isSelected());
+            }
         });
     }
 

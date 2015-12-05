@@ -13,9 +13,9 @@ import pl.mmajewski.cirrus.gui.storage.ContentStoragePanel;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -37,8 +37,8 @@ public class MainDialog extends JDialog {
     private Thread runningRefreshingThread = new Thread(refreshingThread);
 
     public MainDialog() {
-        runningRefreshingThread.start();
         buildLabel.setText(getBuild());
+        runningRefreshingThread.start();
 
         setContentPane(contentPane);
         setModal(true);
@@ -52,59 +52,80 @@ public class MainDialog extends JDialog {
         });
 
         // call onExit() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onExit(),
+        contentPane.registerKeyboardAction(
+                new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       MainDialog.this.onExit();
+                   }
+                },
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        contentStoragePanel.addPropertyChangeListener(e -> {
-            CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
-            ContentStorage contentStorage = coreEventHandler.getContentStorage();
-            ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
-            contentMetadataPanel.apply(contentMetadata);
-
-            AvailabilityStorage availabilityStorage = cirrusBasicApp.getAppEventHandler().getAvailabilityStorage();
-            availabilityStoragePanel.setAvailabilityStorage(availabilityStorage);
-            availabilityStoragePanel.apply((String) e.getNewValue());
-        });
-
-        signupButton.addActionListener(e -> {
-            SignupDialog signupDialog = new SignupDialog();
-            signupDialog.pack();
-            signupDialog.setModal(true);
-            signupDialog.setVisible(true);
-            cirrusBasicApp = signupDialog.getCirrusBasicApp();
-            if(cirrusBasicApp!=null){
-                signupButton.setEnabled(false);
-                adaptFileButton.setEnabled(true);
-                downloadButton.setEnabled(true);
-                browseHostsButton.setEnabled(true);
-
+        contentStoragePanel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
                 CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
-                contentStoragePanel.apply(coreEventHandler.getContentStorage());
+                ContentStorage contentStorage = coreEventHandler.getContentStorage();
+                ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
+                contentMetadataPanel.apply(contentMetadata);
+
+                AvailabilityStorage availabilityStorage = cirrusBasicApp.getAppEventHandler().getAvailabilityStorage();
+                availabilityStoragePanel.setAvailabilityStorage(availabilityStorage);
+                availabilityStoragePanel.apply((String) e.getNewValue());
             }
         });
 
-        adaptFileButton.addActionListener(e -> {
-            AdaptDialog adaptDialog = new AdaptDialog();
-            adaptDialog.setCirrusBasicApp(cirrusBasicApp);
-            adaptDialog.setRefreshingThread(refreshingThread);
-            adaptDialog.pack();
-            adaptDialog.setVisible(true);
+        signupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignupDialog signupDialog = new SignupDialog();
+                signupDialog.pack();
+                signupDialog.setModal(true);
+                signupDialog.setVisible(true);
+                cirrusBasicApp = signupDialog.getCirrusBasicApp();
+                if (cirrusBasicApp != null) {
+                    signupButton.setEnabled(false);
+                    adaptFileButton.setEnabled(true);
+                    downloadButton.setEnabled(true);
+                    browseHostsButton.setEnabled(true);
+
+                    CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+                    contentStoragePanel.apply(coreEventHandler.getContentStorage());
+                }
+            }
         });
 
-        downloadButton.addActionListener(e -> {
-            DownloadDialog downloadDialog = new DownloadDialog();
-            downloadDialog.setCirrusBasicApp(cirrusBasicApp);
-            downloadDialog.setRefreshingThread(refreshingThread);
-            downloadDialog.pack();
-            downloadDialog.setVisible(true);
+        adaptFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AdaptDialog adaptDialog = new AdaptDialog();
+                adaptDialog.setCirrusBasicApp(cirrusBasicApp);
+                adaptDialog.setRefreshingThread(refreshingThread);
+                adaptDialog.pack();
+                adaptDialog.setVisible(true);
+            }
         });
 
-        browseHostsButton.addActionListener(e -> {
-            BrowseHostsDialog browseHostsDialog = new BrowseHostsDialog();
-            browseHostsDialog.setRefreshingThread(refreshingThread);
-            browseHostsDialog.pack();
-            browseHostsDialog.setVisible(true);
+        downloadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DownloadDialog downloadDialog = new DownloadDialog();
+                downloadDialog.setCirrusBasicApp(cirrusBasicApp);
+                downloadDialog.setRefreshingThread(refreshingThread);
+                downloadDialog.pack();
+                downloadDialog.setVisible(true);
+            }
+        });
+
+        browseHostsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BrowseHostsDialog browseHostsDialog = new BrowseHostsDialog();
+                browseHostsDialog.setRefreshingThread(refreshingThread);
+                browseHostsDialog.pack();
+                browseHostsDialog.setVisible(true);
+            }
         });
 
         refreshingThread.register(contentStoragePanel);

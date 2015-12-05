@@ -7,9 +7,7 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -30,8 +28,18 @@ public class SignupDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(e -> onOK());
-        buttonCancel.addActionListener(e -> onCancel());
+        buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignupDialog.this.onOK();
+            }
+        });
+        buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignupDialog.this.onCancel();
+            }
+        });
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -42,7 +50,13 @@ public class SignupDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onCancel(),
+        contentPane.registerKeyboardAction(
+                new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       SignupDialog.this.onCancel();
+                   }
+                },
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }

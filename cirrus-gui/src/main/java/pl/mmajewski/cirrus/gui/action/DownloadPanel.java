@@ -7,6 +7,8 @@ import pl.mmajewski.cirrus.gui.RefreshablePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -41,34 +43,43 @@ public class DownloadPanel implements RefreshablePanel{
             }
         });
 
-        chooseFileButton.addActionListener(e -> {
-            int result = fileChooser.showSaveDialog(chooseFileButton);
-            if(result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                if (selectedFile != null) {
-                    filePathTextField.setText(selectedFile.getAbsolutePath());
-                    downloadButton.setEnabled(contentAccessor!=null&&contentMetadata!=null);
-                    progressBar.setValue(0);
+        chooseFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = fileChooser.showSaveDialog(chooseFileButton);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    if (selectedFile != null) {
+                        filePathTextField.setText(selectedFile.getAbsolutePath());
+                        downloadButton.setEnabled(contentAccessor != null && contentMetadata != null);
+                        progressBar.setValue(0);
+                    }
                 }
             }
         });
 
-        downloadButton.addActionListener(e -> {
-            contentAccessor.setContentMetadata(contentMetadata);
-            try {
-                contentAccessor.saveAsFile(filePathTextField.getText());
-                cancelButton.setEnabled(true);
-            } catch (FileNotFoundException|EventHandlerClosingCirrusException e1) {
-                JOptionPane.showMessageDialog(new JFrame(), e1.getMessage());
-                e1.printStackTrace();
-                cancelButton.setEnabled(false);
+        downloadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentAccessor.setContentMetadata(contentMetadata);
+                try {
+                    contentAccessor.saveAsFile(filePathTextField.getText());
+                    cancelButton.setEnabled(true);
+                } catch (FileNotFoundException | EventHandlerClosingCirrusException e1) {
+                    JOptionPane.showMessageDialog(new JFrame(), e1.getMessage());
+                    e1.printStackTrace();
+                    cancelButton.setEnabled(false);
+                }
             }
         });
 
-        cancelButton.addActionListener(e -> {
-            contentAccessor.cancel();
-            cancelButton.setEnabled(false);
-            downloadButton.setEnabled(true);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentAccessor.cancel();
+                cancelButton.setEnabled(false);
+                downloadButton.setEnabled(true);
+            }
         });
     }
 

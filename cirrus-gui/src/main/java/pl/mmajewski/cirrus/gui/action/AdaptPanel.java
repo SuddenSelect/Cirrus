@@ -7,6 +7,8 @@ import pl.mmajewski.cirrus.gui.RefreshablePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
@@ -42,26 +44,36 @@ public class AdaptPanel implements RefreshablePanel {
                 return ok;
             }
         });
-        chooseFileButton.addActionListener(e -> {
-            int result = fileChooser.showOpenDialog(chooseFileButton);
-            if(result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                if (selectedFile != null) {
-                    filePathTextField.setText(selectedFile.getAbsolutePath());
-                    adaptButton.setEnabled(true);
-                    progressBar.setValue(0);
+        chooseFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = fileChooser.showOpenDialog(chooseFileButton);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    if (selectedFile != null) {
+                        filePathTextField.setText(selectedFile.getAbsolutePath());
+                        filePathTextField.setBackground(Color.WHITE);
+                        adaptButton.setEnabled(true);
+                        progressBar.setValue(0);
+                    }
                 }
             }
         });
-        cancelButton.addActionListener(e -> {
-            if(adaptingThread!=null){
-                adaptingThread.terminate();
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (adaptingThread != null) {
+                    adaptingThread.terminate();
+                }
             }
         });
 
-        adaptButton.addActionListener(e -> {
-            adaptingThread = new ContentAdapterThread();
-            new Thread(adaptingThread).run();
+        adaptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adaptingThread = new ContentAdapterThread();
+                new Thread(adaptingThread).run();
+            }
         });
     }
 

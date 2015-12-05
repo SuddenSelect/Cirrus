@@ -11,9 +11,9 @@ import pl.mmajewski.cirrus.impl.content.accessors.ContentAccessorImplPlainBQueue
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class DownloadDialog extends JDialog {
     private JPanel contentPane;
@@ -40,7 +40,12 @@ public class DownloadDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonClose);
 
-        buttonClose.addActionListener(e -> onClose());
+        buttonClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DownloadDialog.this.onClose();
+            }
+        });
 
         // call onClose() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -51,15 +56,24 @@ public class DownloadDialog extends JDialog {
         });
 
         // call onClose() on ESCAPE
-        contentPane.registerKeyboardAction(e -> onClose(),
+        contentPane.registerKeyboardAction(
+                new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       DownloadDialog.this.onClose();
+                   }
+                },
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        contentStoragePanel.addPropertyChangeListener(e -> {
-            ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
-            ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
-            ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(contentMetadata, cirrusBasicApp.getAppEventHandler().getCoreEventHandler());
-            downloadPanel.setDownloadObjects(contentAccessor, contentMetadata);
+        contentStoragePanel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
+                ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
+                ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(contentMetadata, cirrusBasicApp.getAppEventHandler().getCoreEventHandler());
+                downloadPanel.setDownloadObjects(contentAccessor, contentMetadata);
+            }
         });
     }
 
