@@ -38,4 +38,16 @@ public interface ContentAdapter {
      */
     public void adapt(String contentSource) throws ContentAdapterCirrusException;
 
+    /**
+     * Returns progress of adaptation. Max value can be retrieved using method getMaxProgress()
+     * @return current progess
+     */
+    default public int getProgress(){return 0;}
+
+    /**
+     * Returns max value progress will achieve
+     * @return max progress value
+     */
+    default public int getMaxProgress(){return 100;}
+
 }

@@ -25,6 +25,28 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
     private boolean eventGenereationSuppressed;
     private CirrusEventHandler eventHandler;
 
+    private volatile int progress = 0;
+    private volatile int maxProgress = 100;
+
+    @Override
+    public int getProgress() {
+        return progress;
+    }
+
+    @Override
+    public int getMaxProgress() {
+        return maxProgress;
+    }
+
+    private void setProgress(int progress){
+        this.progress = progress;
+    }
+
+    private void setProgress(int progress, int maxProgress){
+        this.maxProgress = maxProgress;
+        this.progress = progress;
+    }
+
     /**
      * Constructor for quiet (non-eventful) processing
      */
@@ -75,6 +97,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
             FileChannel fileChannel = new FileInputStream(source).getChannel();
 
             int numberOfChunks = (int) (source.length() / Constants.CHUNK_SIZE);
+            this.setProgress(0, numberOfChunks);
             int lastChunkSize = 0;
             if(source.length() % Constants.CHUNK_SIZE > 0){
                 numberOfChunks += 1;
@@ -89,6 +112,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
                 ByteBuffer chunk = ByteBuffer.allocate(Constants.CHUNK_SIZE);
                 fileChannel.read(chunk);
                 chunks[i] = chunk;
+                setProgress(i);
             }
             //Reading last chunk
             if(lastChunkSize>0){
@@ -111,6 +135,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
                 evt.setPieces(contentFactory.getPieces());
                 eventHandler.accept(evt);
             }
+            setProgress(getMaxProgress());
         }catch (Exception e){
             throw new ContentAdapterCirrusException(e,this);
         }

@@ -107,5 +107,6 @@
         <module>cirrus-core</module>
         <module>cirrus-app</module>
         <module>cirrus-cli</module>
+        <module>cirrus-gui</module>
     </modules>
 </project>

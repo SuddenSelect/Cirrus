@@ -20,6 +20,7 @@ import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 import java.io.*;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Logger;
@@ -89,17 +90,18 @@ public class CirrusCoreFactory {
                 localhost = new Host();
                 localhost.setPhysicalAddress(inetAddress);
                 localhost.setCirrusId(CirrusIdGenerator.generateHostId());
+                localhost.setFirstSeen(LocalDateTime.now());
                 localhost.setLastSeen(LocalDateTime.now());
                 localhost.setLatency(0);
                 localhost.setPort(6465);//TODO make persistent
-//            localhost.setTags(Collections.EMPTY_LIST);//TODO make persistent
-//            localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
+                localhost.setTags(new ArrayList<>(0));//TODO make persistent
+                localhost.setLastUpdated(LocalDateTime.now());//TODO make persistent
                 localhost.setAvailableContent(new HashSet<>());//TODO make persistent
                 localhost.setSharedPiecesMap(new HashMap<>());
-
                 saveIdentity();
             }else {
                 localhost.setPhysicalAddress(inetAddress);
+                localhost.setLastSeen(LocalDateTime.now());
             }
         }
         return localhost;
