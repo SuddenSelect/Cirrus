@@ -16,14 +16,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
+ * Single usage ContentAccessor
  * Created by Maciej Majewski on 2015-02-06.
  */
 public class ContentAccessorImplPlainBQueue implements ContentAccessor {
     private CirrusBlockingSequence<ContentPiece> piecesSequence;
     private ContentMetadata metadata;
     private final CirrusEventHandler coreEventHandler;
-    private FileChannel dumpFile;
-    private Map<String/*filename*/,Thread> fileDumpingThreads = new HashMap<>();
+    private FileDumperCirrusThread fileDumpingThread = null;
+    private File dumpFile = null;
+    private FileChannel dumpFileChannel = null;
+    private Thread runningThread = null;
 
     public ContentAccessorImplPlainBQueue(ContentMetadata metadata, CirrusEventHandler coreEventHandler){
         this.coreEventHandler = coreEventHandler;
@@ -38,25 +41,31 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
 
     @Override
     public void saveAsFile(String filename) throws FileNotFoundException, EventHandlerClosingCirrusException {
-        File dump = new File(filename);
-        dumpFile = new FileOutputStream(dump).getChannel();
+        if(fileDumpingThread == null) {
+            dumpFile = new File(filename);
+            dumpFileChannel = new FileOutputStream(dumpFile).getChannel();
 
-        fileDumpingThreads.put(filename, new Thread(this.new FileDumperCirrusThread()));
-        fileDumpingThreads.get(filename).start();
+            fileDumpingThread = this.new FileDumperCirrusThread();
+            runningThread = new Thread(fileDumpingThread);
+            runningThread.start();
 
-        AssembleContentCirrusEvent evt = new AssembleContentCirrusEvent();
-        evt.setMetadata(metadata);
-        evt.init();
-        coreEventHandler.accept(evt);
+            AssembleContentCirrusEvent evt = new AssembleContentCirrusEvent();
+            evt.setMetadata(metadata);
+            evt.init();
+            coreEventHandler.accept(evt);
+        }else{
+            throw new UnsupportedOperationException("Unsupported operation - object was already used for dwnloading "+metadata);
+        }
     }
 
     /**
      * Waits for the FileDumpingThread to finish
      */
-    public void waitForSaving(String filename){
+    public void waitForSaving(){
         try {
-            fileDumpingThreads.get(filename).join();
-            fileDumpingThreads.remove(filename);
+            if(runningThread != null) {
+                runningThread.join();
+            }
         } catch (InterruptedException e) {}
     }
 
@@ -66,6 +75,38 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         return null;
     }
 
+    @Override
+    public int getProgress() {
+        if(fileDumpingThread != null){
+            return fileDumpingThread.getProgress();
+        }
+        return 100;
+    }
+
+    @Override
+    public int getMaxProgress() {
+        return metadata.getPiecesAmount();
+    }
+
+    @Override
+    public void cancel() {
+        try {
+            runningThread.interrupt();
+            runningThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            if(dumpFile.exists()){
+                try {
+                    dumpFileChannel.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                dumpFile.delete();
+            }
+        }
+    }
+
     private class FileDumperCirrusThread extends GenericCirrusEventThread{
         private Logger logger = Logger.getLogger(FileDumperCirrusThread.class.getName());
 
@@ -73,7 +114,8 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         public void run() {
             try {
                 setMessage("Running");
-                dumpFile.force(true);
+                dumpFileChannel.force(true);
+                int progress = 0;
                 for(ContentPiece piece : piecesSequence){
                     if(!running()){
                         break;
@@ -83,7 +125,8 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
                         return;
                     }
                     piece.getContent().rewind();
-                    dumpFile.write(piece.getContent());
+                    dumpFileChannel.write(piece.getContent());
+                    setProgress(++progress);
                 }
                 coreEventHandler.freeContentPieceSink(metadata);
                 setMessage("Finished");

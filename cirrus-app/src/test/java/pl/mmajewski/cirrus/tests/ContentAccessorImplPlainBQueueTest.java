@@ -70,7 +70,7 @@ public class ContentAccessorImplPlainBQueueTest {
         app.getAppEventHandler().standby();
         app.getAppEventHandler().getCoreEventHandler().standby();
 
-        accessor.waitForSaving(dumpFile);
+        accessor.waitForSaving();
         Assert.assertTrue(FileUtils.contentEquals(inFile,outFile));
 
     }

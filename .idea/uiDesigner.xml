@@ -120,6 +120,43 @@
         <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
       </item>
     </group>
+    <group name="modelPanels">
+      <item class="pl.mmajewski.cirrus.gui.model.HostPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="7" hsize-policy="3" anchor="0" fill="2" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.model.ContentPiecePanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="7" hsize-policy="3" anchor="0" fill="2" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.model.ContentAvailabilityPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="7" hsize-policy="3" anchor="0" fill="2" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.model.ContentMetadataPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="7" hsize-policy="3" anchor="0" fill="2" />
+      </item>
+    </group>
+    <group name="misc">
+      <item class="javax.swing.JFileChooser" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+    </group>
+    <group name="actionPanels">
+      <item class="pl.mmajewski.cirrus.gui.action.SignupPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="0" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.action.AdaptPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.action.DownloadPanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+    </group>
+    <group name="storage">
+      <item class="pl.mmajewski.cirrus.gui.storage.HostStoragePanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+      <item class="pl.mmajewski.cirrus.gui.storage.ContentStoragePanel" icon="" removable="true" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+    </group>
   </component>
 </project>
-

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/cirrus-app/cirrus-app.iml" filepath="$PROJECT_DIR$/cirrus-app/cirrus-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/cirrus-cli/cirrus-cli.iml" filepath="$PROJECT_DIR$/cirrus-cli/cirrus-cli.iml" />
       <module fileurl="file://$PROJECT_DIR$/cirrus-core/cirrus-core.iml" filepath="$PROJECT_DIR$/cirrus-core/cirrus-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cirrus-gui/cirrus-gui.iml" filepath="$PROJECT_DIR$/cirrus-gui/cirrus-gui.iml" />
     </modules>
   </component>
 </project>

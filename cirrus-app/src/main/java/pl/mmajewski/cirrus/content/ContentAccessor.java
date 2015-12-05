@@ -32,4 +32,20 @@ public interface ContentAccessor {
      */
     public ByteArrayOutputStream stream();
 
+    /**
+     * Cancels file assembly
+     */
+    public void cancel();
+
+    /**
+     * Returns progress of download. Max value can be retrieved using method getMaxProgress()
+     * @return current progess
+     */
+    default public int getProgress(){return 0;}
+
+    /**
+     * Returns max value progress will achieve for given file
+     * @return max progress value
+     */
+    default public int getMaxProgress(){return 100;}
 }
