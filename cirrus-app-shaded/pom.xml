@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>Cirrus</artifactId>
+        <groupId>Cirrus</groupId>
+        <version>0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cirrus-app-shaded</artifactId>
+
+    <!-- Module added in order to relocate org.objectweb.asm classes
+         used by com.googlecode.cqengine:cqengine and conflicting with
+         older org.objectweb.asm classes from com.intellij:forms_rt.
+         Added in order to fix problem with org.ow2.asm conflict. -->
+    <dependencies>
+        <dependency>
+            <groupId>Cirrus</groupId>
+            <artifactId>cirrus-core</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>Cirrus</groupId>
+            <artifactId>cirrus-app</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.objectweb.asm</pattern>
+                                    <shadedPattern>com.googlecode.cqengine.shaded.org.objectweb.asm</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

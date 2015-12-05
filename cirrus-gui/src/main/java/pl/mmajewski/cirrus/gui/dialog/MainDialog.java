@@ -1,7 +1,5 @@
 package pl.mmajewski.cirrus.gui.dialog;
 
-import com.google.common.io.Closeables;
-import org.drools.core.io.impl.ClassPathResource;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
@@ -157,16 +155,18 @@ public class MainDialog extends JDialog {
 
     private Properties guiProperties = null;
     private void loadGuiProperties(){
-        ClassPathResource resource = new ClassPathResource( "gui.properties" );
         guiProperties = new Properties();
-        InputStream inputStream = null;
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("gui.properties");
         try {
-            inputStream = resource.getInputStream();
             guiProperties.load( inputStream );
         } catch ( IOException e ) {
             e.printStackTrace();
         } finally {
-            Closeables.closeQuietly( inputStream );
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     private String getBuild(){

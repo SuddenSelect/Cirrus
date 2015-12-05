@@ -53,11 +53,19 @@
         <processorPath useClasspath="true" />
         <module name="cirrus-gui" />
       </profile>
+      <profile default="false" name="Annotation profile for cirrus-app-shaded" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="cirrus-app-shaded" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="app" target="1.8" />
       <module name="Cirrus" target="1.8" />
       <module name="cirrus-app" target="1.8" />
+      <module name="cirrus-app-shaded" target="1.8" />
       <module name="cirrus-cli" target="1.8" />
       <module name="cirrus-core" target="1.8" />
       <module name="cirrus-gui" target="1.8" />

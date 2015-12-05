@@ -15,11 +15,11 @@
             <artifactId>cqengine</artifactId>
             <version>2.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.optaplanner</groupId>
-            <artifactId>optaplanner-core</artifactId>
-            <version>6.1.0.Final</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.optaplanner</groupId>-->
+            <!--<artifactId>optaplanner-core</artifactId>-->
+            <!--<version>6.1.0.Final</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <scm>
@@ -106,6 +106,7 @@
     <modules>
         <module>cirrus-core</module>
         <module>cirrus-app</module>
+        <module>cirrus-app-shaded</module>
         <module>cirrus-cli</module>
         <module>cirrus-gui</module>
     </modules>

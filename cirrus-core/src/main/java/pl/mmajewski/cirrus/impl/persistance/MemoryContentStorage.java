@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.impl.persistance;
 
-import com.google.common.collect.Sets;
 import com.googlecode.cqengine.ConcurrentIndexedCollection;
 import com.googlecode.cqengine.IndexedCollection;
 import com.googlecode.cqengine.index.compound.CompoundIndex;
@@ -19,8 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
-import static com.googlecode.cqengine.query.QueryFactory.and;
-import static com.googlecode.cqengine.query.QueryFactory.equal;
+import static com.googlecode.cqengine.query.QueryFactory.*;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
@@ -130,8 +128,13 @@ public class MemoryContentStorage implements ContentStorage{
     }
 
     private Iterable<ContentPiece> getPersistentAndTemporaryPieces(Query<ContentPiece> query){
-        Set<ContentPiece> queriedPieces = Sets.newTreeSet(persistentContentPieces.retrieve(query));
-        queriedPieces.addAll(Sets.newTreeSet(temporaryContentPieces.retrieve(query)));
+        Set<ContentPiece> queriedPieces = new TreeSet<>();
+        for(ContentPiece contentPiece : persistentContentPieces.retrieve(query)){
+            queriedPieces.add(contentPiece);
+        }
+        for(ContentPiece contentPiece : temporaryContentPieces.retrieve(query)){
+            queriedPieces.add(contentPiece);
+        }
         return queriedPieces;
     }
 

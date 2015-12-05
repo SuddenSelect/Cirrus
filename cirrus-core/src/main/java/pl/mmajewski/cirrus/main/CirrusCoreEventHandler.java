@@ -43,6 +43,7 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
                         this.handle(evt);
                     }catch (Exception e){
                         logger.severe(e.getMessage());
+                        e.printStackTrace();
                         ActionFailureCirrusEvent event = new ActionFailureCirrusEvent();
                         event.setException(e);
                         event.setMessage(e.getMessage());

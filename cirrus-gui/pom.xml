@@ -14,18 +14,23 @@
     <dependencies>
         <dependency>
             <groupId>Cirrus</groupId>
-            <artifactId>cirrus-app</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>Cirrus</groupId>
-            <artifactId>cirrus-core</artifactId>
+            <artifactId>cirrus-app-shaded</artifactId>
             <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
             <version>7.0.3</version>
+        </dependency>
+
+        <!-- Dependency marked as 'provided' for exclusion from shaded jar.
+             All necessary classes should be provided by cirrus-app-shaded.
+             Added in order to fix problem with org.ow2.asm conflict. -->
+        <dependency>
+            <groupId>com.googlecode.cqengine</groupId>
+            <artifactId>cqengine</artifactId>
+            <version>2.0.3</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
