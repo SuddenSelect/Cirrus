@@ -11,8 +11,6 @@ import pl.mmajewski.cirrus.main.coreevents.AssembleContentCirrusEvent;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**

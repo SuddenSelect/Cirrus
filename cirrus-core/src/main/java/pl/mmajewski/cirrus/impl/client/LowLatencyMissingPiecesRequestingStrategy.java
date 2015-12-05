@@ -1,6 +1,5 @@
 package pl.mmajewski.cirrus.impl.client;
 
-import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
@@ -8,7 +7,10 @@ import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.main.coreevents.network.RequestContentCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusContentRequestingStrategy;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 29/11/15.

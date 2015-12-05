@@ -1,15 +1,12 @@
 package pl.mmajewski.cirrus.main.coreevents;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
-import pl.mmajewski.cirrus.common.event.GenericCirrusEventThread;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.impl.client.LowLatencyMissingPiecesRequestingStrategy;
-import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.network.RequestContentCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.CirrusContentRequestingStrategy;

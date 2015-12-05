@@ -7,7 +7,6 @@ import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Maciej Majewski on 29/11/15.

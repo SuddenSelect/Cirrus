@@ -12,7 +12,6 @@ import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
-import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;

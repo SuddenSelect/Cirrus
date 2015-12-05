@@ -3,7 +3,6 @@ package pl.mmajewski.cirrus.impl.client;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
-import pl.mmajewski.cirrus.main.coreevents.network.MetadataPropagationCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 
 import java.util.Set;

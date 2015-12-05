@@ -6,7 +6,9 @@ import pl.mmajewski.cirrus.gui.model.HostPanel;
 import pl.mmajewski.cirrus.gui.storage.HostStoragePanel;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class BrowseHostsDialog extends JDialog {
     private JPanel contentPane;

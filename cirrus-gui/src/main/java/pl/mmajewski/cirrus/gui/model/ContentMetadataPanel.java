@@ -5,7 +5,9 @@ import pl.mmajewski.cirrus.gui.RefreshablePanel;
 
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 /**
  * Created by Maciej Majewski on 01/12/15.

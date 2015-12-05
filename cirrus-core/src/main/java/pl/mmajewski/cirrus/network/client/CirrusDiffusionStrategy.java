@@ -5,7 +5,6 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -13,7 +13,6 @@ import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

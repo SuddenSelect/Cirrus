@@ -7,12 +7,10 @@ import com.googlecode.cqengine.index.hash.HashIndex;
 import com.googlecode.cqengine.persistence.offheap.OffHeapPersistence;
 import com.googlecode.cqengine.query.Query;
 import com.googlecode.cqengine.query.option.QueryOptions;
-import com.googlecode.cqengine.resultset.ResultSet;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

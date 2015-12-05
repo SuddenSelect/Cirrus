@@ -8,11 +8,9 @@ import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
-import pl.mmajewski.cirrus.main.coreevents.network.SendMetadataUpdateCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.storage.BalanceAndDiffuseStorageCirrusEvent;
 
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
