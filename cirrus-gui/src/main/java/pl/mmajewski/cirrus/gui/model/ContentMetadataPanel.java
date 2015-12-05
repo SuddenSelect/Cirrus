@@ -26,6 +26,9 @@ public class ContentMetadataPanel implements RefreshablePanel {
 
     synchronized public void apply(ContentMetadata contentMetadata){
         this.contentMetadata = contentMetadata;
+        if(contentMetadata==null){
+            return;
+        }
 
         contentIdTextField.setText(contentMetadata.getContentId());
         commiterCirrusIdTextField.setText(contentMetadata.getCommiterCirrusId());

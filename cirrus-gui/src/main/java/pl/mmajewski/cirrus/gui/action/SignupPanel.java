@@ -18,6 +18,23 @@ public class SignupPanel {
     private JTextField remoteCirrusIdTextField;
     private JFormattedTextField remoteAddressFormattedTextField;
     private JComboBox ipVersionComboBox;
+    private JCheckBox startModeCheckBox;
+
+    public String getLocalAddress(){
+        return (String) localIpComboBox.getSelectedItem();
+    }
+
+    public String getRemoteCirrusId(){
+        return remoteCirrusIdTextField.getText();
+    }
+
+    public String getRemoteAddress(){
+        return remoteAddressFormattedTextField.getText().split(":")[0];
+    }
+
+    public Integer getRemotePort(){
+        return Integer.parseInt(remoteAddressFormattedTextField.getText().split(":")[1]);
+    }
 
     private Pattern addressPattern = Pattern.compile("(.+):(\\d{1,5})");
     private InputVerifier addressVerifier = new InputVerifier() {
@@ -50,6 +67,19 @@ public class SignupPanel {
         remoteAddressFormattedTextField.setInputVerifier(addressVerifier);
         fillAdressesComboBox();
         ipVersionComboBox.addActionListener(e -> fillAdressesComboBox());
+
+        startModeCheckBox.addActionListener(e -> {
+            if(startModeCheckBox.isSelected()){
+                remoteAddressFormattedTextField.setText("");
+                remoteCirrusIdTextField.setText("");
+            }
+            remoteAddressFormattedTextField.setEnabled(!startModeCheckBox.isSelected());
+            remoteCirrusIdTextField.setEnabled(!startModeCheckBox.isSelected());
+        });
+    }
+
+    public boolean isStartingNew(){
+        return startModeCheckBox.isSelected();
     }
 
     private void fillAdressesComboBox(){
@@ -64,12 +94,12 @@ public class SignupPanel {
 
     private List<String> getActiveIPs(String ipVersion) throws SocketException, UnknownHostException {
         List<String> addrList = new ArrayList<>();
-        if("IPv4".equals(ipVersion)){
-            addrList.add(Inet4Address.getByName("0.0.0.0").getHostAddress());
-        }
-        if("IPv6".equals(ipVersion)){
-            addrList.add(Inet6Address.getByName("::").getHostAddress());
-        }
+//        if("IPv4".equals(ipVersion)){
+//            addrList.add(Inet4Address.getByName("0.0.0.0").getHostAddress());
+//        }
+//        if("IPv6".equals(ipVersion)){
+//            addrList.add(Inet6Address.getByName("::").getHostAddress());
+//        }
         Enumeration<NetworkInterface> allInterfaces = NetworkInterface.getNetworkInterfaces();
         while (allInterfaces.hasMoreElements()) {
             NetworkInterface ifc = allInterfaces.nextElement();

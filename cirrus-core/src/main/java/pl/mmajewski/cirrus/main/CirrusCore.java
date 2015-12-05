@@ -2,7 +2,9 @@ package pl.mmajewski.cirrus.main;
 
 import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.net.InetAddress;
@@ -35,6 +37,14 @@ public class CirrusCore {
 
     public CirrusEventHandler getCirrusCoreEventHandler(){
         return cirrusCoreEventHandler;
+    }
+
+    public AvailabilityStorage getAvailabilityStorage(){
+        return cirrusCoreEventHandler.getAvailabilityStorage();
+    }
+
+    public HostStorage getHostStorage(){
+        return cirrusCoreEventHandler.getHostStorage();
     }
 
     public ContentStorage getContentStorage() {

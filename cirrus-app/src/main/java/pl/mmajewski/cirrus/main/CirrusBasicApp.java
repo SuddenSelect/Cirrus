@@ -6,10 +6,13 @@ import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
+import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
+import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;
@@ -113,6 +116,14 @@ public class CirrusBasicApp  {
         @Override
         public void setContentStorage(ContentStorage contentStorage) {
             throw new UnsupportedOperationException();
+        }
+
+        public HostStorage getHostStorage() {
+            return core.getHostStorage();
+        }
+
+        public AvailabilityStorage getAvailabilityStorage() {
+            return core.getAvailabilityStorage();
         }
 
         public ContentStorage getContentStorage() {

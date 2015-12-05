@@ -20,6 +20,9 @@ public class ContentAvailabilityPanel implements RefreshablePanel {
 
     synchronized public void apply(ContentAvailability contentAvailability){
         this.contentAvailability = contentAvailability;
+        if(contentAvailability==null){
+            return;
+        }
 
         cirrusIdTextField.setText(contentAvailability.getHolderCirrusId());
         contentIdTextField.setText(contentAvailability.getContentId());

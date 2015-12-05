@@ -24,6 +24,9 @@ public class ContentPiecePanel implements RefreshablePanel {
 
     synchronized public void apply(ContentPiece contentPiece){
         this.contentPiece = contentPiece;
+        if(contentPiece==null){
+            return;
+        }
 
         contentIdTextField.setText(contentPiece.getContentId());
         sequenceTextField.setText(contentPiece.getSequence().toString());
