@@ -52,7 +52,12 @@ public class EqualDiffusionStrategy implements CirrusDiffusionStrategy<StoreCont
             ArrayList<ContentPiece> pieces = contentStorage.getAvailablePieces(metadata);
             HashSet<ContentPiece> batch;
             do {
-                batch = new HashSet<>(pieces.subList(batchNum * batchSize, (batchNum+1) * batchSize));
+                int fromIndex = batchNum * batchSize;
+                int toIndex = (batchNum+1) * batchSize;
+                if(toIndex>pieces.size()){
+                    toIndex=pieces.size();
+                }
+                batch = new HashSet<>(pieces.subList(fromIndex, toIndex));
                 if(batch.size()==0){
                     break;
                 }
