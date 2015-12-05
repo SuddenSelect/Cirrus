@@ -69,7 +69,7 @@ public class EqualDiffusionStrategy implements CirrusDiffusionStrategy<StoreCont
                     }
                     result.get(host).addContent(metadata, batch);
                 }
-            }while(batchSize.equals(batch.size()));
+            }while(batchSize<batch.size());
 
         }
         return result;
