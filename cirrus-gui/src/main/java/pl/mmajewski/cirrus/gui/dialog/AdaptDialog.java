@@ -37,11 +37,13 @@ public class AdaptDialog extends JDialog {
         this.refreshingThread = refreshingThread;
         refreshingThread.register(contentMetadataPanel);
         refreshingThread.register(contentStoragePanel);
+        refreshingThread.register(adaptPanel);
     }
     private void unregister(){
         if(refreshingThread!=null) {
             refreshingThread.unregister(contentMetadataPanel);
             refreshingThread.unregister(contentStoragePanel);
+            refreshingThread.register(adaptPanel);
         }
     }
 

@@ -1,10 +1,13 @@
 package pl.mmajewski.cirrus.main.coreevents.network;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
+import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -34,8 +37,23 @@ public class StoreContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandle
 
     @Override
     public void event(ServerCirrusEventHandler handler) {
-
-
-
+        handler.getContentStorage().updateContentMetadata(contentMap.keySet());
+        for(Set<ContentPiece> contentPieces : contentMap.values()) {
+            for(ContentPiece piece : contentPieces) {
+                try {
+                    handler.getContentStorage().storeContentPiece(piece);
+                } catch (IOException e) {
+                    ActionFailureCirrusEvent failureEvent = new ActionFailureCirrusEvent();
+                    failureEvent.setException(e);
+                    failureEvent.setMessage(e.getMessage());
+                    e.printStackTrace();
+                    try {
+                        handler.accept(failureEvent);
+                    } catch (EventHandlerClosingCirrusException e1) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }

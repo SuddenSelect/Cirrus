@@ -5,11 +5,14 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.gui.action.SignupPanel;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
+import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SignupDialog extends JDialog {
     private JPanel contentPane;
@@ -83,18 +86,26 @@ public class SignupDialog extends JDialog {
     }
 
     private void signup() throws UnknownHostException, EventHandlerClosingCirrusException {
-        Host host = new Host();
+        Set<Host> hosts = new HashSet<>();
+        Host remoteHost = new Host();
         if(!signupPanel.isStartingNew()) {
-            host.setPhysicalAddress(InetAddress.getByName(signupPanel.getRemoteAddress()));
-            host.setPort(signupPanel.getRemotePort());
-            host.setCirrusId(signupPanel.getRemoteCirrusId());
+            remoteHost.setPhysicalAddress(InetAddress.getByName(signupPanel.getRemoteAddress()));
+            remoteHost.setPort(signupPanel.getRemotePort());
+            remoteHost.setCirrusId(signupPanel.getRemoteCirrusId());
+
+            hosts.add(remoteHost);
         }
 
         cirrusBasicApp = new CirrusBasicApp(InetAddress.getByName(signupPanel.getLocalAddress()));
+        hosts.add(cirrusBasicApp.getAppEventHandler().getHostStorage().fetchLocalHost());
+
+        HostCirrusEvent hostEvent = new HostCirrusEvent();
+        hostEvent.setSharedHosts(hosts);
+        cirrusBasicApp.accept(hostEvent);
 
         if(!signupPanel.isStartingNew()) {
             SendSignupCirrusEvent event = new SendSignupCirrusEvent();
-            event.setHost(host);
+            event.setHost(remoteHost);
             cirrusBasicApp.accept(event);
         }
     }

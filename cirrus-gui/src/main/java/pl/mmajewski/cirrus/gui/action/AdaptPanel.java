@@ -83,15 +83,6 @@ public class AdaptPanel implements RefreshablePanel {
 
     private class ContentAdapterThread extends GenericCirrusEventThread{
 
-        public Integer getMaxProgress(){
-            return contentAdapter.getMaxProgress();
-        }
-
-        @Override
-        public Integer getProgress() {
-            return contentAdapter.getProgress();
-        }
-
         @Override
         public void run() {
             try {

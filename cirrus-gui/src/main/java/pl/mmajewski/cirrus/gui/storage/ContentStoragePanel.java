@@ -43,7 +43,7 @@ public class ContentStoragePanel implements RefreshablePanel {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    public void apply(ContentStorage contentStorage){
+    synchronized public void apply(ContentStorage contentStorage){
         this.contentStorage = contentStorage;
         if(contentStorage==null){
             return;

@@ -4,6 +4,7 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.gui.RefreshingThread;
 import pl.mmajewski.cirrus.gui.model.HostPanel;
 import pl.mmajewski.cirrus.gui.storage.HostStoragePanel;
+import pl.mmajewski.cirrus.main.CirrusBasicApp;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -15,7 +16,13 @@ public class BrowseHostsDialog extends JDialog {
     private HostStoragePanel hostStoragePanel;
     private HostPanel hostPanel;
 
+    private CirrusBasicApp cirrusBasicApp = null;
     private RefreshingThread refreshingThread = null;
+
+    public void setCirrusBasicApp(CirrusBasicApp cirrusBasicApp) {
+        this.cirrusBasicApp = cirrusBasicApp;
+        hostStoragePanel.apply(cirrusBasicApp.getAppEventHandler().getHostStorage());
+    }
 
     public void setRefreshingThread(RefreshingThread refreshingThread) {
         this.refreshingThread = refreshingThread;
@@ -56,7 +63,7 @@ public class BrowseHostsDialog extends JDialog {
     private void onClose() {
         if(refreshingThread!=null){
             refreshingThread.unregister(hostStoragePanel);
-            refreshingThread.register(hostPanel);
+            refreshingThread.unregister(hostPanel);
         }
         dispose();
     }

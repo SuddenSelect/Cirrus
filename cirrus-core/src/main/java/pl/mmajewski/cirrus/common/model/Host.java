@@ -31,8 +31,8 @@ public class Host implements Serializable, Comparable<Host> {
     private LocalDateTime lastSeen;//indexable
     private LocalDateTime lastUpdated;//indexable
     private List<String> tags = new ArrayList<>(0);//indexable
-    private Set<String/*contentID*/> availableContent;//indexable
-    private Map<String/*contentID*/, Set<Integer>> sharedPieces;
+    private Set<String/*contentID*/> availableContent = new HashSet<>();//indexable
+    private Map<String/*contentID*/, Set<Integer>> sharedPieces = new HashMap<>();
     private /*transient*/ Integer latency = -1;
     // IMPORTANT: transient fields become NULL when inserted into CQEngine collection
     // Therefore, field needs to be reset by server upon receiving

@@ -1,5 +1,6 @@
 package pl.mmajewski.cirrus.gui.storage;
 
+import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.gui.RefreshablePanel;
 
@@ -25,8 +26,9 @@ public class HostStoragePanel implements RefreshablePanel{
             private Object previous = null;
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                propertyChangeSupport.firePropertyChange("selectedHost", previous, hostList.getSelectedValue());
-                previous = hostList.getSelectedValue();
+                Host retrieved = hostStorage.fetchHost(((Host) hostList.getSelectedValue()).getCirrusId());
+                propertyChangeSupport.firePropertyChange("selectedHost", previous, retrieved);
+                previous = retrieved;
             }
         });
     }
@@ -39,7 +41,7 @@ public class HostStoragePanel implements RefreshablePanel{
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void apply(HostStorage hostStorage){
+    synchronized public void apply(HostStorage hostStorage){
         this.hostStorage = hostStorage;
         if(hostStorage==null){
             return;

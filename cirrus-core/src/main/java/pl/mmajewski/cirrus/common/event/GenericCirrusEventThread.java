@@ -4,8 +4,8 @@ package pl.mmajewski.cirrus.common.event;
  * Created by Maciej Majewski on 2015-02-07.
  */
 public abstract class GenericCirrusEventThread implements CirrusEventThread {
-    private Integer progress;
-    private String message;
+    private Integer progress = 0;
+    private String message = "";
     private boolean run = true;
 
     @Override

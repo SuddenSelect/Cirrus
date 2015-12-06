@@ -33,6 +33,7 @@ public class DownloadDialog extends JDialog {
     public void setRefreshingThread(RefreshingThread refreshingThread) {
         this.refreshingThread = refreshingThread;
         refreshingThread.register(contentStoragePanel);
+        refreshingThread.register(downloadPanel);
     }
 
     public DownloadDialog() {
@@ -81,6 +82,7 @@ public class DownloadDialog extends JDialog {
 
     private void onClose() {
         refreshingThread.unregister(contentStoragePanel);
+        refreshingThread.register(downloadPanel);
         dispose();
     }
 

@@ -16,7 +16,7 @@ public class BroadcastPropagationStrategy<E extends CirrusEvent> implements Cirr
         public Set<Host> getTargets(HostStorage hostStorage, E event) {
             Set<Host> targets = hostStorage.fetchAllHosts();
             targets.removeIf(host -> event.getTrace().contains(host.getCirrusId()));
-            targets.removeIf(host -> host.equals(hostStorage.fetchLocalHost()));
+//            targets.removeIf(host -> host.equals(hostStorage.fetchLocalHost()));
             return targets;
         }
 

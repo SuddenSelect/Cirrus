@@ -77,12 +77,14 @@ public class HostPanel implements RefreshablePanel {
 
         DefaultMutableTreeNode availableContent = new DefaultMutableTreeNode("Avaliable Content");
         for(String content : host.getAvailableContent()){
+            System.err.println("C: "+content);
             availableContent.add(new DefaultMutableTreeNode(content));
         }
         root.add(availableContent);
 
         DefaultMutableTreeNode sharedPieces = new DefaultMutableTreeNode("Shared Pieces");
         for(Map.Entry entry : host.getSharedPiecesMap().entrySet()){
+            System.err.println("E: "+entry);
             sharedPieces.add(new DefaultMutableTreeNode(entry));
         }
         root.add(sharedPieces);

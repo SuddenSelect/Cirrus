@@ -79,7 +79,12 @@ public class MemoryHostStorage implements HostStorage {
 
     @Override
     public Set<Host> fetchAllHosts() {
-        return new HashSet<>(hosts);
+        Set<Host> all = new HashSet<>();
+        Query<Host> query = all(Host.class);
+        for(Host host : hosts.retrieve(query)){
+            all.add(host);
+        }
+        return all;
     }
 
     @Override

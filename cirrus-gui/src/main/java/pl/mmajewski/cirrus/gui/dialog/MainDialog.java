@@ -2,6 +2,7 @@ package pl.mmajewski.cirrus.gui.dialog;
 
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.gui.RefreshingThread;
@@ -16,7 +17,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 public class MainDialog extends JDialog {
     private JPanel contentPane;
@@ -95,6 +98,8 @@ public class MainDialog extends JDialog {
                     downloadButton.setEnabled(true);
                     browseHostsButton.setEnabled(true);
 
+                    failuresPanel.setCirrusBasicApp(cirrusBasicApp);
+
                     CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
                     contentStoragePanel.apply(coreEventHandler.getContentStorage());
                 }
@@ -127,6 +132,7 @@ public class MainDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BrowseHostsDialog browseHostsDialog = new BrowseHostsDialog();
+                browseHostsDialog.setCirrusBasicApp(cirrusBasicApp);
                 browseHostsDialog.setRefreshingThread(refreshingThread);
                 browseHostsDialog.pack();
                 browseHostsDialog.setVisible(true);

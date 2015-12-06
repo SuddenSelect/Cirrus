@@ -18,46 +18,11 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4b537" class="javax.swing.JButton" binding="signupButton" default-binding="true">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Signup"/>
-            </properties>
-          </component>
           <vspacer id="50d56">
             <constraints>
               <grid row="4" column="0" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="590ea" class="javax.swing.JButton" binding="adaptFileButton" default-binding="true">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <enabled value="false"/>
-              <text value="Adapt File"/>
-            </properties>
-          </component>
-          <component id="e47c1" class="javax.swing.JButton" binding="downloadButton" default-binding="true">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <enabled value="false"/>
-              <text value="Download"/>
-            </properties>
-          </component>
-          <component id="3ccba" class="javax.swing.JButton" binding="browseHostsButton" default-binding="true">
-            <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <enabled value="false"/>
-              <text value="Browse Hosts"/>
-            </properties>
-          </component>
           <nested-form id="66c50" form-file="pl/mmajewski/cirrus/gui/storage/ContentStoragePanel.form" binding="contentStoragePanel">
             <constraints>
               <grid row="0" column="1" row-span="7" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -92,6 +57,53 @@
                 <properties>
                   <font name="Source Code Pro" style="3"/>
                   <text value="Build: 1.0"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="5ca82" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="3" left="3" bottom="3" right="3"/>
+            <constraints>
+              <grid row="0" column="0" row-span="4" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="line" title="Actions">
+              <color color="-4473925"/>
+            </border>
+            <children>
+              <component id="4b537" class="javax.swing.JButton" binding="signupButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Signup"/>
+                </properties>
+              </component>
+              <component id="590ea" class="javax.swing.JButton" binding="adaptFileButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="false"/>
+                  <text value="Adapt File"/>
+                </properties>
+              </component>
+              <component id="e47c1" class="javax.swing.JButton" binding="downloadButton" default-binding="true">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="false"/>
+                  <text value="Download"/>
+                </properties>
+              </component>
+              <component id="3ccba" class="javax.swing.JButton" binding="browseHostsButton" default-binding="true">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="false"/>
+                  <text value="Browse Hosts"/>
                 </properties>
               </component>
             </children>

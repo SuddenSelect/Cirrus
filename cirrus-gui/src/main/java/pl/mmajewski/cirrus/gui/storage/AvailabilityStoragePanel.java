@@ -27,7 +27,7 @@ public class AvailabilityStoragePanel implements RefreshablePanel{
         this.availabilityStorage = availabilityStorage;
     }
 
-    public void apply(String contentId){
+    synchronized public void apply(String contentId){
         this.contentId = contentId;
         if(contentId==null){
             return;
@@ -42,7 +42,6 @@ public class AvailabilityStoragePanel implements RefreshablePanel{
             data.add(availability.getContentId());
             data.add(availability.getHolderCirrusId());
             data.add(availability.getPiecesSequenceNumbers());
-
             tableModel.addRow(data);
         }
         availabilityTable.setModel(tableModel);
