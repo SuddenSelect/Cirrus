@@ -32,6 +32,18 @@
             <version>2.0.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>Cirrus</groupId>
+            <artifactId>cirrus-app</artifactId>
+            <version>0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>Cirrus</groupId>
+            <artifactId>cirrus-core</artifactId>
+            <version>0.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
