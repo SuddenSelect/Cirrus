@@ -32,10 +32,12 @@ public class MainDialog extends JDialog {
 
     private CirrusBasicApp cirrusBasicApp = null;
     private RefreshingThread refreshingThread = new RefreshingThread();
-    private Thread runningRefreshingThread = new Thread(refreshingThread);
+    private Thread runningRefreshingThread = null;
 
     public MainDialog() {
         buildLabel.setText(getBuild());
+
+        runningRefreshingThread = new Thread(refreshingThread);
         runningRefreshingThread.start();
 
         setContentPane(contentPane);
@@ -63,14 +65,19 @@ public class MainDialog extends JDialog {
         contentStoragePanel.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
-                CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
-                ContentStorage contentStorage = coreEventHandler.getContentStorage();
-                ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
-                contentMetadataPanel.apply(contentMetadata);
+                if(cirrusBasicApp != null && e.getNewValue()!=null) {
+                    CirrusEventHandler coreEventHandler = cirrusBasicApp.getAppEventHandler().getCoreEventHandler();
+                    ContentStorage contentStorage = coreEventHandler.getContentStorage();
+                    ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
+                    contentMetadataPanel.apply(contentMetadata);
 
-                AvailabilityStorage availabilityStorage = cirrusBasicApp.getAppEventHandler().getAvailabilityStorage();
-                availabilityStoragePanel.setAvailabilityStorage(availabilityStorage);
-                availabilityStoragePanel.apply((String) e.getNewValue());
+                    AvailabilityStorage availabilityStorage = cirrusBasicApp.getAppEventHandler().getAvailabilityStorage();
+                    availabilityStoragePanel.setAvailabilityStorage(availabilityStorage);
+                    availabilityStoragePanel.apply((String) e.getNewValue());
+                } else {
+                    contentMetadataPanel.apply(null);
+                    availabilityStoragePanel.apply(null);
+                }
             }
         });
 

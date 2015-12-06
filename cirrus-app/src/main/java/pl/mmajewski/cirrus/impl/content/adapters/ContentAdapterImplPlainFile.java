@@ -111,6 +111,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 //                ByteBuffer chunk = ByteBuffer.allocateDirect(Constants.CHUNK_SIZE);
                 ByteBuffer chunk = ByteBuffer.allocate(Constants.CHUNK_SIZE);
                 fileChannel.read(chunk);
+                chunk.rewind();
                 chunks[i] = chunk;
                 setProgress(i);
             }

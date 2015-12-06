@@ -7,6 +7,7 @@ import pl.mmajewski.cirrus.common.util.CirrusChecksum;
 import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,8 @@ import java.util.Map;
             String cirrusId = CirrusIdGenerator.generateContentId(owner, contentName);
         metadata.setContentId(cirrusId);
         metadata.setPiecesChecksums(piecesChecksums);
+        metadata.setLastUpdated(LocalDateTime.now());
+        metadata.setAvailableSince(LocalDateTime.now());
 
         pieces = new ArrayList<>(piecesNum);
     }
@@ -46,6 +49,7 @@ import java.util.Map;
             pieceChecksum.update(chunk);
             chunk.rewind();
             totalChecksum.update(chunk);
+            chunk.rewind();
 
             ContentPiece newPiece = new ContentPiece();
             newPiece.setContent(chunk);

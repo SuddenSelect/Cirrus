@@ -76,6 +76,11 @@ public abstract class CirrusEvent <CEH extends CirrusEventHandler> implements Se
         return e instanceof CirrusEvent && eventId.equals(((CirrusEvent)e).eventId) && creationTime.isEqual(((CirrusEvent)e).creationTime);
     }
 
+    @Override
+    public int hashCode() {
+        return ("HASHCODE"+eventId.hashCode()+creationTime.hashCode()).hashCode();
+    }
+
     /**
      * Returns thread created by the Event - at most one
      * @return thread reference or null

@@ -150,6 +150,11 @@ public class Host implements Serializable, Comparable<Host> {
     }
 
     @Override
+    public int hashCode() {
+        return cirrusId.hashCode();
+    }
+
+    @Override
     public int compareTo(Host o) {
         return this.cirrusId.compareTo(o.cirrusId);
     }

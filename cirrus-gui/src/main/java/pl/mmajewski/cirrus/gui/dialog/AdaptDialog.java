@@ -1,6 +1,8 @@
 package pl.mmajewski.cirrus.gui.dialog;
 
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
+import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.gui.RefreshingThread;
 import pl.mmajewski.cirrus.gui.action.AdaptPanel;
 import pl.mmajewski.cirrus.gui.model.ContentMetadataPanel;
@@ -11,6 +13,8 @@ import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class AdaptDialog extends JDialog {
     private JPanel contentPane;
@@ -69,15 +73,28 @@ public class AdaptDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-                                               @Override
-                                               public void actionPerformed(ActionEvent e) {
-                                                   AdaptDialog.this.onCancel();
-                                               }
-                                           },
+        contentPane.registerKeyboardAction(
+                new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       AdaptDialog.this.onCancel();
+                   }
+                },
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        contentStoragePanel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                if(cirrusBasicApp != null && e.getNewValue()!=null) {
+                    ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getContentStorage();
+                    ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
+                    contentMetadataPanel.apply(contentMetadata);
+                }else{
+                    contentMetadataPanel.apply(null);
+                }
+            }
+        });
     }
 
     private void commit() throws EventHandlerClosingCirrusException {

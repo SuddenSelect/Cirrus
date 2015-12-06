@@ -69,10 +69,12 @@ public class DownloadDialog extends JDialog {
         contentStoragePanel.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
-                ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
-                ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
-                ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(contentMetadata, cirrusBasicApp.getAppEventHandler().getCoreEventHandler());
-                downloadPanel.setDownloadObjects(contentAccessor, contentMetadata);
+                if(cirrusBasicApp != null && e.getNewValue()!=null) {
+                    ContentStorage contentStorage = cirrusBasicApp.getAppEventHandler().getCoreEventHandler().getContentStorage();
+                    ContentMetadata contentMetadata = contentStorage.getContentMetadata((String) e.getNewValue());
+                    ContentAccessor contentAccessor = new ContentAccessorImplPlainBQueue(contentMetadata, cirrusBasicApp.getAppEventHandler().getCoreEventHandler());
+                    downloadPanel.setDownloadObjects(contentAccessor, contentMetadata);
+                }
             }
         });
     }
