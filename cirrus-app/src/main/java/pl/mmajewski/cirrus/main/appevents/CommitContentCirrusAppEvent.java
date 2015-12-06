@@ -7,7 +7,10 @@ import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.event.CirrusAppEvent;
 import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
+import pl.mmajewski.cirrus.impl.client.BroadcastPropagationStrategy;
+import pl.mmajewski.cirrus.impl.client.EqualDiffusionStrategy;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
+import pl.mmajewski.cirrus.main.coreevents.network.SendAvailabilityPropagationCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.storage.BalanceAndDiffuseStorageCirrusEvent;
 
 import java.io.IOException;
@@ -18,9 +21,14 @@ import java.io.IOException;
 public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.AppEventHandler> {
 
     private boolean broadcastChange = true;
+    private int diffusionRedundancy = 1;
 
     public void setBroadcastChange(boolean broadcastChange){
         this.broadcastChange = broadcastChange;
+    }
+
+    public void setDiffusionRedundancy(int diffusionRedundancy) {
+        this.diffusionRedundancy = diffusionRedundancy;
     }
 
     @Override
@@ -43,6 +51,8 @@ public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.A
         }else {
             BalanceAndDiffuseStorageCirrusEvent evt = new BalanceAndDiffuseStorageCirrusEvent();
             evt.setStorageToCommit(prepared);
+            evt.setDiffusionStrategy(new EqualDiffusionStrategy().setRedundancy(diffusionRedundancy));
+            evt.setAvailabilityPropagationStrategy(new BroadcastPropagationStrategy<SendAvailabilityPropagationCirrusEvent>());
             try {
                 coreHandler.accept(evt);
             } catch (EventHandlerClosingCirrusException e) {

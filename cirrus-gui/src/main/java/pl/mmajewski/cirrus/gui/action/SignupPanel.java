@@ -66,6 +66,7 @@ public class SignupPanel {
     };
 
     public SignupPanel() {
+        remoteAddressFormattedTextField.setVerifyInputWhenFocusTarget(false);
         remoteAddressFormattedTextField.setInputVerifier(addressVerifier);
         fillAdressesComboBox();
         ipVersionComboBox.addActionListener(new ActionListener() {

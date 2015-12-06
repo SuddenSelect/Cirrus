@@ -7,12 +7,12 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.impl.client.EqualDiffusionStrategy;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.SendAvailabilityPropagationCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.StoreContentCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.CirrusDiffusionStrategy;
+import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
@@ -26,10 +26,20 @@ import java.util.Set;
  */
 public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
-    private ContentStorage toCommit;
+    private ContentStorage storageToCommit;
+    private CirrusDiffusionStrategy<StoreContentCirrusEvent> diffusionStrategy = null;
+    private CirrusEventPropagationStrategy availabilityPropagationStrategy = null;
 
-    public void setStorageToCommit(ContentStorage toCommit) {
-        this.toCommit = toCommit;
+    public void setStorageToCommit(ContentStorage storageToCommit) {
+        this.storageToCommit = storageToCommit;
+    }
+
+    public void setDiffusionStrategy(CirrusDiffusionStrategy<StoreContentCirrusEvent> diffusionStrategy) {
+        this.diffusionStrategy = diffusionStrategy;
+    }
+
+    public void setAvailabilityPropagationStrategy(CirrusEventPropagationStrategy availabilityPropagationStrategy) {
+        this.availabilityPropagationStrategy = availabilityPropagationStrategy;
     }
 
     @Override
@@ -37,8 +47,7 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirru
 
         Set<ContentAvailability> availabilities = new HashSet<>();
 
-        CirrusDiffusionStrategy<StoreContentCirrusEvent> diffusionStrategy = new EqualDiffusionStrategy();
-        Map<Host, StoreContentCirrusEvent> targets = diffusionStrategy.getTargets(toCommit, handler.getHostStorage());
+        Map<Host, StoreContentCirrusEvent> targets = diffusionStrategy.getTargets(storageToCommit, handler.getHostStorage());
 
         ConnectionPool connectionPool = handler.getConnectionPool();
 
@@ -87,6 +96,7 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirru
 
         SendAvailabilityPropagationCirrusEvent availabilityPropagationEvent = new SendAvailabilityPropagationCirrusEvent();
         availabilityPropagationEvent.setAvailabilities(availabilities);
+        availabilityPropagationEvent.setPropagationStrategy(availabilityPropagationStrategy);
 
         try {
             handler.accept(availabilityPropagationEvent);

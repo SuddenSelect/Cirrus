@@ -23,10 +23,16 @@ import java.util.Set;
  * Created by Maciej Majewski on 2015-02-06.
  */
 public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+
     private ContentMetadata metadata;
+    private CirrusContentRequestingStrategy<RequestContentCirrusEvent> requestingStrategy = null;
 
     public void setMetadata(ContentMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    public void setRequestingStrategy(CirrusContentRequestingStrategy<RequestContentCirrusEvent> requestingStrategy) {
+        this.requestingStrategy = requestingStrategy;
     }
 
     @Override
@@ -36,7 +42,6 @@ public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHan
 
         ConnectionPool connectionPool = handler.getConnectionPool();
 
-        CirrusContentRequestingStrategy<RequestContentCirrusEvent> requestingStrategy = new LowLatencyMissingPiecesRequestingStrategy();
         Map<Host, RequestContentCirrusEvent> targets = requestingStrategy.getTargets(handler.getHostStorage(), handler.getContentStorage(), metadata);
 
         Set<String> trace = new HashSet<>();

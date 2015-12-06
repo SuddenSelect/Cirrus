@@ -29,11 +29,12 @@ public class EqualDiffusionStrategy implements CirrusDiffusionStrategy<StoreCont
 
     private int redundancy = 1;
 
-    public void setRedundancy(int redundancy){
+    public EqualDiffusionStrategy setRedundancy(int redundancy){
         if(redundancy < 1){
             throw new RuntimeException("Incorrect redundancy value");
         }
         this.redundancy = redundancy;
+        return this;
     }
 
     @Override

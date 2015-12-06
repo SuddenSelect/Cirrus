@@ -12,6 +12,9 @@ import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,6 +26,7 @@ public class AdaptDialog extends JDialog {
     private AdaptPanel adaptPanel;
     private ContentMetadataPanel contentMetadataPanel;
     private ContentStoragePanel contentStoragePanel;
+    private JSpinner redundancySpinner;
 
     private CirrusBasicApp cirrusBasicApp = null;
     private RefreshingThread refreshingThread = null;
@@ -97,10 +101,26 @@ public class AdaptDialog extends JDialog {
                 }
             }
         });
+
+        redundancySpinner.setValue(1);
+        redundancySpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int maxValue = cirrusBasicApp.getAppEventHandler().getHostStorage().size();
+                int value = (Integer) redundancySpinner.getValue();
+                if(value < 1){
+                    redundancySpinner.setValue(1);
+                }
+                if(value > maxValue){
+                    redundancySpinner.setValue(maxValue);
+                }
+            }
+        });
     }
 
     private void commit() throws EventHandlerClosingCirrusException {
         CommitContentCirrusAppEvent event = new CommitContentCirrusAppEvent();
+        event.setDiffusionRedundancy((Integer) redundancySpinner.getValue());
         cirrusBasicApp.accept(event);
     }
     private void onOK() {

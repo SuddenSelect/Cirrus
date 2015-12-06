@@ -31,6 +31,7 @@ public class DownloadPanel implements RefreshablePanel{
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setMultiSelectionEnabled(false);
 
+        filePathTextField.setVerifyInputWhenFocusTarget(false);
         filePathTextField.setInputVerifier(new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {

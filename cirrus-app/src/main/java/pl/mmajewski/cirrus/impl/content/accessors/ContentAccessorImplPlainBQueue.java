@@ -7,6 +7,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.content.ContentAccessor;
+import pl.mmajewski.cirrus.impl.client.LowLatencyMissingPiecesRequestingStrategy;
 import pl.mmajewski.cirrus.main.coreevents.AssembleContentCirrusEvent;
 
 import java.io.*;
@@ -49,6 +50,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
 
             AssembleContentCirrusEvent evt = new AssembleContentCirrusEvent();
             evt.setMetadata(metadata);
+            evt.setRequestingStrategy(new LowLatencyMissingPiecesRequestingStrategy());
             evt.init();
             coreEventHandler.accept(evt);
         }else{

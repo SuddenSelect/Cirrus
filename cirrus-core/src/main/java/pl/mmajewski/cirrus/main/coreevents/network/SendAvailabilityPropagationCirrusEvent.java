@@ -22,9 +22,14 @@ import java.util.Set;
 public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<ContentAvailability> availabilities = null;
+    private CirrusEventPropagationStrategy propagationStrategy = null;
 
     public void setAvailabilities(Set<ContentAvailability> availabilities) {
         this.availabilities = availabilities;
+    }
+
+    public void setPropagationStrategy(CirrusEventPropagationStrategy propagationStrategy) {
+        this.propagationStrategy = propagationStrategy;
     }
 
     @Override
@@ -34,7 +39,6 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
         propagationEvent.addTrace(this.getTrace());
 //        propagationEvent.addTrace(handler.getLocalCirrusId());
 
-        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<SendAvailabilityPropagationCirrusEvent>();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), propagationEvent);
 
         Set<String> trace = new HashSet<>();
