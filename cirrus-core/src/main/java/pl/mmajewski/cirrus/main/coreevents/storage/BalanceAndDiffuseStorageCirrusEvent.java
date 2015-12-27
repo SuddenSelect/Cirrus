@@ -8,7 +8,7 @@ import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
-import pl.mmajewski.cirrus.main.coreevents.network.SendAvailabilityPropagationCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendAvailabilityPropagationCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.StoreContentCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.CirrusDiffusionStrategy;

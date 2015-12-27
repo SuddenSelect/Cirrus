@@ -4,7 +4,7 @@ import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.gui.action.SignupPanel;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
-import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendSignupCirrusEvent;
 import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
 
 import javax.swing.*;

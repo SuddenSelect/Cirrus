@@ -6,6 +6,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendMetadataUpdateCirrusEvent;
 
 import java.util.Set;
 

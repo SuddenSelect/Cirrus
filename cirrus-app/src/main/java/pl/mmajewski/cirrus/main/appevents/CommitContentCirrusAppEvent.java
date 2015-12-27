@@ -10,7 +10,7 @@ import pl.mmajewski.cirrus.exception.EventCancelledCirrusException;
 import pl.mmajewski.cirrus.impl.client.BroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.impl.client.EqualDiffusionStrategy;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
-import pl.mmajewski.cirrus.main.coreevents.network.SendAvailabilityPropagationCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendAvailabilityPropagationCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.storage.BalanceAndDiffuseStorageCirrusEvent;
 
 import java.io.IOException;

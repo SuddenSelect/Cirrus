@@ -16,7 +16,7 @@ import pl.mmajewski.cirrus.main.CirrusCoreServer;
 import pl.mmajewski.cirrus.main.appevents.AdaptFileCirrusAppEvent;
 import pl.mmajewski.cirrus.main.appevents.CleanupContentCirrusAppEvent;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
-import pl.mmajewski.cirrus.main.coreevents.network.SendSignupCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendSignupCirrusEvent;
 
 import java.io.File;
 import java.io.IOException;

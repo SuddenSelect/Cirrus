@@ -1,9 +1,10 @@
-package pl.mmajewski.cirrus.main.coreevents.network;
+package pl.mmajewski.cirrus.main.coreevents.send;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.MetadataPropagationCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
