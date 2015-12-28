@@ -7,8 +7,8 @@ import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.MetadataPropagationCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
-import pl.mmajewski.cirrus.network.event.FetchContentCirrusEvent;
-import pl.mmajewski.cirrus.network.event.HostCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.FetchContentCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.HostCirrusEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
