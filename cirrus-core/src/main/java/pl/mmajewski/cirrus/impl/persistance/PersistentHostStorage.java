@@ -1,44 +1,27 @@
 package pl.mmajewski.cirrus.impl.persistance;
 
 import com.googlecode.cqengine.ConcurrentIndexedCollection;
-import com.googlecode.cqengine.IndexedCollection;
+import com.googlecode.cqengine.index.compound.CompoundIndex;
+import com.googlecode.cqengine.index.hash.HashIndex;
 import com.googlecode.cqengine.persistence.disk.DiskPersistence;
 import pl.mmajewski.cirrus.common.model.Host;
+import pl.mmajewski.cirrus.common.persistance.HostStorage;
 
 import java.io.File;
-import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 15/09/15.
  */
-public class PersistentHostStorage extends MemoryHostStorage {
-    private final IndexedCollection<Host> hosts;
-    private final File hostsFile;
-
+public class PersistentHostStorage extends AbstractHostStorage implements HostStorage {
     public PersistentHostStorage(Host localhost, File persistancePath) {
-        super(localhost);
-        hostsFile = new File(persistancePath,"hosts");
-        hosts = new ConcurrentIndexedCollection<Host>(
-                DiskPersistence.onPrimaryKeyInFile(
-                        Host.IDX_CIRRUS_ID,
-                        hostsFile));
-        load();
+        super(localhost, new ConcurrentIndexedCollection<Host>(
+                DiskPersistence.onPrimaryKeyInFile(Host.IDX_CIRRUS_ID, new File(persistancePath,"hosts"))){{
+            addIndex(CompoundIndex.onAttributes(Host.IDX_TAGS, Host.IDX_LAST_UPDATED));
+            addIndex(CompoundIndex.onAttributes(Host.IDX_TAGS, Host.IDX_LAST_SEEN));
+            addIndex(HashIndex.onAttribute(Host.IDX_CIRRUS_ID));
+            addIndex(HashIndex.onAttribute(Host.IDX_INET_ADDRESS));
+            addIndex(HashIndex.onAttribute(Host.IDX_AVAILABLE_CONTENT));
+        }});
     }
 
-    private void load(){
-        super.updateHosts(hosts);
-    }
-
-    @Override
-    public void updateHosts(Set<Host> hosts) {
-        super.updateHosts(hosts);
-        this.hosts.removeAll(hosts);
-        this.hosts.addAll(hosts);
-    }
-
-    @Override
-    public void deleteHosts(Set<Host> hosts) {
-        super.deleteHosts(hosts);
-        this.hosts.removeAll(hosts);
-    }
 }
