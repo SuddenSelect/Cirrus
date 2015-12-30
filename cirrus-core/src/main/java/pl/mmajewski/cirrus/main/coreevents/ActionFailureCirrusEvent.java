@@ -1,6 +1,7 @@
 package pl.mmajewski.cirrus.main.coreevents;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
 
     private String message;
     private Throwable exception;
+    private ContentPiece invalidContentPiece;
 
     public Throwable getException() {
         return exception;
@@ -28,6 +30,14 @@ public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public ContentPiece getInvalidContentPiece() {
+        return invalidContentPiece;
+    }
+
+    public void setInvalidContentPiece(ContentPiece invalidContentPiece) {
+        this.invalidContentPiece = invalidContentPiece;
     }
 
     @Override
