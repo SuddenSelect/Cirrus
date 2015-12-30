@@ -1,6 +1,6 @@
 package pl.mmajewski.cirrus.impl.content.adapters;
 
-import pl.mmajewski.cirrus.common.Constants;
+import pl.mmajewski.cirrus.main.Constants;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.content.ContentAdapter;

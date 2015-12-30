@@ -3,7 +3,7 @@ package pl.mmajewski.cirrus.tests;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pl.mmajewski.cirrus.common.Constants;
+import pl.mmajewski.cirrus.main.Constants;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentMetadata;
