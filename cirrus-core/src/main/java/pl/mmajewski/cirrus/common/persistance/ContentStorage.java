@@ -46,6 +46,13 @@ public interface ContentStorage {
     public void updateContentMetadata(Set<ContentMetadata> metadata);
 
     /**
+     * Updates Content Pieces or adds if not existent.
+     * Should in separate thread verify correctness.
+     * @param contentPieces set of ContentMetadata to be updated
+     */
+    public void updateContentPieces(Set<ContentPiece> contentPieces);
+
+    /**
      * Removes ContentMetadata and all pieces tied to it.
      * Invoked only when deleting content entirely.
      * @param metadata
