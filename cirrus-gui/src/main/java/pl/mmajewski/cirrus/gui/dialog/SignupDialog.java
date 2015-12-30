@@ -5,7 +5,7 @@ import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.gui.action.SignupPanel;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.coreevents.send.SendSignupCirrusEvent;
-import pl.mmajewski.cirrus.main.coreevents.network.HostCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.HostUpdateCirrusEvent;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -99,7 +99,7 @@ public class SignupDialog extends JDialog {
         cirrusBasicApp = new CirrusBasicApp(InetAddress.getByName(signupPanel.getLocalAddress()));
         hosts.add(cirrusBasicApp.getAppEventHandler().getHostStorage().fetchLocalHost());
 
-        HostCirrusEvent hostEvent = new HostCirrusEvent();
+        HostUpdateCirrusEvent hostEvent = new HostUpdateCirrusEvent();
         hostEvent.setSharedHosts(hosts);
         cirrusBasicApp.accept(hostEvent);
 

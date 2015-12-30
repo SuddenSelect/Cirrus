@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by Maciej Majewski on 09/11/14.
  */
-public class HostCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+public class HostUpdateCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<Host> sharedHosts;
 

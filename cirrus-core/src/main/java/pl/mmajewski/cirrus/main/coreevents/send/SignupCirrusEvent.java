@@ -7,8 +7,8 @@ import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.network.MetadataPropagationCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
 import pl.mmajewski.cirrus.network.client.ClientEventConnection;
-import pl.mmajewski.cirrus.main.coreevents.network.FetchContentCirrusEvent;
-import pl.mmajewski.cirrus.main.coreevents.network.HostCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.FetchContentMetadataCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.network.HostUpdateCirrusEvent;
 import pl.mmajewski.cirrus.network.exception.NetworkCirrusException;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Created by Maciej Majewski on 21/11/15.
  */
-public class SignupCirrusEvent extends HostCirrusEvent {
+public class SignupCirrusEvent extends HostUpdateCirrusEvent {
 
     private Set<Host> joiningHosts = null;
 
@@ -30,11 +30,11 @@ public class SignupCirrusEvent extends HostCirrusEvent {
     public void event(ServerCirrusEventHandler handler) {
         super.event(handler);
 
-        HostCirrusEvent hostShareEvent = new HostCirrusEvent();
+        HostUpdateCirrusEvent hostShareEvent = new HostUpdateCirrusEvent();
         hostShareEvent.setSharedHosts(handler.getHostStorage().fetchAllHosts());
         hostShareEvent.addTrace(handler.getLocalCirrusId());
 
-        FetchContentCirrusEvent metadataShareEvent = new FetchContentCirrusEvent();
+        FetchContentMetadataCirrusEvent metadataShareEvent = new FetchContentMetadataCirrusEvent();
         metadataShareEvent.setSharedMetadata(handler.getContentStorage().getAllContentMetadata());
         metadataShareEvent.addTrace(handler.getLocalCirrusId());
 
@@ -60,7 +60,7 @@ public class SignupCirrusEvent extends HostCirrusEvent {
             }
         }
 
-        HostCirrusEvent broadcastJoinedHosts = new HostCirrusEvent();
+        HostUpdateCirrusEvent broadcastJoinedHosts = new HostUpdateCirrusEvent();
         broadcastJoinedHosts.addTrace(this.getTrace());
         broadcastJoinedHosts.addTrace(handler.getLocalCirrusId());
 

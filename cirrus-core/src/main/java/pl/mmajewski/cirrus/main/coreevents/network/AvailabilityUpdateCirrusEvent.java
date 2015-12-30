@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by Maciej Majewski on 29/11/15.
  */
-public class AvailabilityPropagationStrategy extends CirrusEvent<ServerCirrusEventHandler> {
+public class AvailabilityUpdateCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
 
     private Set<ContentAvailability> availabilities = null;
 
