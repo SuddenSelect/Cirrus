@@ -79,6 +79,15 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
     }
 
     @Override
+    public void updateContentPieces(Set<ContentPiece> contentPieces){
+        for(ContentPiece contentPiece : contentPieces) {
+            persistentContentPieces.removeIf(e -> e.getContentId().equals(contentPiece.getContentId())
+                                               && e.getSequence().equals(contentPiece.getSequence()));
+        }
+        persistentContentPieces.addAll(contentPieces);
+    }
+
+    @Override
     public void deleteContent(ContentMetadata metadata) {
         contentMetadatas.remove(metadata);
         Predicate<ContentPiece> predicate = contentPiece -> contentPiece.getContentId().equals(metadata.getContentId());
