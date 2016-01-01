@@ -32,6 +32,8 @@ public class DeliverContentCirrusEvent extends CirrusEvent<CirrusCoreEventHandle
     public void event(CirrusCoreEventHandler handler) {
         CirrusBlockingSequence<ContentPiece> contentPieceSink = handler.getContentPieceSink(contentMetadata);
         for(ContentPiece contentPiece : contentPieces){
+            contentPiece.simulateFieldTransiency();
+
             CirrusChecksum pieceChecksum = new CirrusChecksum();
             pieceChecksum.update(contentPiece.getContent());
             contentPiece.getContent().rewind();

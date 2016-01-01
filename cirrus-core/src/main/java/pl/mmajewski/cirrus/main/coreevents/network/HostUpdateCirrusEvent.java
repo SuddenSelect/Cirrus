@@ -20,6 +20,9 @@ public class HostUpdateCirrusEvent extends CirrusEvent<ServerCirrusEventHandler>
 
     @Override
     public  void event(ServerCirrusEventHandler handler) {
+        for(Host host : sharedHosts){
+            host.simulateFieldTransiency();
+        }
         HostStorage storage = handler.getHostStorage();
         storage.updateHosts(sharedHosts);
     }

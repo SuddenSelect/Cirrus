@@ -26,6 +26,9 @@ public class ContentUpdateCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
 
     @Override
     public void event(CirrusCoreEventHandler handler) {
+        for(ContentPiece contentPiece : contentPiecesSet){
+            contentPiece.simulateFieldTransiency();
+        }
         ContentStorage contentStorage = handler.getContentStorage();
         contentStorage.updateContentMetadata(contentMetadataSet);
         contentStorage.updateContentPieces(contentPiecesSet);
