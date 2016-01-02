@@ -40,7 +40,6 @@ public class StoreContentCirrusEvent extends CirrusEvent<ServerCirrusEventHandle
         handler.getContentStorage().updateContentMetadata(contentMap.keySet());
         for(Set<ContentPiece> contentPieces : contentMap.values()) {
             for(ContentPiece piece : contentPieces) {
-                piece.simulateFieldTransiency();
                 try {
                     handler.getContentStorage().storeContentPiece(piece);
                 } catch (IOException e) {
