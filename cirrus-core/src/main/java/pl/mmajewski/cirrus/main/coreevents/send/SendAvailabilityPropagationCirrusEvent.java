@@ -71,7 +71,7 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
     }
 
     public void updateLocalAvailabilities(ServerCirrusEventHandler handler) {
-        handler.getAvailabilityStorage().addAvailability(availabilities);
+        handler.getAvailabilityStorage().updateAvailability(availabilities);
 
         HostStorage hostStorage = handler.getHostStorage();
         Set<Host> updated = new HashSet<>();

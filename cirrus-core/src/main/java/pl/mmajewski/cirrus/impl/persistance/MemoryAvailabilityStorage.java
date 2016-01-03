@@ -27,8 +27,17 @@ public class MemoryAvailabilityStorage implements AvailabilityStorage {
             }};
 
     @Override
-    public void addAvailability(Set<ContentAvailability> availabilities) {
+    public void updateAvailability(Set<ContentAvailability> availabilities) {
+        removeAvailability(availabilities);
         availabilty.addAll(availabilities);
+    }
+
+    @Override
+    public void removeAvailability(Set<ContentAvailability> availabilities) {
+        for(ContentAvailability av : availabilities){
+            availabilty.removeIf(e -> e.getContentId().equals(av.getContentId())
+                                   && e.getHolderCirrusId().equals(av.getHolderCirrusId()));
+        }
     }
 
     @Override

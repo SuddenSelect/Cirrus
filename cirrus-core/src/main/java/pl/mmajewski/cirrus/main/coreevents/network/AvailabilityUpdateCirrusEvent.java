@@ -20,7 +20,7 @@ public class AvailabilityUpdateCirrusEvent extends CirrusEvent<ServerCirrusEvent
 
     @Override
     public void event(ServerCirrusEventHandler handler) {
-        handler.getAvailabilityStorage().addAvailability(availabilities);
+        handler.getAvailabilityStorage().updateAvailability(availabilities);
 
         for(ContentAvailability availability : availabilities){
             Host host = handler.getHostStorage().fetchHost(availability.getHolderCirrusId());

@@ -13,10 +13,18 @@ import java.util.Set;
 public interface AvailabilityStorage {
 
     /**
-     * Stores availabilities in the runtime.
+     * Stores or updates availabilities in the runtime.
      * @param availabilities set of availabilities
      */
-    public void addAvailability(Set<ContentAvailability> availabilities);
+    public void updateAvailability(Set<ContentAvailability> availabilities);
+
+    /**
+     * Removes availabilities in the runtime, using contentId and holderCirrusId.
+     * @param availabilities set of availabilities
+     */
+    public void removeAvailability(Set<ContentAvailability> availabilities);
+
+
 
     /**
      * Retrieves ContentAvailability by contentID.

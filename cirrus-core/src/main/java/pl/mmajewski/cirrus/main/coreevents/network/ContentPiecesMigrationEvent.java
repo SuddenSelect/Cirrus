@@ -19,6 +19,6 @@ public class ContentPiecesMigrationEvent extends CirrusEvent<ServerCirrusEventHa
 
     @Override
     public void event(ServerCirrusEventHandler handler){
-        handler.getAvailabilityStorage().addAvailability(contentAvailabilities);
+        handler.getAvailabilityStorage().updateAvailability(contentAvailabilities);
     }
 }
