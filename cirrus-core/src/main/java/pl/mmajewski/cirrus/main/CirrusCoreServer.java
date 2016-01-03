@@ -6,6 +6,7 @@ import pl.mmajewski.cirrus.common.exception.CoreServerInitializationCirrusExcept
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
+import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
@@ -103,7 +104,7 @@ public class CirrusCoreServer extends CirrusCoreEventHandler implements ServerCi
     private HostStorage hostStorage = null;
     private AvailabilityStorage availabilityStorage = null;
 
-    private ConnectionPool connectionPool = CirrusCoreFactory.Network.newConnectionPool();
+    private ConnectionPool connectionPool = new ClientDirectConnectionPool();
 
     public CirrusCoreServer(CirrusCore parent, int port) {
         super(parent);

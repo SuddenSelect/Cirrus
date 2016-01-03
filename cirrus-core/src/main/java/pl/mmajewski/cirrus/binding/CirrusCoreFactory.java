@@ -13,8 +13,6 @@ import pl.mmajewski.cirrus.main.CirrusCore;
 import pl.mmajewski.cirrus.main.CirrusCoreServer;
 import pl.mmajewski.cirrus.network.Connection;
 import pl.mmajewski.cirrus.network.ConnectionPool;
-import pl.mmajewski.cirrus.network.client.CirrusEventPropagationStrategy;
-import pl.mmajewski.cirrus.network.client.ClientEventConnection;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.io.*;
@@ -107,54 +105,14 @@ public class CirrusCoreFactory {
         return localhost;
     }
 
-    public static class Network {
-
-        public static Connection newConnection() {
-            return null;//binding stub
-        }
-
-        public static ConnectionPool newConnectionPool() {
-            return new ClientDirectConnectionPool();//binding stub
-        }
-    }
-
-    public static class Server {
-
         public static ServerCirrusEventHandler newCoreEventHandler(InetAddress localAddress, int port) {
             return new CirrusCoreServer(newCirrusCore(localAddress), port);//binding stub
         }
 
         public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, InetAddress localhost, int port) {
             CirrusCoreServer cirrusCoreServer = new CirrusCoreServer(cirrusCore, port);
-            cirrusCoreServer.setAvailabilityStorage(Persistance.newAvailabilityStorage());
-            cirrusCoreServer.setHostStorage(Persistance.newHostStorage(getLocalhost(localhost)));//TODO permanent localhost retrieval
+            cirrusCoreServer.setAvailabilityStorage(new MemoryAvailabilityStorage());
+            cirrusCoreServer.setHostStorage(new MemoryHostStorage(getLocalhost(localhost)));//TODO permanent localhost retrieval
             return cirrusCoreServer;//binding stub
         }
-    }
-
-    public static class Client {
-        public static ClientEventConnection newEventConnection() {
-            return null;//binding stub
-        }
-
-        public static CirrusEventPropagationStrategy newEventPropagationStrategy() {
-            return null;//binding stub
-        }
-    }
-
-
-    // Persistance
-    public static class Persistance {
-        public static ContentStorage newContentStorage() {
-            return new MemoryContentStorage();//binding stub
-        }
-
-        public static AvailabilityStorage newAvailabilityStorage() {
-            return new MemoryAvailabilityStorage();//binding stub
-        }
-
-        public static HostStorage newHostStorage(Host localhost) {
-            return new MemoryHostStorage(localhost);//binding stub
-        }
-    }
 }

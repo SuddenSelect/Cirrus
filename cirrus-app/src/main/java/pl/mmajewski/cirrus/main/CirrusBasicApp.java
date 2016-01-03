@@ -11,6 +11,7 @@ import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.event.CirrusAppEventHandler;
+import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
 
 import java.net.InetAddress;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
 public class CirrusBasicApp  {
     private static Logger logger = Logger.getLogger(CirrusBasicApp.class.getName());
 
-    private ContentStorage contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
+    private ContentStorage contentStorage = new MemoryContentStorage();
     private CirrusCore core;
     private AppEventHandler appEventHandler = this.new AppEventHandler();
     private volatile boolean processEvents = true;
@@ -48,7 +49,7 @@ public class CirrusBasicApp  {
     }
 
     private void resetPreparedContentStorage(){
-        contentStorage = CirrusCoreFactory.Persistance.newContentStorage();
+        contentStorage = new MemoryContentStorage();
     }
 
     public void accept(CirrusEvent event) throws EventHandlerClosingCirrusException {
