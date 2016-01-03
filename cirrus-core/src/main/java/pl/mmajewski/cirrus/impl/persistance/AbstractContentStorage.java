@@ -36,29 +36,29 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
             }};
     protected IndexedCollection<ContentMetadata> contentMetadatas;
 
-    private int maxPersistentPieces;
-    private int maxTemporaryPieces;
+//    private int maxPersistentPieces;
+//    private int maxTemporaryPieces;
 
 
-    @Override
-    public void setMaxTemporarilyStoredPieces(int maxTemporaryPieces) {
-        this.maxTemporaryPieces = maxTemporaryPieces;
-    }
-
-    @Override
-    public int getMaxTemporarilyStoredPieces() {
-        return maxTemporaryPieces;
-    }
-
-    @Override
-    public void setMaxPersistentStoredPieces(int maxPieces) {
-        this.maxPersistentPieces = maxPieces;
-    }
-
-    @Override
-    public int getMaxPersistentStoredPieces() {
-        return maxPersistentPieces;
-    }
+//    @Override
+//    public void setMaxTemporarilyStoredPieces(int maxTemporaryPieces) {
+//        this.maxTemporaryPieces = maxTemporaryPieces;
+//    }
+//
+//    @Override
+//    public int getMaxTemporarilyStoredPieces() {
+//        return maxTemporaryPieces;
+//    }
+//
+//    @Override
+//    public void setMaxPersistentStoredPieces(int maxPieces) {
+//        this.maxPersistentPieces = maxPieces;
+//    }
+//
+//    @Override
+//    public int getMaxPersistentStoredPieces() {
+//        return maxPersistentPieces;
+//    }
 
     @Override
     public Set<ContentMetadata> getAllContentMetadata() {

@@ -20,10 +20,10 @@ import java.util.Set;
  */
 public interface ContentStorage {
     /* Parametrization */
-    public void setMaxTemporarilyStoredPieces(int maxTemporaryPieces);
-    public int  getMaxTemporarilyStoredPieces();
-    public void setMaxPersistentStoredPieces(int maxPersistentPieces);
-    public int getMaxPersistentStoredPieces();
+//    public void setMaxTemporarilyStoredPieces(int maxTemporaryPieces);
+//    public int  getMaxTemporarilyStoredPieces();
+//    public void setMaxPersistentStoredPieces(int maxPersistentPieces);
+//    public int getMaxPersistentStoredPieces();
     /* *************** */
 
     /**
