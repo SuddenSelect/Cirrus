@@ -16,10 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Predicate;
 
-import static com.googlecode.cqengine.query.QueryFactory.and;
-import static com.googlecode.cqengine.query.QueryFactory.equal;
+import static com.googlecode.cqengine.query.QueryFactory.*;
 
 /**
  * Created by Maciej Majewski on 29/12/15.
@@ -74,15 +72,20 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
     @Override
     public void updateContentMetadata(Set<ContentMetadata> metadata) {
         //removal necessary for updating indexes
-        contentMetadatas.removeAll(metadata);
-        contentMetadatas.addAll(metadata);
+        Set<ContentMetadata> metadatas = new HashSet<>(metadata);
+        contentMetadatas.removeAll(metadatas);
+        contentMetadatas.addAll(metadatas);
     }
 
     @Override
     public void updateContentPieces(Set<ContentPiece> contentPieces){
         for(ContentPiece contentPiece : contentPieces) {
-            persistentContentPieces.removeIf(e -> e.getContentId().equals(contentPiece.getContentId())
-                                               && e.getSequence().equals(contentPiece.getSequence()));
+            Query<ContentPiece> query = and(
+                    equal(ContentPiece.IDX_CONTENT_ID, contentPiece.getContentId()),
+                    equal(ContentPiece.IDX_SEQUENCE, contentPiece.getSequence())
+            );
+            ContentPiece toDel = persistentContentPieces.retrieve(query).uniqueResult();
+            persistentContentPieces.remove(toDel);
         }
         persistentContentPieces.addAll(contentPieces);
     }
@@ -90,9 +93,18 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
     @Override
     public void deleteContent(ContentMetadata metadata) {
         contentMetadatas.remove(metadata);
-        Predicate<ContentPiece> predicate = contentPiece -> contentPiece.getContentId().equals(metadata.getContentId());
-        persistentContentPieces.removeIf(predicate);
-        temporaryContentPieces.removeIf(predicate);
+        Query<ContentPiece> query = equal(ContentPiece.IDX_CONTENT_ID, metadata.getContentId());
+        Set<ContentPiece> toDel = new HashSet<>();
+        for(ContentPiece contentPiece : persistentContentPieces.retrieve(query)){
+            toDel.add(contentPiece);
+        }
+        persistentContentPieces.removeAll(toDel);
+        toDel.clear();
+
+        for(ContentPiece contentPiece : temporaryContentPieces.retrieve(query)){
+            toDel.add(contentPiece);
+        }
+        temporaryContentPieces.removeAll(toDel);
     }
 
     @Override
@@ -148,7 +160,11 @@ import static com.googlecode.cqengine.query.QueryFactory.equal;
         Set<Integer> missingPieces = new TreeSet<>();
         ArrayList<ContentPiece> availablePieces = getAvailablePieces(contentMetadata);
         for (int i = 0; i < contentMetadata.getPiecesAmount(); i++) {
-            if(availablePieces.get(i)==null){
+            try {
+                if (availablePieces.get(i) == null) {
+                    missingPieces.add(i);
+                }
+            }catch (IndexOutOfBoundsException e){
                 missingPieces.add(i);
             }
         }

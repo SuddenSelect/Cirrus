@@ -1,18 +1,11 @@
 package pl.mmajewski.cirrus.binding;
 
 import pl.mmajewski.cirrus.common.model.Host;
-import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
-import pl.mmajewski.cirrus.common.persistance.ContentStorage;
-import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.common.util.CirrusIdGenerator;
-import pl.mmajewski.cirrus.impl.network.ClientDirectConnectionPool;
 import pl.mmajewski.cirrus.impl.persistance.MemoryAvailabilityStorage;
-import pl.mmajewski.cirrus.impl.persistance.MemoryContentStorage;
-import pl.mmajewski.cirrus.impl.persistance.MemoryHostStorage;
+import pl.mmajewski.cirrus.impl.persistance.PersistentHostStorage;
 import pl.mmajewski.cirrus.main.CirrusCore;
 import pl.mmajewski.cirrus.main.CirrusCoreServer;
-import pl.mmajewski.cirrus.network.Connection;
-import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.io.*;
@@ -112,7 +105,11 @@ public class CirrusCoreFactory {
         public static ServerCirrusEventHandler newCoreEventHandler(CirrusCore cirrusCore, InetAddress localhost, int port) {
             CirrusCoreServer cirrusCoreServer = new CirrusCoreServer(cirrusCore, port);
             cirrusCoreServer.setAvailabilityStorage(new MemoryAvailabilityStorage());
-            cirrusCoreServer.setHostStorage(new MemoryHostStorage(getLocalhost(localhost)));//TODO permanent localhost retrieval
+            File hostStoragePath = new File(".host_storage");
+            if(!hostStoragePath.exists()){
+                hostStoragePath.mkdirs();
+            }
+            cirrusCoreServer.setHostStorage(new PersistentHostStorage(getLocalhost(localhost), hostStoragePath));//TODO permanent localhost retrieval
             return cirrusCoreServer;//binding stub
         }
 }

@@ -31,9 +31,11 @@ public class PersistentContentStorage extends AbstractContentStorage implements 
     private File getPieceFile(String contentId){
         return new File(piecesSubfolder, contentId+pieceExtension);
     }
+
     private IndexedCollection<ContentPiece> newPiecesCollection(String contentId) throws IOException {
         File piecesFile = getPieceFile(contentId);
         if(!piecesFile.exists()){
+            piecesFile.getParentFile().mkdirs();
             piecesFile.createNewFile();
         }
         return new ObjectLockingIndexedCollection<>(
@@ -43,8 +45,10 @@ public class PersistentContentStorage extends AbstractContentStorage implements 
     }
 
     public PersistentContentStorage(File persistancePath) throws InvalidPersistanceStoragePathCirrusException, IOException {
-        if(persistancePath.isFile()||!persistancePath.canWrite()){
+        if(persistancePath.exists() && (persistancePath.isFile()||!persistancePath.canWrite())){
             throw new InvalidPersistanceStoragePathCirrusException(persistancePath);
+        }else if(!persistancePath.exists()){
+            persistancePath.mkdirs();
         }
         this.piecesSubfolder = new File(persistancePath, "pieces");
         File metadataFile = new File(persistancePath, "metadata");
@@ -79,9 +83,12 @@ public class PersistentContentStorage extends AbstractContentStorage implements 
 
     private void load() throws IOException {
         FilenameFilter filter = (dir, name) -> name.endsWith(pieceExtension);
-        for(String pieceFilename : piecesSubfolder.list(filter)){
-            String contentId = pieceFilename.split(Pattern.quote(pieceExtension))[0];
-            pieces.put(contentId, newPiecesCollection(contentId));
+        String[] files = piecesSubfolder.list(filter);
+        if(files!=null) {
+            for (String pieceFilename : files) {
+                String contentId = pieceFilename.split(Pattern.quote(pieceExtension))[0];
+                pieces.put(contentId, newPiecesCollection(contentId));
+            }
         }
         super.updateContentMetadata(metadatas);
         for(IndexedCollection<ContentPiece> piecesCollection : pieces.values()){

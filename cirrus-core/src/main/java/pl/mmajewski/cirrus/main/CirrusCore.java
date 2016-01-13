@@ -2,6 +2,7 @@ package pl.mmajewski.cirrus.main;
 
 import pl.mmajewski.cirrus.binding.CirrusCoreFactory;
 import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
+import pl.mmajewski.cirrus.common.exception.InvalidPersistanceStoragePathCirrusException;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
@@ -10,6 +11,7 @@ import pl.mmajewski.cirrus.impl.persistance.PersistentContentStorage;
 import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.logging.Logger;
 
@@ -19,13 +21,22 @@ import java.util.logging.Logger;
 public class CirrusCore {
     private static Logger logger = Logger.getLogger(CirrusCore.class.getName());
 
-    private ContentStorage contentStorage = new MemoryContentStorage();
+    private ContentStorage contentStorage;
     private ServerCirrusEventHandler cirrusCoreEventHandler;
     private volatile boolean processEvents = true;
     private Thread processThread;
     private InetAddress localAddress;
 
     public CirrusCore(InetAddress localAddress) {
+        try {
+            File contentStoragePath = new File(".content_storage");
+            contentStorage = new PersistentContentStorage(contentStoragePath);
+        } catch (IOException|InvalidPersistanceStoragePathCirrusException e) {
+            contentStorage = new MemoryContentStorage();
+            logger.severe("PersistentContentStorage creation failure! Using MemoryContentStorage.");
+            logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
         this.localAddress = localAddress;
         cirrusCoreEventHandler = CirrusCoreFactory.newCoreEventHandler(this, localAddress, 6465);
         processThread = new Thread((Runnable) cirrusCoreEventHandler);

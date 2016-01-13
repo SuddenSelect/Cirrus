@@ -12,6 +12,7 @@ import pl.mmajewski.cirrus.impl.content.adapters.ContentAdapterImplPlainFile;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.appevents.CommitContentCirrusAppEvent;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -28,9 +29,35 @@ public class CirrusBasicAppTest {
         }
     }
 
+    private void cleanupFiles(){
+        File contentStorage = new File(".content_storage");
+        if(contentStorage.exists()) {
+            for (File td : contentStorage.listFiles()) {
+                td.delete();
+            }
+            File pieces = new File(contentStorage, "pieces");
+            if(pieces.exists()) {
+                for (File td : pieces.listFiles()) {
+                    td.delete();
+                }
+                pieces.delete();
+            }
+            contentStorage.delete();
+        }
+        File hostStorage = new File(".host_storage");
+        if(hostStorage.exists()) {
+            for (File td : hostStorage.listFiles()) {
+                td.delete();
+            }
+            hostStorage.delete();
+        }
+    }
+
     @Parameters("testFile")
     @Test
     public void testCommit(String file) throws ContentAdapterCirrusException, InterruptedException, EventHandlerClosingCirrusException, UnknownHostException {
+        cleanupFiles();
+
         CirrusBasicApp app = new CirrusBasicApp(InetAddress.getLoopbackAddress());
         Assert.assertNotNull(app.getAppEventHandler());
         Assert.assertNotNull(app.getAppEventHandler().getContentStorage());
