@@ -90,6 +90,7 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 
     @Override
     public void adapt(String contentSource) throws ContentAdapterCirrusException {
+        long startTime = System.currentTimeMillis();//Test metrics
         try{
             this.contentSource = contentSource;
             File source = new File(contentSource);
@@ -140,6 +141,10 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
         }catch (Exception e){
             throw new ContentAdapterCirrusException(e,this);
         }
+
+        //Test metrics
+        long adaptTime = System.currentTimeMillis() - startTime;
+        logger.info("[TIME] ADAPT_FILE: "+adaptTime+"ms ("+contentSource+")");
     }
 
     public ByteBuffer[] getChunks(){

@@ -109,6 +109,11 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
 
     private class FileDumperCirrusThread extends GenericCirrusEventThread{
         private Logger logger = Logger.getLogger(FileDumperCirrusThread.class.getName());
+        private long startTime = 0;//Test metrics
+
+        public FileDumperCirrusThread() {
+            this.startTime = System.currentTimeMillis();//Test metrics
+        }
 
         @Override
         public void run() {
@@ -130,6 +135,11 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
                 }
                 coreEventHandler.freeContentPieceSink(metadata);
                 setMessage("Finished");
+
+                //Test metrics
+                long downloadTime = System.currentTimeMillis() - startTime;
+                logger.info("[TIME] FILE_DOWNLOAD: "+downloadTime+"ms ("+dumpFile.getName()+")");
+
             }catch (IOException e) {
                 setMessage("Saving problem: "+e.getMessage());
                 logger.warning(e.getMessage());

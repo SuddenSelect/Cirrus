@@ -1,16 +1,18 @@
 package pl.mmajewski.cirrus.main.coreevents;
 
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
+import pl.mmajewski.cirrus.common.event.CirrusEventHandler;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
-import pl.mmajewski.cirrus.main.CirrusCoreEventHandler;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
-public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler> {
+public class ActionFailureCirrusEvent extends CirrusEvent<CirrusEventHandler> {
+    private static final Logger logger = Logger.getLogger(ActionFailureCirrusEvent.class.getName());
 
     private String message;
     private Throwable exception;
@@ -41,7 +43,7 @@ public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
     }
 
     @Override
-    public void event(CirrusCoreEventHandler handler) {
+    public void event(CirrusEventHandler handler) {
         //TODO present problem to the user
         StringWriter stackTrace = new StringWriter();
         if(exception!=null) {
@@ -49,6 +51,8 @@ public class ActionFailureCirrusEvent extends CirrusEvent<CirrusCoreEventHandler
         } else {
             stackTrace.append("< no stack trace >");
         }
-        handler.pushFailure("# "+getCreationTime()+" # "+message+" :\n"+stackTrace.toString()+"\n");
+        String fail = "# "+getCreationTime()+" # "+message+" :\n"+stackTrace.toString()+"\n";
+        logger.warning(fail);
+        handler.pushFailure(fail);
     }
 }

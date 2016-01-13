@@ -20,11 +20,13 @@ import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
  */
 public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+    private static final Logger logger = Logger.getLogger(BalanceAndDiffuseStorageCirrusEvent.class.getName());
 
     private ContentStorage storageToCommit;
     private CirrusDiffusionStrategy<StoreContentCirrusEvent> diffusionStrategy = null;
@@ -44,6 +46,7 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirru
 
     @Override
     public void event(ServerCirrusEventHandler handler) {
+        long startTime = System.currentTimeMillis();//Test metrics
 
         Set<ContentAvailability> availabilities = new HashSet<>();
 
@@ -104,5 +107,18 @@ public class BalanceAndDiffuseStorageCirrusEvent extends CirrusEvent<ServerCirru
             e.printStackTrace();
         }
 
+        //Test metrics
+        long uploadTime = System.currentTimeMillis() - startTime;
+        StringBuilder contents = new StringBuilder();
+        boolean skipComma = true;
+        for(ContentMetadata metadata : storageToCommit.getAllContentMetadata()){
+            if(skipComma){
+                skipComma=false;
+            }else{
+                contents.append(", ");
+            }
+            contents.append(metadata.getContentId());
+        }
+        logger.info("[TIME] UPLOAD_FILE: "+uploadTime+"ms ("+contents.toString()+")");
     }
 }
