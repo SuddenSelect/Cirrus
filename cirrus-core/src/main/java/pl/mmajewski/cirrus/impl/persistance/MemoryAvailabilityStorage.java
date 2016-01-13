@@ -8,6 +8,7 @@ import com.googlecode.cqengine.query.Query;
 import pl.mmajewski.cirrus.common.model.ContentAvailability;
 import pl.mmajewski.cirrus.common.persistance.AvailabilityStorage;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -34,10 +35,17 @@ public class MemoryAvailabilityStorage implements AvailabilityStorage {
 
     @Override
     public void removeAvailability(Set<ContentAvailability> availabilities) {
+        Set<ContentAvailability> toDel = new HashSet<>();
         for(ContentAvailability av : availabilities){
-            availabilty.removeIf(e -> e.getContentId().equals(av.getContentId())
-                                   && e.getHolderCirrusId().equals(av.getHolderCirrusId()));
+            Query<ContentAvailability> query = and(
+                    equal(ContentAvailability.IDX_CONTENT_ID, av.getContentId()),
+                    equal(ContentAvailability.IDX_HOLDER_CIRRUS_ID, av.getHolderCirrusId())
+            );
+            for(ContentAvailability avToDel : availabilty.retrieve(query)){
+                toDel.add(avToDel);
+            }
         }
+        availabilty.removeAll(toDel);
     }
 
     @Override
