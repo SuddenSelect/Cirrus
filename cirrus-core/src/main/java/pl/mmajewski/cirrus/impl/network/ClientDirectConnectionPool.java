@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by Maciej Majewski on 15/09/15.
  */
 public class ClientDirectConnectionPool implements ConnectionPool{
-    private int maxConnectionsToHost = 5;
+    private int maxConnectionsToHost = 2;
     private int maxConnectionsInPool = 1000;
     private long connectionHealthCheckInterval = 1000;
     private Map<String/*CirrusId*/, ClientDirectConnectionGroup> connectionGroupMap = new HashMap<>();
