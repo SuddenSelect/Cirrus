@@ -103,7 +103,7 @@ public class AdaptPanel implements RefreshablePanel {
 
     @Override
     public void refresh() {
-        if(contentAdapter!=null){
+        if(contentAdapter==null){
             progressBar.setMaximum(100);
             progressBar.setValue(0);
         }else{

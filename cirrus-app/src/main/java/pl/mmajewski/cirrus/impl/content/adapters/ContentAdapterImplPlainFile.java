@@ -97,18 +97,20 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
 
             FileChannel fileChannel = new FileInputStream(source).getChannel();
 
-            int numberOfChunks = (int) (source.length() / Constants.CHUNK_SIZE);
+            int numberOfChunks = (int) (Math.ceil(((double)source.length()) / Constants.CHUNK_SIZE));
             this.setProgress(0, numberOfChunks);
             int lastChunkSize = 0;
+            int numberOfNormalChunks = numberOfChunks;
             if(source.length() % Constants.CHUNK_SIZE > 0){
-                numberOfChunks += 1;
                 lastChunkSize = (int) (Constants.CHUNK_SIZE - ((numberOfChunks * Constants.CHUNK_SIZE) - source.length()));
+                numberOfNormalChunks = numberOfChunks - 1;
             }
 
             chunks = new ByteBuffer[numberOfChunks];
+            logger.info("DBG: Chunks "+numberOfChunks+", normal "+numberOfNormalChunks+", last size "+lastChunkSize);
 
             //Reading all chunks except wierd-sized last
-            for (int i = 0; i < numberOfChunks-1; i++) {
+            for (int i = 0; i < numberOfNormalChunks; i++) {
 //                ByteBuffer chunk = ByteBuffer.allocateDirect(Constants.CHUNK_SIZE);
                 ByteBuffer chunk = ByteBuffer.allocate(Constants.CHUNK_SIZE);
                 fileChannel.read(chunk);

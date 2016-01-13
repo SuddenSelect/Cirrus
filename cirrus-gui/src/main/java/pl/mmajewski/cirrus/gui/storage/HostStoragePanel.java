@@ -26,9 +26,12 @@ public class HostStoragePanel implements RefreshablePanel{
             private Object previous = null;
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                Host retrieved = hostStorage.fetchHost(((Host) hostList.getSelectedValue()).getCirrusId());
-                propertyChangeSupport.firePropertyChange("selectedHost", previous, retrieved);
-                previous = retrieved;
+                Host selectedHost = (Host) hostList.getSelectedValue();
+                if(selectedHost!=null) {
+                    Host retrieved = hostStorage.fetchHost(selectedHost.getCirrusId());
+                    propertyChangeSupport.firePropertyChange("selectedHost", previous, retrieved);
+                    previous = retrieved;
+                }
             }
         });
     }
