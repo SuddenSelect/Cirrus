@@ -34,6 +34,7 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
     @Override
     public void event(ServerCirrusEventHandler handler) {
         SendAvailabilityPropagationCirrusEvent propagationEvent = new SendAvailabilityPropagationCirrusEvent();
+        propagationEvent.setPropagationStrategy(propagationStrategy);
 //        propagationEvent.setAvailabilities(availabilities);
         propagationEvent.addTrace(this.getTrace());
 //        propagationEvent.addTrace(handler.getLocalCirrusId());

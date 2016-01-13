@@ -61,11 +61,16 @@ public class SignupCirrusEvent extends HostUpdateCirrusEvent {
         }
 
         HostUpdateCirrusEvent broadcastJoinedHosts = new HostUpdateCirrusEvent();
-        broadcastJoinedHosts.addTrace(this.getTrace());
+//        broadcastJoinedHosts.addTrace(this.getTrace());
         broadcastJoinedHosts.addTrace(handler.getLocalCirrusId());
+        broadcastJoinedHosts.setSharedHosts(joinedHosts);
 
-        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<MetadataPropagationCirrusEvent>();
+        CirrusEventPropagationStrategy propagationStrategy = new BroadcastPropagationStrategy<HostUpdateCirrusEvent>();
         Set<Host> targets = propagationStrategy.getTargets(handler.getHostStorage(), broadcastJoinedHosts);
+
+        for(Host jh : joinedHosts) {
+            broadcastJoinedHosts.addTrace(jh.getCirrusId());
+        }
 
         for(Host host : targets){
             try {
