@@ -78,22 +78,7 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
 
         //Time metrics
         long availTime = System.currentTimeMillis() - startTime;
-        StringBuilder contents = new StringBuilder();
-        if(availabilities!=null) {
-            boolean skipComma = true;
-            for (ContentAvailability av : availabilities) {
-                if (skipComma) {
-                    skipComma = false;
-                } else {
-                    contents.append(", ");
-                }
-                contents.append(av.getContentId()).append("|");
-                for (Integer sq : av.getPiecesSequenceNumbers()) {
-                    contents.append(sq).append("|");
-                }
-            }
-        }
-        logger.info("[TIME] AVAIL_FILE: "+availTime+"ms ("+contents.toString()+")");
+        logger.info("[TIME] AVAIL_FILE: "+availTime+"ms");
     }
 
     public void updateLocalAvailabilities(ServerCirrusEventHandler handler) {
