@@ -73,7 +73,6 @@ public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHan
         for(ContentPiece piece : pieces) {
             if(piece!=null) {
                 CirrusBlockingSequence<ContentPiece> contentPieceSink = handler.getContentPieceSink(metadata);
-                logger.info("DBG_ASMC: SINK "+contentPieceSink);
                 contentPieceSink.push(piece.getSequence(), piece);
             }
         }

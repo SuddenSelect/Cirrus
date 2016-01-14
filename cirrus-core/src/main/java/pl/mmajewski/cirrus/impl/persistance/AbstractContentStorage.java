@@ -159,20 +159,16 @@ import static com.googlecode.cqengine.query.QueryFactory.*;
     @Override
     public Set<Integer> getMissingContentPieceSequenceNumbers(ContentMetadata contentMetadata) {
         Set<Integer> missingPieces = new TreeSet<>();
-        ArrayList<ContentPiece> availablePieces = getAvailablePieces(contentMetadata);
         for (int i = 0; i < contentMetadata.getPiecesAmount(); i++) {
-            try {
-                if (availablePieces.get(i) == null) {
-                    missingPieces.add(i);
-                }
-            }catch (IndexOutOfBoundsException e){
-                missingPieces.add(i);
-            }
+            missingPieces.add(i);
+        }
+        ArrayList<ContentPiece> availablePieces = getAvailablePieces(contentMetadata);
+        for(ContentPiece contentPiece : availablePieces){
+            missingPieces.remove(contentPiece.getSequence());
         }
         return missingPieces;
     }
 
-    private static final Logger logger = Logger.getLogger(AbstractContentStorage.class.getName());
     @Override
     public ArrayList<ContentPiece> getAvailablePieces(ContentMetadata contentMetadata) {
         Query<ContentPiece> query = and(

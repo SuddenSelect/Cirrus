@@ -25,6 +25,9 @@ public class LowLatencyMissingPiecesRequestingStrategy implements CirrusContentR
         Set<Integer> missingPieces = contentStorage.getMissingContentPieceSequenceNumbers(contentMetadata);
         Iterable<Host> sharers = hostStorage.fetchSharers(contentMetadata);
         for(Host host : sharers){
+            if(hostStorage.fetchLocalHost().equals(host)){
+                continue;
+            }
             Set<Integer> hostPieces = host.getSharedPieces(contentMetadata.getContentId());
             hostPieces.retainAll(Collections.unmodifiableSet(missingPieces));
             if(!hostPieces.isEmpty()){
