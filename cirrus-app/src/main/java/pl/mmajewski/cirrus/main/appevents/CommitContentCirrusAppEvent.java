@@ -11,9 +11,11 @@ import pl.mmajewski.cirrus.impl.client.BroadcastPropagationStrategy;
 import pl.mmajewski.cirrus.impl.client.EqualDiffusionStrategy;
 import pl.mmajewski.cirrus.main.CirrusBasicApp;
 import pl.mmajewski.cirrus.main.coreevents.send.SendAvailabilityPropagationCirrusEvent;
+import pl.mmajewski.cirrus.main.coreevents.send.SendMetadataUpdateCirrusEvent;
 import pl.mmajewski.cirrus.main.coreevents.storage.BalanceAndDiffuseStorageCirrusEvent;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by Maciej Majewski on 2015-02-03.
@@ -36,13 +38,15 @@ public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.A
         ContentStorage prepared = handler.getContentStorage();
         CirrusEventHandler coreHandler = handler.getCoreEventHandler();
 
+        ContentStorage storage = coreHandler.getContentStorage();
+        storage.updateContentMetadata(prepared.getAllContentMetadata());
         if(!broadcastChange) {
-            ContentStorage storage = coreHandler.getContentStorage();
-            storage.updateContentMetadata(prepared.getAllContentMetadata());
             for (ContentMetadata metadata : prepared.getAllContentMetadata()) {
                 for (ContentPiece piece : prepared.getAvailablePieces(metadata)) {
                     try {
-                        storage.storeContentPiece(piece);
+                        if(piece!=null) {
+                            storage.storeContentPiece(piece);
+                        }
                     } catch (IOException e) {
                         throw new EventCancelledCirrusException(e);
                     }
@@ -60,18 +64,18 @@ public class CommitContentCirrusAppEvent extends CirrusAppEvent<CirrusBasicApp.A
             }
         }
 
-//        Set<ContentMetadata> newContentMetadata = prepared.getAllContentMetadata();
+        Set<ContentMetadata> newContentMetadata = prepared.getAllContentMetadata();
         handler.resetStorage();
 
 
-//        if(broadcastChange) {
-//            SendMetadataUpdateCirrusEvent updateEvent = new SendMetadataUpdateCirrusEvent();
-//            updateEvent.setMetadataSet(newContentMetadata);
-//            try {
-//                coreHandler.accept(updateEvent);
-//            } catch (EventHandlerClosingCirrusException e) {
-//                throw new EventCancelledCirrusException(e);
-//            }
-//        }
+        if(broadcastChange) {
+            SendMetadataUpdateCirrusEvent updateEvent = new SendMetadataUpdateCirrusEvent();
+            updateEvent.setMetadataSet(newContentMetadata);
+            try {
+                coreHandler.accept(updateEvent);
+            } catch (EventHandlerClosingCirrusException e) {
+                throw new EventCancelledCirrusException(e);
+            }
+        }
     }
 }

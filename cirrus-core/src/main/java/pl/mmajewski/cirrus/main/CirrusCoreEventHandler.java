@@ -130,7 +130,9 @@ public class CirrusCoreEventHandler implements CirrusEventHandler, Runnable {
     public CirrusBlockingSequence<ContentPiece> getContentPieceSink(ContentMetadata metadata) {
         if(!sinks.containsKey(metadata.getContentId())){
             synchronized (sinks) {
-                sinks.put(metadata.getContentId(), new CirrusBlockingSequence<>(metadata.getPiecesAmount()));
+                if(!sinks.containsKey(metadata.getContentId())) {
+                    sinks.put(metadata.getContentId(), new CirrusBlockingSequence<>(metadata.getPiecesAmount()));
+                }
             }
         }
         return sinks.get(metadata.getContentId());

@@ -96,7 +96,7 @@ public class ContentAccessorImplPlainBQueue implements ContentAccessor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            if(dumpFile.exists()){
+            if(dumpFile != null && dumpFile.exists()){
                 try {
                     dumpFileChannel.close();
                 } catch (IOException e) {

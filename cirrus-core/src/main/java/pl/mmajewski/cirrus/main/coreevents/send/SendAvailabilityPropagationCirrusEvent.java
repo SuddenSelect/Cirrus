@@ -3,6 +3,7 @@ package pl.mmajewski.cirrus.main.coreevents.send;
 import pl.mmajewski.cirrus.common.event.CirrusEvent;
 import pl.mmajewski.cirrus.common.exception.EventHandlerClosingCirrusException;
 import pl.mmajewski.cirrus.common.model.ContentAvailability;
+import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.HostStorage;
 import pl.mmajewski.cirrus.main.coreevents.ActionFailureCirrusEvent;
@@ -14,11 +15,13 @@ import pl.mmajewski.cirrus.network.server.ServerCirrusEventHandler;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 29/11/15.
  */
 public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCirrusEventHandler> {
+    private static final Logger logger = Logger.getLogger(SendAvailabilityPropagationCirrusEvent.class.getName());
 
     private Set<ContentAvailability> availabilities = null;
     private CirrusEventPropagationStrategy propagationStrategy = null;
@@ -33,9 +36,12 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
 
     @Override
     public void event(ServerCirrusEventHandler handler) {
+        long startTime = System.currentTimeMillis();
+
+
         SendAvailabilityPropagationCirrusEvent propagationEvent = new SendAvailabilityPropagationCirrusEvent();
         propagationEvent.setPropagationStrategy(propagationStrategy);
-//        propagationEvent.setAvailabilities(availabilities);
+        propagationEvent.setAvailabilities(availabilities);
         propagationEvent.addTrace(this.getTrace());
 //        propagationEvent.addTrace(handler.getLocalCirrusId());
 
@@ -69,6 +75,25 @@ public class SendAvailabilityPropagationCirrusEvent extends CirrusEvent<ServerCi
                 }
             }
         }
+
+        //Time metrics
+        long availTime = System.currentTimeMillis() - startTime;
+        StringBuilder contents = new StringBuilder();
+        if(availabilities!=null) {
+            boolean skipComma = true;
+            for (ContentAvailability av : availabilities) {
+                if (skipComma) {
+                    skipComma = false;
+                } else {
+                    contents.append(", ");
+                }
+                contents.append(av.getContentId()).append("|");
+                for (Integer sq : av.getPiecesSequenceNumbers()) {
+                    contents.append(sq).append("|");
+                }
+            }
+        }
+        logger.info("[TIME] AVAIL_FILE: "+availTime+"ms ("+contents.toString()+")");
     }
 
     public void updateLocalAvailabilities(ServerCirrusEventHandler handler) {

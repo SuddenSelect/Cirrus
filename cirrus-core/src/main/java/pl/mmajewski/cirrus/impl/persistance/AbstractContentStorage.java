@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import static com.googlecode.cqengine.query.QueryFactory.*;
 
@@ -171,6 +172,7 @@ import static com.googlecode.cqengine.query.QueryFactory.*;
         return missingPieces;
     }
 
+    private static final Logger logger = Logger.getLogger(AbstractContentStorage.class.getName());
     @Override
     public ArrayList<ContentPiece> getAvailablePieces(ContentMetadata contentMetadata) {
         Query<ContentPiece> query = and(
@@ -178,8 +180,12 @@ import static com.googlecode.cqengine.query.QueryFactory.*;
                 equal(ContentPiece.IDX_CONTENT_STATUS, ContentStatus.CORRECT));
         Iterable<ContentPiece> availablePieces = getPersistentAndTemporaryPieces(query);
         ArrayList<ContentPiece> availablePiecesList = new ArrayList<>(contentMetadata.getPiecesAmount());
+//        while(availablePiecesList.size()<contentMetadata.getPiecesAmount()){
+//            availablePiecesList.add(null);
+//        }
         for(ContentPiece piece : availablePieces){
-            availablePiecesList.add(piece.getSequence(), piece);
+            availablePiecesList.add(piece);
+//            availablePiecesList.add(piece.getSequence(), piece);
         }
         return availablePiecesList;
     }

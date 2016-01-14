@@ -107,7 +107,6 @@ public class ContentAdapterImplPlainFile implements ContentAdapter {
             }
 
             chunks = new ByteBuffer[numberOfChunks];
-            logger.info("DBG: Chunks "+numberOfChunks+", normal "+numberOfNormalChunks+", last size "+lastChunkSize);
 
             //Reading all chunks except wierd-sized last
             for (int i = 0; i < numberOfNormalChunks; i++) {

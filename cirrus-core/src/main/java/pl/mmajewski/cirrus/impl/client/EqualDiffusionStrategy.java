@@ -9,11 +9,14 @@ import pl.mmajewski.cirrus.main.coreevents.network.StoreContentCirrusEvent;
 import pl.mmajewski.cirrus.network.client.CirrusDiffusionStrategy;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 29/11/15.
  */
 public class EqualDiffusionStrategy implements CirrusDiffusionStrategy<StoreContentCirrusEvent> {
+    private static final Logger logger = Logger.getLogger(EqualDiffusionStrategy.class.getName());
+
     private class RoundRobin extends LinkedList<Host>{
         public RoundRobin(Iterable<Host> hosts) {
             for(Host host : hosts){
@@ -70,8 +73,7 @@ public class EqualDiffusionStrategy implements CirrusDiffusionStrategy<StoreCont
                     }
                     result.get(host).addContent(metadata, batch);
                 }
-            }while(batchSize<batch.size());
-
+            }while(batchSize<=batch.size());
         }
         return result;
     }

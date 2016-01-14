@@ -6,6 +6,7 @@ import pl.mmajewski.cirrus.common.model.ContentMetadata;
 import pl.mmajewski.cirrus.common.model.ContentPiece;
 import pl.mmajewski.cirrus.common.model.Host;
 import pl.mmajewski.cirrus.common.persistance.ContentStorage;
+import pl.mmajewski.cirrus.common.util.CirrusBlockingSequence;
 import pl.mmajewski.cirrus.main.coreevents.send.RequestContentCirrusEvent;
 import pl.mmajewski.cirrus.network.ConnectionPool;
 import pl.mmajewski.cirrus.network.client.CirrusContentRequestingStrategy;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Created by Maciej Majewski on 2015-02-06.
@@ -69,8 +71,13 @@ public class AssembleContentCirrusEvent extends CirrusEvent<ServerCirrusEventHan
         }
 
         for(ContentPiece piece : pieces) {
-            handler.getContentPieceSink(metadata).push(piece.getSequence(), piece);
+            if(piece!=null) {
+                CirrusBlockingSequence<ContentPiece> contentPieceSink = handler.getContentPieceSink(metadata);
+                logger.info("DBG_ASMC: SINK "+contentPieceSink);
+                contentPieceSink.push(piece.getSequence(), piece);
+            }
         }
     }
+    private static final Logger logger = Logger.getLogger(AssembleContentCirrusEvent.class.getName());
 
 }
